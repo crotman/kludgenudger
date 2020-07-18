@@ -2,9 +2,12 @@
 
 export(assemble_diff_command)
 export(assemble_pmd_command)
+export(map_lines)
+export(read_number_of_lines)
 export(read_pmd_xml)
 import(dplyr)
 import(purrr)
 import(stringr)
 import(tidyr)
+importFrom(readr,read_table)
 importFrom(rlang,.data)

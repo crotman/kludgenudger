@@ -1,0 +1,8 @@
+1	0	match_alerts_app/include_statement_before/{old => new}/code.java
+
+diff --git a/match_alerts_app/include_statement_before/old/code.java b/match_alerts_app/include_statement_before/new/code.java
+index 311c341..aeae708 100644
+--- a/match_alerts_app/include_statement_before/old/code.java
++++ b/match_alerts_app/include_statement_before/new/code.java
+@@ -20,0 +21 @@ class ClassX extends ClassY implements InterfX {
++		paramT = 0;
