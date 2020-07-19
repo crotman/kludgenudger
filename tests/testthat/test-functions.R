@@ -58,7 +58,33 @@ test_that("decorate_code_alerts_mapped works", {
       
     )
   )
-  
-  
 })
+
+
+test_that("extract_piece_of_code works", {
+  expect_equal(
+    "int varX = function(paramX, paramY);", 
+    extract_piece_of_code(
+      strings_param = read_lines("data/caso1_extract_piece_of_code/code.java") %>% str_flatten("\n"),
+      begin_line = 9,
+      end_line = 9,
+      begin_column = 9,
+      end_column = 44
+    )
+  )
+})
+
+test_that("read_raw_ast_nodes works", {
+  caso_1 <- read_rds("data/info_read_raw_ast_nodes.rds")
+  expect_equal(
+    caso_1$function_output, 
+    read_raw_ast_nodes(
+      code_location = "data/caso1_read_raw_ast_nodes/code.java",
+      output_location = "data/caso1_read_raw_ast_nodes/code.xml",
+      pmd_location = "C:/doutorado/AnaliseTwitter4j/pmd/bin",
+      blockrules_location = "data/blockrules/blockrules.xml"
+    )
+  )
+})
+
 

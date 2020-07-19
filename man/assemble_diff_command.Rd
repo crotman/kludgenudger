@@ -24,7 +24,7 @@ assemble_diff_command(
 \item{output_right}{piece of output file name representing right}
 }
 \value{
-
+git diff command
 }
 \description{
 Assembles the diff command between two code files

@@ -14,7 +14,7 @@ map_lines(file, lines_prev_param, lines_post_param)
 \item{lines_post_param}{number of lines of right(post) file}
 }
 \value{
-
+a tibble with the corresponding lines of both files
 }
 \description{
 Map lines from two files based on the diff result on them

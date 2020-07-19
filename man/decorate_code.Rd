@@ -12,7 +12,7 @@ decorate_code(strings, size_line_of_code = 80)
 \item{size_line_of_code}{number of columns of the lines of code shown}
 }
 \value{
-
+a string to be used in a markdown file
 }
 \description{
 Make lines of code nice in a markdown document

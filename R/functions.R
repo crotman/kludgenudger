@@ -454,7 +454,7 @@ categorise_alerts <- function(map, alerts_old_param, alerts_new_param){
 #' @param size_line_of_code number of columns of the lines of code shown
 #'
 #' @return a string to be used in a markdown file
-#' @export code that can be put on markdown document
+#' @export
 #' 
 #' @import stringr
 #' 
@@ -508,8 +508,10 @@ aggregate_alerts_by_line <-
 #'
 #' @param strings lines of code
 #' @param alerts alerts 
-#' @param region_only 
-#' @param region_size 
+#' @param region_only include only regions near alerts?
+#' @param region_size size of the region near alerts contained in the output
+#' @param size_line_of_code size of lines of code in the markdown output
+#' @param length_alert_name size of lines of alert names in the markdown output
 #'
 #' @return a string to be used in a markdown file
 #'
@@ -597,6 +599,8 @@ decorate_code_and_alerts <-
 #' @param map_param line map between new and old versions
 #' @param region_only show only region where alerts are ?
 #' @param region_size size of the region near alerts to show
+#' @param length_alert_name_side_by_side length of the alert name in the markdown output
+#' @param size_line_of_code_side_by_side size of each line of code in the markdown output
 #'
 #' @return code that can be put on markdown document
 #'
@@ -741,23 +745,66 @@ decorate_code_alerts_mapped <-
     
   }
 
+#' Reads a code file, decorate and returns a string for a RMarkdown document
+#'
+#' @param file file to be read
+#'
+#'
+#' @importFrom readr read_lines
+#'
+#' @return a string for a RMarkdown document
+#' @export
+#'
+#' @examples
 read_and_decorate_code <-  function(file) {
-  read_lines(file,) %>%
+  readr::read_lines(file) %>%
     decorate_code() %>%
     as.character()
 }
 
+#' Read a source code and, with its alerts, make it nice to put on a markdown document
+#'
+#' @param file source code file which matches with the alerts
+#' @param alerts alerts from an output of calculate_features, output$versions_executed$pmd_output\[\[i\]\]
+#' @param region_only must the output contain only the region with alerts?
+#' @param region_size how many lines must the region near the alert contained in the output have?
+#'
+#'
+#' @importFrom readr read_lines
+#' @return a nice markdown content to be put on a markdown document
+#' @export
+#'
+#' @examples
 read_and_decorate_code_and_alerts <-  function(file, alerts,  region_only = FALSE,
                                                region_size = 3) {
   #for debug
   # file <-  "old/code.java"
   # alerts <- examples_executed$pmd_output[[1]]
   
-  read_lines(file) %>%
+  readr::read_lines(file) %>%
     decorate_code_and_alerts(alerts = alerts, region_only = region_only, region_size = region_size) %>%
     as.character()
 }
 
+
+
+#' Reads an old version ans a new version of a source code and returns a string for a RMarkdown document compating them
+#'
+#' @param file_old file containing the old version of a source code
+#' @param alerts_old alerts for the old version of a source code
+#' @param file_new file containing the new version of a source code
+#' @param alerts_new alerts for the new version of a source code
+#' @param map line map between new and old versions
+#' @param region_only show only the region near the alerts?
+#' @param region_size size of the region contained in the output
+#'
+#' @importFrom readr read_lines
+#' 
+#' 
+#' @return string ready for a RMarkdown document
+#' @export
+#'
+#' @examples
 read_and_decorate_code_and_alerts_mapped <-
   function(file_old,
            alerts_old,
@@ -791,32 +838,44 @@ read_and_decorate_code_and_alerts_mapped <-
 
 
 
+#' Extract piece of code
+#'
+#' @param strings_param code to extract piece from
+#' @param begin_line line where the piece begins
+#' @param end_line  line where the piece ends
+#' @param begin_column column where the piece begins
+#' @param end_column column where the piece ends
+#'
+#' @return piece of code
+#' @export
+#'
+#' @examples
 extract_piece_of_code <-  function(strings_param, begin_line, end_line, begin_column, end_column){
   
   
   #for debug
-  #strings_param <- read_lines("little-tree/code.java") %>% str_flatten("\n")
-  # begin_line <- 33
-  # end_line <- 43
-  # begin_column <- 5
-  # end_column <- 5
+  # strings_param <- read_lines("data/caso1_extract_piece_of_code/code.java") %>% str_flatten("\n")
+  # begin_line <- 9
+  # end_line <- 9
+  # begin_column <- 9
+  # end_column <- 44   
   
   strings <- str_split(strings_param, pattern = "\n") %>% unlist()
   
   piece <- strings %>% 
     enframe(name = "line", value = "code") %>% 
     filter(
-      between(line, begin_line, end_line)
+      between(.data$line, begin_line, end_line)
     ) %>% 
     mutate(
       code = case_when(
-        line == begin_line & line == end_line ~ str_sub(code, start = begin_column , end_column),
-        line == begin_line ~  str_sub(code, start = begin_column),
-        line == end_line ~str_sub(code, end = end_column),
+        .data$line == begin_line & .data$line == end_line ~ str_sub(.data$code, start = begin_column , end_column),
+        .data$line == begin_line ~  str_sub(.data$code, start = begin_column),
+        .data$line == end_line ~str_sub(.data$code, end = end_column),
         TRUE ~ code
       )   
     ) %>% 
-    pull(code) %>% 
+    pull(.data$code) %>% 
     str_flatten(collapse = "\n") 
   
   
@@ -826,12 +885,31 @@ extract_piece_of_code <-  function(strings_param, begin_line, end_line, begin_co
 }
 
 
-read_raw_ast_nodes <-  function(code_location, output_location ){
+#' Raw abstract syntax tree from a source code file
+#' 
+#' Reads the source code file, runs PMD Source Analyzer and returns the war Abstract Syntax Tree
+#'
+#' @param code_location location of a file containing the source code
+#' @param output_location temporary output where xml from PMD will be written
+#' @param pmd_location location of PMD.bat
+#' @param blockrules_location location of xml containing the blockrules
+#'
+#' @importFrom readr read_lines
+#' @return a dataframe containing the raw AST, with all the nodes captured from source code
+#' @export
+#'
+#' @examples
+read_raw_ast_nodes <-  function(
+  code_location, 
+  output_location,
+  pmd_location,
+  blockrules_location
+){
   
   # code_location <- code_file_old
   # output_location <- output_old
   
-  system(str_glue("pmd/bin/pmd.bat -d {code_location} -f xml -R blockrules/blockrules.xml -reportfile {output_location}"))
+  system(str_glue("{pmd_location}/pmd.bat -d {code_location} -f xml -R {blockrules_location} -reportfile {output_location}"))
   
   code_all_lines <- read_lines(code_location)
   
@@ -849,18 +927,16 @@ read_raw_ast_nodes <-  function(code_location, output_location ){
       code = pmap(
         .l =  list(
           strings_param = str_flatten(code_all_lines, collapse = "\n"), 
-          begin_line = beginline, 
-          end_line = endline, 
-          begin_column = begincolumn, 
-          end_column = endcolumn                
+          begin_line = .data$beginline, 
+          end_line = .data$endline, 
+          begin_column = .data$begincolumn, 
+          end_column = .data$endcolumn                
         ),
         .f = extract_piece_of_code 
       )
     )
   
   file.remove(output_location)
-  
-  write_rds(returned_value, "ast.rds")
   
   returned_value
 }

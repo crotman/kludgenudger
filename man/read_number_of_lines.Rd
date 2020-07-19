@@ -10,7 +10,7 @@ read_number_of_lines(dir)
 \item{dir}{directory, string}
 }
 \value{
-
+number of lines
 }
 \description{
 Return number of lines of the file in the path

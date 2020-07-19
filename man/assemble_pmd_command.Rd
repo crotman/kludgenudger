@@ -18,7 +18,7 @@ assemble_pmd_command(pmd_path, code_path, rule_path, output_path, output)
 \item{output}{name of the output xml file, without extension}
 }
 \value{
-
+PMD command to generate the alerts
 }
 \description{
 Assemble command in order to execute PMD
