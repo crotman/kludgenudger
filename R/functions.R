@@ -454,7 +454,7 @@ categorise_alerts <- function(map, alerts_old_param, alerts_new_param){
 #' @param size_line_of_code number of columns of the lines of code shown
 #'
 #' @return a string to be used in a markdown file
-#' @export
+#' @export code that can be put on markdown document
 #' 
 #' @import stringr
 #' 
@@ -500,7 +500,7 @@ aggregate_alerts_by_line <-
     
   }
 
-#' Make lines of code nice in markdown, with their alerts 
+#' Make lines of code look nice in markdown, with their alerts 
 #'
 #'
 #'it's called from read_and_decorate_code
@@ -588,6 +588,19 @@ decorate_code_and_alerts <-
       pull(.data$final_code)
   }
 
+#'  Make two versions of lines of code look nice, side by side, in markdown, with their alerts
+#'
+#' @param strings_old_param source code of the old version
+#' @param alerts_old_param alerts of the old version
+#' @param strings_new_param source code of the new version
+#' @param alerts_new_param alerts of the new version
+#' @param map_param line map between new and old versions
+#' @param region_only show only region where alerts are ?
+#' @param region_size size of the region near alerts to show
+#'
+#' @return code that can be put on markdown document
+#'
+#' @examples
 decorate_code_alerts_mapped <-
   function(strings_old_param,
            alerts_old_param,
@@ -595,7 +608,10 @@ decorate_code_alerts_mapped <-
            alerts_new_param,
            map_param,
            region_only = FALSE,
-           region_size = 3) {
+           region_size = 3,
+           length_alert_name_side_by_side = 14,
+           size_line_of_code_side_by_side = 77           
+           ) {
     # for debug
     # strings_old_param <-  read_lines("old/code.java")
     # strings_new_param <-  read_lines("new/code.java")
@@ -607,22 +623,22 @@ decorate_code_alerts_mapped <-
     
     
     map <- map_param %>%
-      select(line_old = map_remove,
-             line_new = map_add)
+      select(line_old = .data$map_remove,
+             line_new = .data$map_add)
     
     strings_old <-
       strings_old_param %>% enframe(name = "line_old", value = "code_old") %>% replace_na(list(code_old = ""))
     
     alerts_old <- alerts_old_param %>%
-      aggregate_alerts_by_line(trunc_rule_length = length_alert_name_side_by_side) %>%
-      select(line_old = beginline, rule_old = rule)
+      aggregate_alerts_by_line(trunc_rule_length_param = length_alert_name_side_by_side) %>%
+      select(line_old = .data$beginline, rule_old = .data$rule)
     
     strings_new <-
       strings_new_param %>% enframe(name = "line_new", value = "code_new") %>% replace_na(list(code_new = ""))
     
     alerts_new <- alerts_new_param %>%
-      aggregate_alerts_by_line(trunc_rule_length = length_alert_name_side_by_side) %>%
-      select(line_new = beginline, rule_new = rule)
+      aggregate_alerts_by_line(trunc_rule_length_param = length_alert_name_side_by_side) %>%
+      select(line_new = .data$beginline, rule_new = .data$rule)
     
     
     saida <- map %>%
@@ -637,15 +653,15 @@ decorate_code_alerts_mapped <-
       ungroup() %>% 
       mutate(
         id_line = row_number(), 
-        alert_mark_up = if_else(is.na(rule_new) & is.na(rule_old) , NA_integer_, id_line ),  
-        alert_mark_down = if_else(is.na(rule_new) & is.na(rule_old), NA_integer_, id_line )  
+        alert_mark_up = if_else(is.na(.data$rule_new) & is.na(.data$rule_old) , NA_integer_, .data$id_line ),  
+        alert_mark_down = if_else(is.na(.data$rule_new) & is.na(.data$rule_old), NA_integer_, .data$id_line )  
       ) %>%
       fill(
-        alert_mark_up,
+        .data$alert_mark_up,
         .direction = "up"
       ) %>% 
       fill(
-        alert_mark_down,
+        .data$alert_mark_down,
         .direction = "down"
       ) %>% 
       replace_na(
@@ -655,26 +671,26 @@ decorate_code_alerts_mapped <-
         )
       ) %>% 
       mutate(
-        dist_up = id_line - alert_mark_down,
-        dist_down = alert_mark_up - id_line
+        dist_up = .data$id_line - .data$alert_mark_down,
+        dist_down = .data$alert_mark_up - .data$id_line
       ) %>% 
       rowwise() %>%
       mutate(
-        min_dist = min(dist_up, dist_down)
+        min_dist = min(.data$dist_up, .data$dist_down)
       ) %>% 
       mutate(
-        code_new = if_else(min_dist == region_size + 1, "/* ...  */", code_new ),
-        code_old = if_else(min_dist == region_size + 1, "/* ...  */", code_old )
+        code_new = if_else(.data$min_dist == region_size + 1, "/* ...  */", .data$code_new ),
+        code_old = if_else(.data$min_dist == region_size + 1, "/* ...  */", .data$code_old )
       ) %>% 
       filter(
-        min_dist <= region_size + 1
+        .data$min_dist <= region_size + 1
       ) %>% 
       ungroup() %>% 
       select(
-        -id_line
+        -.data$id_line
       ) %>% 
-      mutate(line_old = as.character(line_old),
-             line_new = as.character(line_new)) %>%
+      mutate(line_old = as.character(.data$line_old),
+             line_new = as.character(.data$line_new)) %>%
       replace_na(
         list(
           code_new = "/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/",
@@ -688,9 +704,9 @@ decorate_code_alerts_mapped <-
         )
       ) %>%
       mutate(
-        line_old = line_old %>%  str_pad(width = 3, side = "left"),
-        line_new = line_new %>%  str_pad(width = 3, side = "left"),
-        code_old = code_old %>%
+        line_old = .data$line_old %>%  str_pad(width = 3, side = "left"),
+        line_new = .data$line_new %>%  str_pad(width = 3, side = "left"),
+        code_old = .data$code_old %>%
           str_trunc(
             width = size_line_of_code_side_by_side - length_alert_name_side_by_side,
             ellipsis = ""
@@ -700,7 +716,7 @@ decorate_code_alerts_mapped <-
             side = "right"
           ),
         
-        code_new = code_new %>%
+        code_new = .data$code_new %>%
           str_trunc(
             width = size_line_of_code_side_by_side - length_alert_name_side_by_side,
             ellipsis = ""
@@ -710,16 +726,16 @@ decorate_code_alerts_mapped <-
             side = "right"
           ),
         
-        rule_old = rule_old %>% str_pad(width = length_alert_name_side_by_side + 3, side = "right"),
-        rule_new = rule_new %>% str_pad(width = length_alert_name_side_by_side + 3, side = "right"),
+        rule_old = .data$rule_old %>% str_pad(width = length_alert_name_side_by_side + 3, side = "right"),
+        rule_new = .data$rule_new %>% str_pad(width = length_alert_name_side_by_side + 3, side = "right"),
         
         
         
         final_code = str_glue(
-          "/*{line_old}-{rule_old}*/{code_old}/*{line_new}-{rule_new}*/{code_new}"
+          "/*{.data$line_old}-{.data$rule_old}*/{.data$code_old}/*{.data$line_new}-{.data$rule_new}*/{.data$code_new}"
         )
       ) %>%
-      pull(final_code) 
+      pull(.data$final_code) 
     
     
     
