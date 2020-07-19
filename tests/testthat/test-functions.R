@@ -25,3 +25,19 @@ test_that("map_lines works", {
   )
   
 })
+
+
+test_that("decorate_code_and_alerts works", {
+  caso_1 <- read_rds("data/info_decorate_code_and_alerts.rds")
+  expect_equal(
+    caso_1$function_output, 
+    decorate_code_and_alerts(
+      strings = caso_1$strings,
+      alerts = caso_1$alerts,
+      region_only = caso_1$region_only,
+      region_size = caso_1$region_size
+    )
+  )
+  
+  
+})
