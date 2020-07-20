@@ -118,9 +118,12 @@ assemble_diff_command <- function(code_path_left, code_path_right, output_path, 
 read_number_of_lines <- function(dir){
   
   files <- list.files(dir)
-  
-  readr::read_table(file = str_glue("{dir}\\{files}"), col_names = FALSE, skip_empty_rows = FALSE) %>% 
+  print("dir")
+  print(dir)
+  saida <- readr::read_table(file = str_glue("{dir}\\{files}"), col_names = FALSE, skip_empty_rows = FALSE) %>% 
     nrow() 
+  print(saida)
+  saida
 }
 
 #' Map lines from two files based on the diff result on them
@@ -880,6 +883,29 @@ generate_ast_tree_from_raw_nodes <-  function(nodes){
   
 }
 
+
+
+
+#' Generate a plot from graph with AST
+#' 
+#' 
+#'
+#' @param graph_dfs_tree a graph contained in the output from calculate_features_from_versions 
+#' @param size_label size of the label attached to the node
+#' @param alpha_label opacity of the label attached to the node
+#' @param node_text_field name of a column in the output from calculate_features_from_versions used in the label attached to the node
+#' @param name_field name of a column in the output from calculate_features_from_versions used inside the node
+#' @param show_label are the labels shown?
+#' @param title title of the plot
+#' 
+#' @import tidygraph
+#' @import ggplot2
+#' @import ggraph
+#'
+#' @return a plot
+#' @export
+#'
+#' @examples
 show_ast <-  function(
   graph_dfs_tree, 
   size_label = 5.5, 
@@ -942,7 +968,7 @@ show_ast <-  function(
                    end_cap = circle(3, 'mm'), start_cap = circle(3, 'mm')) +    
     layer +
     geom_node_point(
-      aes(color = method),
+      aes(color = .data$method),
       size = 8,
       shape = 21
     ) +
@@ -967,14 +993,23 @@ show_ast <-  function(
 }
 
 
-
-
-cross_versions <- function(examples_executed){
+#' Adds the line map to the dataframe used inside calculate_features_from_versions
+#'
+#' @param examples_executed dataframe with the versions and their pmd output
+#' @param output_path path to write the diff file
+#'
+#' @return dataframe with line maps info
+#'
+#' @examples
+cross_versions <- function(
+  examples_executed,
+  output_path = ""
+){
   
   # examples_executed <- examples_sec2_executed
   
   examples_executed_selected_fields_left <-
-    examples_executed %>% select(id, name, path, output) %>%
+    examples_executed %>% select(.data$id, .data$name, .data$path, .data$output) %>%
     rename_all(
       .funs = function(x) {
         str_glue("{x}_left")
@@ -982,52 +1017,64 @@ cross_versions <- function(examples_executed){
     )
   
   examples_executed_selected_fields_right <-
-    examples_executed %>% select(id, name, path, output) %>%
+    examples_executed %>% select(.data$id, .data$name, .data$path, .data$output) %>%
     rename_all(
       .funs = function(x) {
         str_glue("{x}_right")
       }
     )
   
-  
+
   saida <- examples_executed_selected_fields_left %>%
     crossing(examples_executed_selected_fields_right) %>%
-    filter(id_left < id_right) %>%
+    filter(.data$id_left < .data$id_right) %>%
     mutate(diff_command =
              map2(
-               .x = path_left,
-               .y = path_right,
+               .x = .data$path_left,
+               .y = .data$path_right,
                ~ assemble_diff_command(
                  code_path_left = .x,
                  code_path_right = .y,
-                 output_path = output_path,
-                 output_left = output_left,
-                 output_right = output_right
+                 output_path = "",
+                 output_left = .data$output_left,
+                 output_right = .data$output_right
                )
-             )) %>%
-    mutate(lines_left = read_number_of_lines(path_left),
-           lines_right = read_number_of_lines(path_right)) %>%
+             )) %>% 
+    mutate(lines_left = read_number_of_lines(.data$path_left),
+           lines_right = read_number_of_lines(.data$path_right)) %>%
     mutate(
       output_diff_command = map(
-        .x = diff_command,
+        .x = .data$diff_command,
         .f = ~ system(command =  .x)
       ),
       file_diff = str_glue("{output_path}{output_left}_{output_right}.diff")
     ) %>%
     mutate(lines_map = pmap(
       .l = list(
-        file = file_diff  ,
-        lines_prev_param = lines_left,
-        lines_post_param = lines_right
+        file = .data$file_diff  ,
+        lines_prev_param = .data$lines_left,
+        lines_post_param = .data$lines_right
       ),
       .f = map_lines
     ))
   
   saida
-  
+   
 }
 
 
+
+#' calculate the features from the combination of the alerts in the new and the old version
+#' 
+#' it's called from calculate_features_from_versions 
+#'
+#' @param graph_old graph related to the old version
+#' @param graph_new graph related to the new version
+#' @param coordinates line map
+#'
+#' @return calculated features
+#'
+#' @examples
 calculate_features <-  function(graph_old, graph_new, coordinates){
   
   # graph_new <- graphs_from_alerts_new$graph_new[[2]]
@@ -1389,7 +1436,7 @@ calculate_features_from_versions <- function(
                  pmd_path = pmd_path,
                  code_path = .x ,
                  rule_path = rule_path,
-                 output_path = output_path,
+                 output_path = "",
                  output = .y
                )
              )) %>%

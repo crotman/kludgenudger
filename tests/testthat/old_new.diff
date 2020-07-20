@@ -1,0 +1,22 @@
+10	5	data/{caso1_velho => caso1_new}/code.java
+
+diff --git a/data/caso1_velho/code.java b/data/caso1_new/code.java
+index 311c341..d070f7b 100644
+--- a/data/caso1_velho/code.java
++++ b/data/caso1_new/code.java
+@@ -21,5 +21,10 @@ class ClassX extends ClassY implements InterfX {
+-        if (paramZ)
+-            fieldX = paramW;
+-        else{
+-            fieldX = 0;
+-        }
++		if(paramZ == 0){
++            if (paramZ)
++                fieldX = paramW;
++            else{
++                fieldX = 0;
++            }
++		}	
++	    else{
++		    fieldX = 1;
++		}

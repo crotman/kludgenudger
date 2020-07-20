@@ -105,4 +105,19 @@ test_that("generate_ast_tree_from_raw_nodes works", {
 })
 
 
+test_that("cross_versions works", {
+  caso_1 <- read_rds("data/info_cross_versions.rds")
+  old <- read_lines("data/caso1_velho/code.java")
+  new <- read_lines("data/caso1_new/code.java")
+  param <- caso_1$examples_executed %>% 
+    mutate(path = c("data/caso1_velho", "data/caso1_new"))
+  expect_equal(
+    caso_1$function_output$lines_map[[1]] %>%  select(-c(file_prev, file_post)), 
+    cross_versions(
+      examples_executed = param
+    )$lines_map[[1]] %>%  select(-c(file_prev, file_post))
+  )
+})
+
+
 

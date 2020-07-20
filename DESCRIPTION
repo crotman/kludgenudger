@@ -23,7 +23,9 @@ Imports:
     purrr,
     rlang,
     readr,
+    ggplot2,
     tibble,
-    tidygraph
+    tidygraph,
+    ggraph
 Depends: 
     R (>= 2.10)
