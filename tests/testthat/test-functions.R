@@ -64,7 +64,7 @@ test_that("decorate_code_alerts_mapped works", {
 test_that("extract_piece_of_code works", {
   expect_equal(
     "int varX = function(paramX, paramY);", 
-    extract_piece_of_code(
+  extract_piece_of_code(
       strings_param = read_lines("data/caso1_extract_piece_of_code/code.java") %>% str_flatten("\n"),
       begin_line = 9,
       end_line = 9,
@@ -86,5 +86,23 @@ test_that("read_raw_ast_nodes works", {
     )
   )
 })
+
+
+test_that("generate_ast_tree_from_raw_nodes works", {
+  caso_1 <- read_rds("data/info_generate_ast_tree_from_raw_nodes.rds")
+  expect_equal(
+    caso_1$function_output %>% tidygraph::activate(nodes) %>%  as_tibble(), 
+    generate_ast_tree_from_raw_nodes(
+      nodes = caso_1$nodes
+    ) %>% tidygraph::activate(nodes) %>% as_tibble()
+  )
+  expect_equal(
+    caso_1$function_output %>% tidygraph::activate(edges) %>%  as_tibble(), 
+    generate_ast_tree_from_raw_nodes(
+      nodes = caso_1$nodes
+    ) %>% tidygraph::activate(edges) %>% as_tibble()
+  )
+})
+
 
 

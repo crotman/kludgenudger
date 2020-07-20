@@ -20,6 +20,30 @@ assemble_pmd_command <- function(pmd_path, code_path, rule_path, output_path, ou
 }
 
 
+#' Make lines of code nice in a markdown document
+#'
+#' @param strings lines of code
+#' @param size_line_of_code number of columns of the lines of code shown
+#'
+#' @return a string to be used in a markdown file
+#' @export
+#' 
+#' @import stringr
+#' 
+#' @import tibble
+#' @import dplyr
+#'
+#' @examples
+decorate_code <- function(strings, size_line_of_code = 80) {
+  strings %>%
+    enframe(name = "line", value = "code") %>%
+    mutate(
+      line = as.character(.data$line) %>%  str_pad(width = 3, side = "left"),
+      code = .data$code %>%  str_trunc(width = size_line_of_code, ellipsis = "..."),
+      final_code = str_glue("/*{line}*/{code}")
+    ) %>%
+    pull(.data$final_code)
+}
 
 
 
@@ -35,6 +59,8 @@ assemble_pmd_command <- function(pmd_path, code_path, rule_path, output_path, ou
 #' @import purrr
 #' @import dplyr
 #' @import tidyr
+#' @import tibble
+#' @import dplyr
 #' @importFrom rlang .data
 #' @examples
 read_pmd_xml <- function(file){
@@ -276,204 +302,6 @@ map_lines <- function(file, lines_prev_param, lines_post_param){
 }
 
 
-categorise_alerts <- function(map, alerts_old_param, alerts_new_param){
-  
-  map  = examples_crossed$lines_map[[1]]
-  
-  alerts_old_param <- examples_executed$pmd_output[[1]]
-  
-  alerts_new_param <- examples_executed$pmd_output[[2]]
-  
-  
-  
-  alerts_old = alerts_old_param %>%
-    select(
-      id_alert,
-      line = beginline,
-      rule,
-      ruleset,
-      package,
-      class,
-      method,
-      variable
-    ) %>%
-    rename_all(
-      .funs = ~str_glue("{.x}_old")
-    ) %>%
-    mutate(
-      line_old = as.integer(line_old)
-    )
-  # 
-  # 
-  alerts_new = alerts_new_param %>%
-    select(
-      id_alert,
-      line = beginline,
-      rule,
-      ruleset,
-      package,
-      class,
-      method,
-      variable
-    ) %>%
-    rename_all(
-      .funs = ~str_glue("{.x}_new")
-    ) %>%
-    mutate(
-      line_new = as.integer(line_new)
-    )
-  
-  
-  classification_old <- map %>% 
-    select(
-      line_old = map_remove,
-      line_new = map_add,
-    ) %>%
-    mutate_all(
-      as.integer
-    ) %>% 
-    left_join(
-      alerts_old,
-      by = c("line_old")
-    ) %>% 
-    left_join(
-      alerts_new,
-      by = c("line_new")
-    ) %>% 
-    filter(
-      !is.na(rule_old)
-    ) %>% 
-    replace_na(
-      list(
-        rule_old = "No rule",
-        rule_new = "No rule",
-        class_new = "No class",
-        class_old = "No class",
-        ruleset_new = "No ruleset",
-        ruleset_old = "no ruleset",
-        class_old = "No class",
-        class_new = "No class",
-        method_old = "No method",
-        method_new = "No method",
-        variable_old = "No variable",
-        variable_new = "No variable"
-      )
-    ) %>% 
-    mutate(
-      classification = if_else(
-        rule_old == rule_new & 
-          class_new == class_old & 
-          method_old == method_new &
-          variable_new == variable_old
-        ,
-        "Open",
-        "Fixed"
-      )
-    ) %>% 
-    group_by(
-      id_alert_old
-    ) %>% 
-    mutate(
-      n_not_fixed = sum(classification == "Open")
-    ) %>% 
-    filter(
-      (n_not_fixed == 0) | classification == "Not fixed"
-    ) 
-  
-  
-  classification_new <- map %>% 
-    select(
-      line_old = map_remove,
-      line_new = map_add,
-    ) %>%
-    mutate_all(
-      as.integer
-    ) %>% 
-    left_join(
-      alerts_old,
-      by = c("line_old")
-    ) %>% 
-    left_join(
-      alerts_new,
-      by = c("line_new")
-    ) %>% 
-    filter(
-      !is.na(rule_new)
-    ) %>% 
-    replace_na(
-      list(
-        rule_old = "No rule",
-        rule_new = "No rule",
-        class_new = "No class",
-        class_old = "No class",
-        ruleset_new = "No ruleset",
-        ruleset_old = "no ruleset",
-        class_old = "No class",
-        class_new = "No class",
-        method_old = "No method",
-        method_new = "No method",
-        variable_old = "No variable",
-        variable_new = "No variable"
-      )
-    ) %>% 
-    mutate(
-      classification = if_else(
-        rule_old == rule_new & 
-          class_new == class_old & 
-          method_old == method_new &
-          variable_new == variable_old
-        ,
-        "Open",
-        "New"
-      )
-    ) %>% 
-    group_by(
-      id_alert_new
-    ) %>% 
-    mutate(
-      n_not_fixed = sum(classification == "Open")
-    ) %>% 
-    filter(
-      (n_not_fixed == 0) | classification == "Open"
-    ) 
-  
-  classification <- bind_rows(
-    classification_old %>% mutate(version = "Old"),
-    classification_new %>% mutate(version = "New"),
-  )
-  
-  classification
-  
-}
-
-
-
-#' Make lines of code nice in a markdown document
-#'
-#' @param strings lines of code
-#' @param size_line_of_code number of columns of the lines of code shown
-#'
-#' @return a string to be used in a markdown file
-#' @export
-#' 
-#' @import stringr
-#' 
-#' @import tibble
-#' @import dplyr
-#'
-#' @examples
-decorate_code <- function(strings, size_line_of_code = 80) {
-  strings %>%
-    enframe(name = "line", value = "code") %>%
-    mutate(
-      line = as.character(.data$line) %>%  str_pad(width = 3, side = "left"),
-      code = .data$code %>%  str_trunc(width = size_line_of_code, ellipsis = "..."),
-      final_code = str_glue("/*{line}*/{code}")
-    ) %>%
-    pull(.data$final_code)
-}
-
-
 aggregate_alerts_by_line <-
   function(alerts, trunc_rule_length_param = NA_real_) {
     trunc_rule_length <-
@@ -513,6 +341,8 @@ aggregate_alerts_by_line <-
 #' @param size_line_of_code size of lines of code in the markdown output
 #' @param length_alert_name size of lines of alert names in the markdown output
 #'
+#' @import tibble
+#' @import dplyr
 #' @return a string to be used in a markdown file
 #'
 #' @examples
@@ -601,6 +431,9 @@ decorate_code_and_alerts <-
 #' @param region_size size of the region near alerts to show
 #' @param length_alert_name_side_by_side length of the alert name in the markdown output
 #' @param size_line_of_code_side_by_side size of each line of code in the markdown output
+#'
+#' @import tibble
+#' @import dplyr
 #'
 #' @return code that can be put on markdown document
 #'
@@ -845,7 +678,9 @@ read_and_decorate_code_and_alerts_mapped <-
 #' @param end_line  line where the piece ends
 #' @param begin_column column where the piece begins
 #' @param end_column column where the piece ends
-#'
+#' @import tibble
+#' @import dplyr
+
 #' @return piece of code
 #' @export
 #'
@@ -895,6 +730,8 @@ extract_piece_of_code <-  function(strings_param, begin_line, end_line, begin_co
 #' @param blockrules_location location of xml containing the blockrules
 #'
 #' @importFrom readr read_lines
+#' @import tibble
+#' @import dplyr
 #' @return a dataframe containing the raw AST, with all the nodes captured from source code
 #' @export
 #'
@@ -942,41 +779,15 @@ read_raw_ast_nodes <-  function(
 }
 
 
-show_latex_raw_ast_nodes <- function(nodes){
-  
-  nodes %>%
-    select(
-      -c(linha, ruleset, package, class, priority, variable, id_alert, small_rule)
-    ) %>% 
-    rename(
-      line = beginline,
-      endline = endline,
-      col = begincolumn,
-      endcol = endcolumn
-      
-    ) %>% 
-    mutate(
-      code = str_trunc(code,width = 30, ellipsis = "...")
-    ) %>% 
-    arrange(
-      line, col
-    ) %>% 
-    kable(
-      format = "latex",
-      caption = "Elements captured in code\\label{elements_captured}",
-      escape = TRUE
-    ) %>%
-    kable_styling(
-      font_size = 8,
-      latex_options = c("hold_position")
-    )
-  
-  
-}
-
-
+#' Generate Abstract Syntax Tree from raw nodes
+#'
+#' @param nodes raw nodes from read_raw_ast_nodes
+#' @import tidygraph
+#' @return the Abstrac Syntax Tree, a graph
+#' @export
+#'
+#' @examples
 generate_ast_tree_from_raw_nodes <-  function(nodes){
-  
   
   max_column <- max(nodes$endcolumn)
   
@@ -987,23 +798,23 @@ generate_ast_tree_from_raw_nodes <-  function(nodes){
   all_edges <- nodes_from %>% 
     crossing(nodes_to) %>% 
     mutate(
-      location_begin_from = beginline_from * max_column + begincolumn_from,
-      location_begin_to = beginline_to * max_column + begincolumn_to,
-      location_end_from = endline_from * max_column + endcolumn_from,
-      location_end_to = endline_to * max_column + endcolumn_to
+      location_begin_from = .data$beginline_from * max_column + .data$begincolumn_from,
+      location_begin_to = .data$beginline_to * max_column + .data$begincolumn_to,
+      location_end_from = .data$endline_from * max_column + .data$endcolumn_from,
+      location_end_to = .data$endline_to * max_column + .data$endcolumn_to
     ) %>% 
-    filter(id_alert_from != id_alert_to) %>% 
+    filter(.data$id_alert_from != .data$id_alert_to) %>% 
     filter(
-      location_begin_from <= location_begin_to & location_end_from >= location_end_to
+      .data$location_begin_from <= .data$location_begin_to & .data$location_end_from >= .data$location_end_to
     ) %>% 
     select(
-      from = id_alert_from,
-      to =id_alert_to
+      from = .data$id_alert_from,
+      to = .data$id_alert_to
     ) 
   
   
   descendents <- all_edges %>% 
-    group_by(from) %>% 
+    group_by(.data$from) %>% 
     summarise(n_descendents = n()) 
   
   nodes_sorted <- nodes %>% 
@@ -1015,23 +826,23 @@ generate_ast_tree_from_raw_nodes <-  function(nodes){
       list(n_descendents = 0 )
     ) %>% 
     arrange(
-      desc(n_descendents)
+      desc(.data$n_descendents)
     ) %>% 
     mutate(
-      id_alert_old = id_alert,
+      id_alert_old = .data$id_alert,
       id_alert = row_number()
     ) %>%  
     mutate(
       name = case_when(
-        small_rule %in% c("name", "class_type","var_id" ) ~ str_glue('{id_alert}:line:{beginline},{small_rule}:{code}'),
-        TRUE ~ str_glue("{id_alert}:line:{beginline},{small_rule}")
+        .data$small_rule %in% c("name", "class_type","var_id" ) ~ str_glue('{.data$id_alert}:line:{.data$beginline},{.data$small_rule}:{.data$code}'),
+        TRUE ~ str_glue("{.data$id_alert}:line:{.data$beginline},{.data$small_rule}")
       )
     )
   
   map_new_id_alert <- nodes_sorted %>% 
     select(
-      id_alert_old,
-      id_alert
+      .data$id_alert_old,
+      .data$id_alert
     )
   
   all_edges_new_id <-  all_edges %>% 
@@ -1040,20 +851,20 @@ generate_ast_tree_from_raw_nodes <-  function(nodes){
       c("from" = "id_alert_old")
     ) %>% 
     mutate(
-      from = id_alert
+      from = .data$id_alert
     ) %>% 
-    select(-id_alert) %>% 
+    select(-.data$id_alert) %>% 
     left_join(
       map_new_id_alert,
       c("to" = "id_alert_old")
     ) %>% 
     mutate(
-      to = id_alert
+      to = .data$id_alert
     ) %>% 
-    select(-id_alert) 
+    select(-.data$id_alert) 
   
   nodes_sorted <-  nodes_sorted %>% 
-    select(-id_alert_old)
+    select(-.data$id_alert_old)
   
   
   complete_graph <- create_empty(n = 0, directed = TRUE) %>% 
@@ -1061,11 +872,13 @@ generate_ast_tree_from_raw_nodes <-  function(nodes){
     bind_edges(all_edges_new_id) 
   
   
-  complete_graph %>% 
+  output <- complete_graph %>% 
     convert(to_dfs_tree , root = 1, mode = "out" )
   
-}
 
+  output
+  
+}
 
 show_ast <-  function(
   graph_dfs_tree, 
