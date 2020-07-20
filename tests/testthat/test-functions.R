@@ -121,3 +121,14 @@ test_that("cross_versions works", {
 
 
 
+test_that("calculate_features works", {
+  caso_1 <- read_rds("data/info_calculate_features.rds")
+  expect_equal(
+    caso_1$function_output, 
+    calculate_features(
+      graph_old = caso_1$graph_old,
+      graph_new = caso_1$graph_new,
+      coordinates = caso_1$coordinates
+    )
+  )
+})

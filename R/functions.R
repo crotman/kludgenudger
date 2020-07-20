@@ -1071,6 +1071,8 @@ cross_versions <- function(
 #' @param graph_old graph related to the old version
 #' @param graph_new graph related to the new version
 #' @param coordinates line map
+#' 
+#' @import tidygraph
 #'
 #' @return calculated features
 #'
@@ -1081,34 +1083,33 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
   
   alert_old <- graph_old %>% 
-    activate(nodes) %>% 
-    as_tibble() %T>%
-    write_rds("alert_old.rds") %>% 
+    activate("nodes") %>% 
+    as_tibble() %>% 
     select(
-      beginline,
-      endline,
-      rule,
-      id_group,
-      method,
-      rule_alert,
-      code
+      .data$beginline,
+      .data$endline,
+      .data$rule,
+      .data$id_group,
+      .data$method,
+      .data$rule_alert,
+      .data$code
     ) %>% 
     rowwise() %>% 
-    mutate( code = str_flatten(code, collapse = "\n") ) %>%
+    mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
     ungroup() %>% 
     left_join(
-      coordinates %>% select(-new),
+      coordinates %>% select(-.data$new),
       by = c("beginline" = "old")
     ) %>% 
     rename(
-      begin_common_line = common_line
+      begin_common_line = .data$common_line
     ) %>% 
     left_join(
-      coordinates %>%  select(-new),
+      coordinates %>%  select(-.data$new),
       by = c("endline" = "old")
     ) %>% 
     rename(
-      end_common_line = common_line
+      end_common_line = .data$common_line
     ) %>% 
     mutate(
       node = row_number()
@@ -1118,33 +1119,33 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
     )
   
   alert_new <- graph_new %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     as_tibble() %>%
     select(
-      beginline,
-      endline,
-      rule,
-      id_group,
-      method,
-      rule_alert,
-      code
+      .data$beginline,
+      .data$endline,
+      .data$rule,
+      .data$id_group,
+      .data$method,
+      .data$rule_alert,
+      .data$code
     ) %>% 
     rowwise() %>% 
-    mutate( code = str_flatten(code, collapse = "\n") ) %>%
+    mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
     ungroup() %>% 
     left_join(
-      coordinates %>% select(-old),
+      coordinates %>% select(-.data$old),
       by = c("beginline" = "new")
     ) %>% 
     rename(
-      begin_common_line = common_line
+      begin_common_line = .data$common_line
     ) %>% 
     left_join(
-      coordinates %>%  select(-old),
+      coordinates %>%  select(-.data$old),
       by = c("endline" = "new")
     ) %>% 
     rename(
-      end_common_line = common_line
+      end_common_line = .data$common_line
     ) %>% 
     mutate(
       node = row_number()
@@ -1164,196 +1165,195 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   features_match_path <- match_path %>% 
     mutate(
       last_method_id_old = if_else(
-        rule_old %in% c(
+        .data$rule_old %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        id_group_old, 
+        .data$id_group_old, 
         NA_integer_
       ),
-      last_method_id_new = if_else(rule_new %in% c(
+      last_method_id_new = if_else(.data$rule_new %in% c(
         "compilation_unit", 
         "constructor_declaration", 
         "method"
       ), 
-      id_group_new, 
+      .data$id_group_new, 
       NA_integer_
       ),
       last_method_begin_line_old = if_else(
-        rule_old %in% c(
+        .data$rule_old %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        begin_common_line_old, 
+        .data$begin_common_line_old, 
         NA_integer_
       ),
-      last_method_begin_line_new = if_else(rule_new %in% c(
+      last_method_begin_line_new = if_else(.data$rule_new %in% c(
         "compilation_unit", 
         "constructor_declaration", 
         "method"
       ), 
-      begin_common_line_new, 
+      .data$begin_common_line_new, 
       NA_integer_
       ),
       last_method_end_line_old = if_else(
-        rule_old %in% c(
+        .data$rule_old %in% c(   
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        end_common_line_old, 
+        .data$end_common_line_old, 
         NA_integer_
       ),
-      last_method_end_line_new = if_else(rule_new %in% c(
+      last_method_end_line_new = if_else(.data$rule_new %in% c(
         "compilation_unit", 
         "constructor_declaration", 
         "method"
       ),    
-      end_common_line_new, 
+      .data$end_common_line_new, 
       NA_integer_
       ),
       
       last_method_code_old = if_else(
-        rule_old %in% c(
+        .data$rule_old %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        code_old, 
+        .data$code_old, 
         NA_character_
       ),
       
       
       last_method_code_new = if_else(
-        rule_new %in% c(
+        .data$rule_new %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        code_new, 
+        .data$code_new, 
         NA_character_
       ),
       
-      last_code_new = code_new,
-      last_code_old = code_old,
+      last_code_new = .data$code_new,
+      last_code_old = .data$code_old,
       
       
-      last_block_id_old = if_else(rule_old %in% c("compilation_unit","block"), id_group_old, NA_integer_),
-      last_block_id_new = if_else(rule_new %in% c("compilation_unit","block"), id_group_new, NA_integer_),
+      last_block_id_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$id_group_old, NA_integer_),
+      last_block_id_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$id_group_new, NA_integer_),
       
-      last_block_begin_line_old = if_else(rule_old %in% c("compilation_unit","block"), begin_common_line_old, NA_integer_),
-      last_block_begin_line_new = if_else(rule_new %in% c("compilation_unit","block"), begin_common_line_new, NA_integer_),
+      last_block_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$begin_common_line_old, NA_integer_),
+      last_block_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$begin_common_line_new, NA_integer_),
       
-      last_block_end_line_old = if_else(rule_old %in% c("compilation_unit","block"), end_common_line_old, NA_integer_),
-      last_block_end_line_new = if_else(rule_new %in% c("compilation_unit","block"), end_common_line_new, NA_integer_),
+      last_block_end_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$end_common_line_old, NA_integer_),
+      last_block_end_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$end_common_line_new, NA_integer_),
       
-      last_class_begin_line_old = if_else(rule_old %in% c("compilation_unit"), begin_common_line_old, NA_integer_),
-      last_class_begin_line_new = if_else(rule_new %in% c("compilation_unit"), begin_common_line_new, NA_integer_),
+      last_class_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit"), .data$begin_common_line_old, NA_integer_),
+      last_class_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit"), .data$begin_common_line_new, NA_integer_),
       
-      last_class_end_line_old = if_else(rule_old %in% c("compilation_unit"), end_common_line_old, NA_integer_),
-      last_class_end_line_new = if_else(rule_new %in% c("compilation_unit"), end_common_line_new, NA_integer_),
+      last_class_end_line_old = if_else(.data$rule_old %in% c("compilation_unit"), .data$end_common_line_old, NA_integer_),
+      last_class_end_line_new = if_else(.data$rule_new %in% c("compilation_unit"), .data$end_common_line_new, NA_integer_),
       
-      last_block_begin_line_old = if_else(rule_old %in% c("compilation_unit","block"), begin_common_line_old, NA_integer_),
-      last_block_begin_line_new = if_else(rule_new %in% c("compilation_unit","block"), begin_common_line_new, NA_integer_),
+      last_block_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$begin_common_line_old, NA_integer_),
+      last_block_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$begin_common_line_new, NA_integer_),
       
       
-      last_id_group_old = id_group_old,
-      last_id_group_new = id_group_new,
+      last_id_group_old = .data$id_group_old,
+      last_id_group_new = .data$id_group_new,
       
       last_common_group_begin_line = if_else(
-        id_group_new == id_group_old, 
-        begin_common_line_old, 
+        .data$id_group_new == .data$id_group_old, 
+        .data$begin_common_line_old, 
         NA_integer_
       ),
       
       last_common_group_end_line = if_else(
-        id_group_new == id_group_old, 
-        end_common_line_old, 
+        .data$id_group_new == .data$id_group_old, 
+        .data$end_common_line_old, 
         NA_integer_
       ),
       
-      last_method_name_old = method_old,
+      last_method_name_old = .data$method_old,
       
-      last_method_name_new = method_new
+      last_method_name_new = .data$method_new
       
       
-    ) %T>%
-    write_rds(path = "features.rds") %>% 
+    ) %>% 
     fill(
-      last_method_id_old,
-      last_method_id_new,
-      last_method_begin_line_new,
-      last_method_begin_line_old,
-      last_method_end_line_new,
-      last_method_end_line_old,
-      last_id_group_old,
-      last_id_group_new,
-      last_block_id_old,
-      last_block_id_new,
-      last_block_begin_line_old,
-      last_block_begin_line_new,
-      last_block_end_line_old,
-      last_block_end_line_new,
-      begin_common_line_new,
-      begin_common_line_old,
-      end_common_line_new,
-      end_common_line_old,
-      last_common_group_begin_line,
-      last_common_group_end_line,
-      id_group_new,
-      id_group_old,
-      last_class_begin_line_old,
-      last_class_begin_line_new,
-      last_class_end_line_old,
-      last_class_end_line_new,
-      rule_alert_new, 
-      rule_alert_old,
-      last_method_name_old,
-      last_method_name_new,
-      last_method_code_new,
-      last_method_code_old,
-      last_code_new,
-      last_code_old
+      .data$last_method_id_old,
+      .data$last_method_id_new,
+      .data$last_method_begin_line_new,
+      .data$last_method_begin_line_old,
+      .data$last_method_end_line_new,
+      .data$last_method_end_line_old,
+      .data$last_id_group_old,
+      .data$last_id_group_new,
+      .data$last_block_id_old,
+      .data$last_block_id_new,
+      .data$last_block_begin_line_old,
+      .data$last_block_begin_line_new,
+      .data$last_block_end_line_old,
+      .data$last_block_end_line_new,
+      .data$begin_common_line_new,
+      .data$begin_common_line_old,
+      .data$end_common_line_new,
+      .data$end_common_line_old,
+      .data$last_common_group_begin_line,
+      .data$last_common_group_end_line,
+      .data$id_group_new,
+      .data$id_group_old,
+      .data$last_class_begin_line_old,
+      .data$last_class_begin_line_new,
+      .data$last_class_end_line_old,
+      .data$last_class_end_line_new,
+      .data$rule_alert_new, 
+      .data$rule_alert_old,
+      .data$last_method_name_old,
+      .data$last_method_name_new,
+      .data$last_method_code_new,
+      .data$last_method_code_old,
+      .data$last_code_new,
+      .data$last_code_old
       
     ) %>%
     mutate(
-      same_rule = rule_alert_new == rule_alert_old,
-      same_id_group = id_group_new == id_group_old,  
-      same_method_group = last_method_id_new == last_method_id_old,
-      same_method_name = last_method_name_old == last_method_name_new,
-      same_block = last_block_id_new == last_block_id_old,
-      last_common_group_mean_line = (last_common_group_begin_line + last_common_group_end_line)/2,
-      mean_line_new = (begin_common_line_new + end_common_line_new)/2,
-      mean_line_old = (begin_common_line_old + end_common_line_old)/2,
-      mean_line_last_common_group = (last_common_group_begin_line + last_common_group_end_line)/2,
-      dist_line = abs(mean_line_new - mean_line_old),
-      size_last_block = last_common_group_end_line - last_common_group_begin_line,
-      dist_line_normalized_block = dist_line/if_else(size_last_block == 0, 1L , size_last_block ),
-      size_unit = last_class_end_line_new - last_class_begin_line_new,
+      same_rule = .data$rule_alert_new == .data$rule_alert_old,
+      same_id_group = .data$id_group_new == .data$id_group_old,  
+      same_method_group = .data$last_method_id_new == .data$last_method_id_old,
+      same_method_name = .data$last_method_name_old == .data$last_method_name_new,
+      same_block = .data$last_block_id_new == .data$last_block_id_old,
+      last_common_group_mean_line = (.data$last_common_group_begin_line + .data$last_common_group_end_line)/2,
+      mean_line_new = (.data$begin_common_line_new + .data$end_common_line_new)/2,
+      mean_line_old = (.data$begin_common_line_old + .data$end_common_line_old)/2,
+      mean_line_last_common_group = (.data$last_common_group_begin_line + .data$last_common_group_end_line)/2,
+      dist_line = abs(.data$mean_line_new - .data$mean_line_old),
+      size_last_block = .data$last_common_group_end_line - .data$last_common_group_begin_line,
+      dist_line_normalized_block = .data$dist_line/if_else(.data$size_last_block == 0, 1L , .data$size_last_block ),
+      size_unit = .data$last_class_end_line_new - .data$last_class_begin_line_new,
       size_method = if_else(
-        same_method_group,
-        last_method_end_line_new - last_method_begin_line_new,
-        size_unit
+        .data$same_method_group,
+        .data$last_method_end_line_new - .data$last_method_begin_line_new,
+        .data$size_unit
       ),  
-      dist_line_normalized_method = dist_line/size_method,
-      dist_line_normalized_unit = dist_line/size_unit,
-      same_code = str_trim(last_code_old) == str_trim(last_code_new),
-      same_method_code = str_trim(last_method_code_old) == str_trim(last_method_code_new)
+      dist_line_normalized_method = .data$dist_line/.data$size_method,
+      dist_line_normalized_unit = .data$dist_line/.data$size_unit,
+      same_code = str_trim(.data$last_code_old) == str_trim(.data$last_code_new),
+      same_method_code = str_trim(.data$last_method_code_old) == str_trim(.data$last_method_code_new)
     ) %>% 
     select(
-      same_rule,
-      same_id_group,
-      same_method_group,
-      same_method_name,
-      same_block,
-      same_code,
-      same_method_code,
-      dist_line,
-      dist_line_normalized_block,
-      dist_line_normalized_method,
-      dist_line_normalized_unit
+      .data$same_rule,
+      .data$same_id_group,
+      .data$same_method_group,
+      .data$same_method_name,
+      .data$same_block,
+      .data$same_code,
+      .data$same_method_code,
+      .data$dist_line,
+      .data$dist_line_normalized_block,
+      .data$dist_line_normalized_method,
+      .data$dist_line_normalized_unit
     ) %>% 
     slice_tail(n = 1) 
   
@@ -1364,7 +1364,7 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
 nodes_path_from_alert <- function(graph, id_node){
   output <- graph %>% 
     convert(to_shortest_path , from = id_node, to = 1  , mode = "out" ) %>%
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     as_tibble() %>% 
     select(id_group)
 }
