@@ -1,13 +1,13 @@
 Package: kludgenudger
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: support for Bruno Crotman's thesis about kludges in software development
+Version: 0.1.0
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Bruno",
+           family = "Crotman",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "crotman@gmail.com",
+           comment = c(ORCID = "0000-0003-3102-6310"))
+Description: Extract possible kludges com source code using PMD alerts. Categorize alerts in fixed, open and new
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -16,6 +16,7 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat
 Imports: 
+    kableExtra,
     stringr,
     dplyr,
     xml2,
@@ -26,6 +27,8 @@ Imports:
     ggplot2,
     tibble,
     tidygraph,
-    ggraph
+    ggraph,
+    tidyselect,
+    knitr
 Depends: 
     R (>= 2.10)

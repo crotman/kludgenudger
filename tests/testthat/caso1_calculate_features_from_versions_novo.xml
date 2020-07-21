@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+    version="6.24.0" timestamp="2020-07-21T16:54:08.694">
+<file name="C:\doutorado\kludgenudger\tests\testthat\data\caso1_calculate_features_from_versions_novo\code.java">
+<violation beginline="23" endline="23" begincolumn="17" endcolumn="32" rule="ControlStatementBraces" ruleset="Code Style" package="pack_x" class="ClassX" method="methodZ" externalInfoUrl="https://pmd.github.io/pmd-6.24.0/pmd_rules_java_codestyle.html#controlstatementbraces" priority="3">
+This statement should have braces
+</violation>
+</file>
+</pmd>

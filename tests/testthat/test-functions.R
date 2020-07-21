@@ -132,3 +132,26 @@ test_that("calculate_features works", {
     )
   )
 })
+
+
+
+test_that("calculate_features_from_versions works", {
+  caso_1 <- read_rds("data/info_calculate_features_from_versions.rds")
+  expect_equal(
+    caso_1$output_function$features$features, 
+    calculate_features_from_versions(
+      code_file_new = "data/caso1_calculate_features_from_versions_novo/code.java",
+      code_file_old = "data/caso1_calculate_features_from_versions_velho/code.java",
+      pmd_path = "pmd/bin/pmd.bat"
+    )$features$features
+  )
+})
+
+
+  
+
+
+
+
+
+

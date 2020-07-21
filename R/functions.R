@@ -1366,7 +1366,7 @@ nodes_path_from_alert <- function(graph, id_node){
     convert(to_shortest_path , from = id_node, to = 1  , mode = "out" ) %>%
     activate("nodes") %>% 
     as_tibble() %>% 
-    select(id_group)
+    select(.data$id_group)
 }
 
 graph_path_from_alert <- function(graph, id_node){
@@ -1377,11 +1377,57 @@ graph_path_from_alert <- function(graph, id_node){
 
 
 
+#' Calculate features from combinations of PMD alerts of a new and an old version of source code
+#' 
+#' Reads or gets as input two versions of source codes, a new and an old, and returns the info about the alerts and the combination between the alerts.
+#' The main output are the features related to combinations of an alerts: an alert from the new version and an alert from the old version. 
+#' All the combinations between an old alert and a new alert are considered.
+#' The main goal is to differentiate between Fixed, Old and New alerts.
+#' If a combination of alerts from the new and the old versions have many features that indicate they have the same role in the code, the alert in the new version may be considered an old alert.
+#'     
+#'
+#' @param code_file_new file containing the source code of the new version. If this parameter is empty, the parameter code_new is used
+#' @param code_file_old file containing the source code of the old version. If this parameter is empty, the parameter code_old is used
+#' @param code_new source code of the new version. If this parameter is empty, the parameter code_file_new is used
+#' @param code_old source code of the old version. If this parameter is empty, the parameter code_file_old is used
+#' @param pmd_path complete path to pmd.bat including the name of the file 
+#' @param mostra_new which nodes of the new version must appear?
+#' @param mostra_old which nodes of the old version must appear?
+#' @param glue_string template of a string that will be passed to str_glue and will be available in the returned info
+#' @param rule_path path to the rules used for the PMD alerts
+#' @param blockrules_location path to the rules for the Abstract Syntax Tree
+#' @param output_path path where temporary files are created
+#' 
+#' @import readr
+#'
+#' @return a list with information about the comparison between old and new versions.
+#' The list contains the following items:
+#' 
+#' * versions_executed: a dataframe containing the PMD alerts generated for each version
+#' * versions_crossed: a dataframe containing information about the combination of versions including a map between the lines of code in the new and in the old version
+#' * graph_old_with_alert: a tidygraph containing the abstract syntax tree of the old version and information about PMD alerts
+#' * graph_new_with_alert: a tidygraph containing the abstract syntax tree of the new version and information about PMD alerts
+#' * graph_old_with_group: a tidygraph containing the abstract syntax tree of the old version and information about PMD alerts.
+#' Here, the nodes of the new and the old versions are categorized in groups
+#' * graph_new_with_group: a tidygraph containing the abstract syntax tree of the new version and information about PMD alerts.
+#' Here, the nodes of the new and the old versions are categorized in groups
+#' * graphs_from_alerts_old: a dataframe containing, for each alert of the old version, the path from the node related to the alert to the root node (compilation unit), in a tidygraph
+#' * graphs_from_alerts_new: a dataframe containing, for each alert of the new version, the path from the node related to the alert to the root node (compilation unit), in a tidygraph
+#' * features: a dataframe containing, for each combination of old and new alert, the features related to the combinations
+#' 
+#' 
+#' @export
+#'
+#' @examples
 calculate_features_from_versions <- function(
   code_file_new = "", 
   code_file_old = "", 
   code_new = "", 
   code_old = "",
+  pmd_path,
+  rule_path = "rulesets/java/quickstart.xml",
+  blockrules_location = "data/blockrules/blockrules.xml",
+  output_path = "",
   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
   mostra_old = c(10, 42, 41, 15, 16, 43),
   glue_string = ""
@@ -1430,8 +1476,8 @@ calculate_features_from_versions <- function(
   examples_sec2_executed <- examples_sec2 %>%
     mutate(pmd_command =
              map2(
-               .x = path,
-               .y = output,
+               .x = .data$path,
+               .y = .data$output,
                ~ assemble_pmd_command(
                  pmd_path = pmd_path,
                  code_path = .x ,
@@ -1441,17 +1487,17 @@ calculate_features_from_versions <- function(
                )
              )) %>%
     mutate(pmd_command_output = map(
-      .x = pmd_command,
+      .x = .data$pmd_command,
       .f =  ~ system(command =  .x)
     )) %>%
-    mutate(pmd_output = map(.x = str_glue("{output_path}{output}.xml"), .f = read_pmd_xml))
+    mutate(pmd_output = map(.x = str_glue("{output_path}{.data$output}.xml"), .f = read_pmd_xml))
   
   examples_sec2_crossed <- cross_versions(examples_sec2_executed) 
   
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
-      old = map_remove,
-      new = map_add
+      old = .data$map_remove,
+      new = .data$map_add
     )
   
   
@@ -1463,27 +1509,31 @@ calculate_features_from_versions <- function(
   
   nodes_old <- read_raw_ast_nodes(
     code_location = code_file_old,
-    output_location =  output_old
+    output_location =  output_old,
+    pmd_location = str_remove(pmd_path, "/pmd.bat"),
+    blockrules_location = blockrules_location
   )
   
   graph_old <- generate_ast_tree_from_raw_nodes(nodes_old)
   
   nodes_new <- read_raw_ast_nodes(
     code_location = code_file_new,
-    output_location <-  output_new
+    output_location <-  output_new,
+    pmd_location = str_remove(pmd_path, "/pmd.bat"),
+    blockrules_location = blockrules_location
   )
   
   graph_new <- generate_ast_tree_from_raw_nodes(nodes_new)
   
   nodes_new <- graph_new %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     as_tibble() %>% 
     rename_all(
       ~str_glue("{.x}_new")
     )
   
   nodes_old <- graph_old %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     as_tibble() %>% 
     rename_all(
       ~str_glue("{.x}_old")
@@ -1491,12 +1541,11 @@ calculate_features_from_versions <- function(
   
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
-      old = map_remove,
-      new = map_add
+      old = .data$map_remove,
+      new = .data$map_add
     )
   
-  write_rds(map, "map.rds")
-  
+
   map_begin <- map %>% 
     rename_all(
       ~str_glue("{.x}_begin")
@@ -1527,54 +1576,53 @@ calculate_features_from_versions <- function(
       )
     ) %>%
     group_by(
-      id_alert_old
+      .data$id_alert_old
     ) %>% 
     mutate(
       n_old = n()
     ) %>%   
     group_by(
-      id_alert_new
+      .data$id_alert_new
     ) %>% 
     mutate(
       n_new = n()
     ) %>% 
     ungroup() %>% 
     filter(
-      (n_old == 1 & n_new == 1) | (begincolumn_new == begincolumn_old & begincolumn_old == begincolumn_new)
+      (.data$n_old == 1 & .data$n_new == 1) | (.data$begincolumn_new == .data$begincolumn_old & .data$begincolumn_old == .data$begincolumn_new)
     ) %>% 
     group_by(
-      id_alert_old
+      .data$id_alert_old
     ) %>% 
     mutate(
       n_old = n()
     ) %>% 
     group_by(
-      id_alert_new
+      .data$id_alert_new
     ) %>% 
     mutate(
       n_new = n()
     ) %>% 
     ungroup() %>% 
     select(
-      id_alert_new,
-      id_alert_old
+      .data$id_alert_new,
+      .data$id_alert_old
     ) %>% 
     mutate(
       id_group = row_number()
     )
   
-  write_rds(match_nodes, "match_nodes.rds")
-  
+
   offset_id_group_na <- 0L
   
   graph_new_with_group <- graph_new %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     left_join(
       match_nodes,
       by = c("id_alert" = "id_alert_new" )
     ) %>% 
     select(
-      -id_alert_old 
+      -.data$id_alert_old 
     ) %>% 
     mutate(
       mostra = case_when(
@@ -1583,28 +1631,28 @@ calculate_features_from_versions <- function(
       )
     ) %>% 
     mutate(
-      id_group = if_else(is.na(id_group), -row_number()-offset_id_group_na, id_group)
+      id_group = if_else(is.na(.data$id_group), -row_number()-offset_id_group_na, .data$id_group)
     )
   
-  offset_id_group_na <- nrow(graph_new_with_group %>% activate(nodes) %>%  as_tibble())
+  offset_id_group_na <- nrow(graph_new_with_group %>% activate("nodes") %>%  as_tibble())
   
   graph_old_with_group <- graph_old %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     left_join(
       match_nodes,
       by = c("id_alert" = "id_alert_old" )
     ) %>% 
     select(
-      -id_alert_new 
+      -.data$id_alert_new 
     ) %>% 
     mutate(
       mostra = case_when(
-        id_alert %in% mostra_old ~ 1,
+        .data$id_alert %in% mostra_old ~ 1,
         TRUE ~ -1 
       )
     ) %>% 
     mutate(
-      id_group = if_else(is.na(id_group), -row_number()-offset_id_group_na, id_group)
+      id_group = if_else(is.na(.data$id_group), -row_number()-offset_id_group_na, .data$id_group)
     )        
   
   
@@ -1627,7 +1675,7 @@ calculate_features_from_versions <- function(
   
   
   graph_old_with_alert <- graph_old_with_group %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     mutate(
       one = 1
     ) %>% 
@@ -1640,19 +1688,19 @@ calculate_features_from_versions <- function(
         "endcolumn" = "endcolumn_alert")
     ) %>% 
     mutate(
-      text_alert = if_else(is.na(id_alert_alert),
+      text_alert = if_else(is.na(.data$id_alert_alert),
                            "",
-                           str_glue("{id_group}-{rule_alert}") %>%  as.character()
+                           str_glue("{.data$id_group}-{.data$rule_alert}") %>%  as.character()
       ),
       
-      text_alert_id_node = if_else(is.na(id_alert_alert),
+      text_alert_id_node = if_else(is.na(.data$id_alert_alert),
                                    "",
-                                   str_glue("{id_alert}-{rule_alert}") %>%  as.character()
+                                   str_glue("{.data$id_alert}-{.data$rule_alert}") %>%  as.character()
       ),
       
-      text_line_rule = if_else(is.na(id_alert_alert),
+      text_line_rule = if_else(is.na(.data$id_alert_alert),
                                "",
-                               str_glue("{id_alert}-{rule_alert}") %>%  as.character()
+                               str_glue("{.data$id_alert}-{.data$rule_alert}") %>%  as.character()
                                
       ),
       
@@ -1665,7 +1713,7 @@ calculate_features_from_versions <- function(
   
   
   graph_new_with_alert <- graph_new_with_group %>% 
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     mutate(
       one = 1
     ) %>% 
@@ -1678,14 +1726,14 @@ calculate_features_from_versions <- function(
         "endcolumn" = "endcolumn_alert")
     ) %>% 
     mutate(
-      text_alert = if_else(is.na(id_alert_alert),
+      text_alert = if_else(is.na(.data$id_alert_alert),
                            "",
-                           str_glue("{id_group}-{rule_alert}") %>%  as.character()
+                           str_glue("{.data$id_group}-{.data$rule_alert}") %>%  as.character()
       ),
       
-      text_alert_id_node = if_else(is.na(id_alert_alert),
+      text_alert_id_node = if_else(is.na(.data$id_alert_alert),
                                    "",
-                                   str_glue("{id_alert}-{rule_alert}") %>%  as.character()
+                                   str_glue("{.data$id_alert}-{.data$rule_alert}") %>%  as.character()
       ),
       
       glue = str_glue(glue_string)
@@ -1694,42 +1742,42 @@ calculate_features_from_versions <- function(
   
   
   graph_old_reverted <- graph_old_with_alert %>% 
-    activate(edges) %>% 
-    reroute(from = to, to = from)
+    activate("edges") %>% 
+    reroute(from = .data$to, to = .data$from)
   
   nodes_alerts_old <- graph_old_reverted %>% 
-    activate(nodes) %>% 
-    filter(!is.na(id_alert_alert)) %>% 
-    select(id_alert) %>% 
+    activate("nodes") %>% 
+    filter(!is.na(.data$id_alert_alert)) %>% 
+    select(.data$id_alert) %>% 
     as_tibble()
   
   graphs_from_alerts_old <- nodes_alerts_old %>% 
-    mutate(graph = map(.x = id_alert, .f = ~graph_path_from_alert(graph = graph_old_reverted, id_node = .x )   )) 
+    mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_old_reverted, id_node = .x )   )) 
   
   
-  graphs_from_alerts_old %<>% rename(
-    id_alert_old = id_alert,
-    graph_old = graph
+  graphs_from_alerts_old <- graphs_from_alerts_old %>% rename(
+    id_alert_old = .data$id_alert,
+    graph_old = .data$graph
   ) 
   
   
   graph_new_reverted <- graph_new_with_alert %>% 
-    activate(edges) %>% 
-    reroute(from = to, to = from)
+    activate("edges") %>% 
+    reroute(from = .data$to, to = .data$from)
   
   nodes_alerts_new <- graph_new_reverted %>% 
-    activate(nodes) %>% 
-    filter(!is.na(id_alert_alert)) %>% 
-    select(id_alert) %>% 
+    activate("nodes") %>% 
+    filter(!is.na(.data$id_alert_alert)) %>% 
+    select(.data$id_alert) %>% 
     as_tibble()
   
   graphs_from_alerts_new <- nodes_alerts_new %>% 
-    mutate(graph = map(.x = id_alert, .f = ~graph_path_from_alert(graph = graph_new_reverted, id_node = .x )   )) 
+    mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_new_reverted, id_node = .x )   )) 
   
   
-  graphs_from_alerts_new %<>% rename(
-    id_alert_new = id_alert,
-    graph_new = graph
+  graphs_from_alerts_new <- graphs_from_alerts_new %>%  rename(
+    id_alert_new = .data$id_alert,
+    graph_new = .data$graph
   ) 
   
   coordinates <- map %>% 
@@ -1740,7 +1788,7 @@ calculate_features_from_versions <- function(
     crossing(graphs_from_alerts_old) %>% 
     rowwise() %>% 
     mutate(
-      features = calculate_features(graph_old = graph_old, graph_new = graph_new, coordinates = coordinates) %>% list()
+      features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
     ) 
   
   
@@ -1762,21 +1810,36 @@ calculate_features_from_versions <- function(
 
 
 
+#' Reports the features in a latex table
+#'
+#' @param features_df features info from calculate_features_from_versions
+#' @param caption caption of the table
+#' 
+#' @import tidyselect
+#' @import knitr
+#' @importFrom kableExtra collapse_rows
+#' @importFrom kableExtra kable_styling
+#' 
+#'
+#' @return a table in latex
+#' @export
+#'
+#' @examples
 report_features <- function(features_df, caption){
   
   
   old_lines <- features_df$graph_old_with_alert %>%
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     as_tibble() %>% 
-    filter(!is.na(id_alert_alert)) %>% 
-    select(id_alert, beginline) %>% 
+    filter(!is.na(.data$id_alert_alert)) %>% 
+    select(.data$id_alert, .data$beginline) %>% 
     rename_with( ~str_glue("{.x}_old")) 
   
   new_lines <- features_df$graph_new_with_alert %>%
-    activate(nodes) %>% 
+    activate("nodes") %>% 
     as_tibble() %>% 
-    filter(!is.na(id_alert_alert)) %>% 
-    select(id_alert, beginline) %>% 
+    filter(!is.na(.data$id_alert_alert)) %>% 
+    select(.data$id_alert, .data$beginline) %>% 
     rename_with( ~str_glue("{.x}_new")) 
   
   
@@ -1799,7 +1862,7 @@ report_features <- function(features_df, caption){
   
   
   saida_tabela <- features_df$features %>%
-    unnest(features, .sep = ".") %>%
+    unnest(.data$features, .sep = ".") %>%
     select(
       starts_with("id_alert") | starts_with("features")
     ) %>%
@@ -1812,7 +1875,7 @@ report_features <- function(features_df, caption){
       by = c("id_alert_new" = "id_alert_new")
     ) %>%
     select(
-      -c(id_alert_new, id_alert_old)
+      -c(.data$id_alert_new, .data$id_alert_old)
     ) %>%
     mutate(
       across(
@@ -1827,10 +1890,10 @@ report_features <- function(features_df, caption){
       )
     ) %>%
     relocate(
-      beginline_old, beginline_new
+      .data$beginline_old, .data$beginline_new
     ) %>%
     pivot_longer(
-      cols = c(-beginline_old, -beginline_new),
+      cols = c(-.data$beginline_old, -.data$beginline_new),
       names_to = "feature",
       values_to = "value"
     ) %>% 
@@ -1838,22 +1901,22 @@ report_features <- function(features_df, caption){
       line_old_line_new = str_glue("Line (Old version):{beginline_old}, Line (New version):{beginline_new}")
     ) %>%
     select(
-      c(-beginline_new, -beginline_old)
+      c(-.data$beginline_new, -.data$beginline_old)
     ) %>% 
     relocate(
-      line_old_line_new
+      .data$line_old_line_new
     ) %>% 
     mutate(
-      feature = str_remove(feature, "feature.") %>% str_remove("\\.")
+      feature = str_remove(.data$feature, "feature.") %>% str_remove("\\.")
     ) %>% 
     left_join(
       feature_names_translation,
       by = c("feature")
     ) %>% 
     select(
-      line_old_line_new,
-      feature = feature_display,
-      value
+      .data$line_old_line_new,
+      feature = .data$feature_display,
+      .data$value
     )
   
   
@@ -1871,8 +1934,8 @@ report_features <- function(features_df, caption){
           "Value"
         )
   ) %>%
-    collapse_rows(columns = 1, latex_hline = "major", valign =  "top") %>% 
-    kable_styling(
+    kableExtra::collapse_rows(columns = 1, latex_hline = "major", valign =  "top") %>% 
+    kableExtra::kable_styling(
       latex_options = c("hold_position", "striped")
     )
   
