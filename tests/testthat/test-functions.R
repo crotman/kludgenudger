@@ -171,8 +171,35 @@ test_that("extract_comments_from_code works", {
 })
 
 
+test_that("decide_heurist_if_same_alert works", {
+  
+  features_input <- tribble(
+    ~same_rule,~same_id_group,~same_method_group,~same_method_name,~same_block,~same_code,~same_method_code,~dist_line,~dist_line_normalized_block,~dist_line_normalized_method,~dist_line_normalized_unit,
+    TRUE,      TRUE,          TRUE,              TRUE,             TRUE,       TRUE,      TRUE,             0,         0,                          0,                           0                         ,                                
+    TRUE,      FALSE,          FALSE,              TRUE,             FALSE,       TRUE,      TRUE,             0,         1,                          0,                           0                        , 
+    TRUE,      TRUE,          TRUE,              TRUE,             TRUE,       FALSE,      FALSE,             0,         0,                          0,                           0                         ,                                
+    TRUE,      FALSE,          TRUE,              TRUE,             TRUE,       TRUE,      FALSE,             4,         0,                          0,                           0                         ,                                
+    FALSE,      TRUE,          TRUE,              TRUE,             TRUE,       TRUE,      TRUE,             0,         0,                          0,                           0                         ,                                
+    TRUE,      FALSE,          TRUE,              TRUE,             TRUE,       TRUE,      FALSE,             6,         0,                          0,                           0                         ,                                
+  )
 
+  
+  output <- tribble(
+    ~same_alert,
+    TRUE,
+    TRUE,
+    TRUE,
+    TRUE,
+    FALSE,
+    FALSE
+    
+  )
 
-
-
+  expect_equal(
+    output, 
+    decide_heurist_if_same_alert(
+      clean_calculated_features = features_input
+    )
+  )
+})
 

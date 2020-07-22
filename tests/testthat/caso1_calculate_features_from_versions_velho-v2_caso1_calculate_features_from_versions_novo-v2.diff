@@ -1,0 +1,33 @@
+14	9	data/{caso1_calculate_features_from_versions_velho-v2 => caso1_calculate_features_from_versions_novo-v2}/code.java
+
+diff --git a/data/caso1_calculate_features_from_versions_velho-v2/code.java b/data/caso1_calculate_features_from_versions_novo-v2/code.java
+index 4bcfcca..9655143 100644
+--- a/data/caso1_calculate_features_from_versions_velho-v2/code.java
++++ b/data/caso1_calculate_features_from_versions_novo-v2/code.java
+@@ -11 +11 @@ class ClassX extends ClassY implements InterfX {
+-        
++        {
+@@ -13,2 +13,2 @@ class ClassX extends ClassY implements InterfX {
+-        			
+-        else{
++        }			
++        else
+@@ -16 +16 @@ class ClassX extends ClassY implements InterfX {
+-        }
++        
+@@ -21,5 +21,10 @@ class ClassX extends ClassY implements InterfX {
+-        if (paramZ)
+-            fieldX = paramW;
+-        else{
+-            fieldX = 0;
+-        }
++		if(paramZ == 0){
++            if (paramZ)
++                fieldX = paramW;
++            else{
++                fieldX = 0;
++            }
++		}	
++	    else{
++		    fieldX = 1;
++		}
