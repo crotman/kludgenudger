@@ -1414,7 +1414,7 @@ graph_path_from_alert <- function(graph, id_node){
 #' * graphs_from_alerts_old: a dataframe containing, for each alert of the old version, the path from the node related to the alert to the root node (compilation unit), in a tidygraph
 #' * graphs_from_alerts_new: a dataframe containing, for each alert of the new version, the path from the node related to the alert to the root node (compilation unit), in a tidygraph
 #' * features: a dataframe containing, for each combination of old and new alert, the features related to the combinations
-#' 
+#' * categorised_alerts: dataframe with old and new alerts categorised in fixed, open and new
 #' 
 #' @export
 #'
@@ -1434,11 +1434,20 @@ calculate_features_from_versions <- function(
   
 ){
   
-  # code_file_old <- "C:/doutorado/AnaliseTwitter4j/match_algorithm_description/little-tree/code.java"
-  # code_file_new <- "C:/doutorado/AnaliseTwitter4j/match_algorithm_description/little-tree-new/code.java"
+  
+  # code_new = ""
+  # code_old = ""
+  # output_path = ""
+  # mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
+  # mostra_old = c(10, 42, 41, 15, 16, 43)
+  # glue_string = ""
   # 
-  # code_new <- default_code_new
-  # code_old <- default_code_old
+  # code_file_new = "data/caso1_calculate_features_from_versions_novo-v2/code.java"
+  # code_file_old = "data/caso1_calculate_features_from_versions_velho-v2/code.java"
+  # pmd_path = "pmd/bin/pmd.bat"
+  # rule_path = "rulesets/java/quickstart.xml"
+  # blockrules_location = "data/blockrules/blockrules.xml"
+  
   
   
   if(code_new != ""){
@@ -1802,6 +1811,66 @@ calculate_features_from_versions <- function(
     graphs_from_alerts_old = graphs_from_alerts_old,
     graphs_from_alerts_new = graphs_from_alerts_new,
     features = match_alerts_alg2
+  )
+  
+  combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
+    calculated_features = saida
+  ) %>%
+    decide_heurist_if_same_alert() %>%
+    bind_cols(saida$features) %>%
+    filter(.data$same_alert) %>% 
+    select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
+
+  combinations_same_alerts_old <- combinations_same_alerts %>%
+    select(.data$id_alert_old, .data$same_alert ) %>%
+    distinct()
+
+  combinations_same_alerts_new <- combinations_same_alerts %>%
+    select(.data$id_alert_new, .data$same_alert ) %>%
+    distinct()
+
+
+  alerts_old <- saida$graph_old_with_alert %>%
+    activate("nodes") %>%
+    as_tibble() %>%
+    filter(!is.na(.data$id_alert_alert)) %>%
+    left_join(
+      combinations_same_alerts_old,
+      by = c("id_alert" = "id_alert_old")
+    ) %>%
+    replace_na(list(same_alert = FALSE)) %>%
+    mutate(
+      version = "old",
+      category = if_else(.data$same_alert, "open", "fixed")
+    )
+
+  alerts_new <- saida$graph_new_with_alert %>%
+    activate("nodes") %>%
+    as_tibble() %>%
+    filter(!is.na(.data$id_alert_alert)) %>%
+    left_join(
+      combinations_same_alerts_new,
+      by = c("id_alert" = "id_alert_new")
+    ) %>%
+    replace_na(list(same_alert = FALSE)) %>%
+    mutate(
+      version = "new",
+      category = if_else(.data$same_alert, "open", "new")
+    )
+  
+  categorised_alerts <- bind_rows(alerts_new, alerts_old)
+  
+  saida <- list(
+    versions_executed = examples_sec2_executed,
+    versions_crossed = examples_sec2_crossed,
+    graph_old_with_alert =  graph_old_with_alert,
+    graph_new_with_alert = graph_new_with_alert,
+    graph_old_with_group = graph_old_with_group,
+    graph_new_with_group = graph_new_with_group,
+    graphs_from_alerts_old = graphs_from_alerts_old,
+    graphs_from_alerts_new = graphs_from_alerts_new,
+    features = match_alerts_alg2,
+    categorised_alerts = categorised_alerts
   )
   
   saida

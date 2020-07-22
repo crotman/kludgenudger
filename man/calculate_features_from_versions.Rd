@@ -56,6 +56,7 @@ Here, the nodes of the new and the old versions are categorized in groups
 \item graphs_from_alerts_old: a dataframe containing, for each alert of the old version, the path from the node related to the alert to the root node (compilation unit), in a tidygraph
 \item graphs_from_alerts_new: a dataframe containing, for each alert of the new version, the path from the node related to the alert to the root node (compilation unit), in a tidygraph
 \item features: a dataframe containing, for each combination of old and new alert, the features related to the combinations
+\item categorised_alerts: dataframe with old and new alerts categorised in fixed, open and new
 }
 }
 \description{

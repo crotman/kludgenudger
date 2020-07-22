@@ -203,3 +203,20 @@ test_that("decide_heurist_if_same_alert works", {
   )
 })
 
+
+
+test_that("calculate_features_from_versions works", {
+  output <- read_rds("data/info_calculate_features_from_versions_categorised_alerts.rds")
+  output_function <- calculate_features_from_versions(
+    code_file_new = "data/caso1_calculate_features_from_versions_novo-v2/code.java",
+    code_file_old = "data/caso1_calculate_features_from_versions_velho-v2/code.java",
+    pmd_path = "pmd/bin/pmd.bat"
+  )$categorised_alerts
+  expect_equal(
+    output, 
+    output_function
+  )
+})
+
+
+
