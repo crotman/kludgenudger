@@ -786,7 +786,7 @@ read_raw_ast_nodes <-  function(
 #'
 #' @param nodes raw nodes from read_raw_ast_nodes
 #' @import tidygraph
-#' @return the Abstrac Syntax Tree, a graph
+#' @return the Abstract Syntax Tree, a graph
 #' @export
 #'
 #' @examples
@@ -1943,7 +1943,81 @@ report_features <- function(features_df, caption){
 }
 
 
+#' Extract comments from java/C source code
+#'
+#' @param file_path path to the source code file
+#'
+#' @return dataframe with beginline, endline, begincolumn, endcolumn and comment
+#' @export
+#'
+#' @examples
+extract_comments_from_code <- function(file_path){
+  
+  file_path = "data/caso1_extract_comments_from_code/code.java"
+  code <- read_lines(file_path) %>% 
+    str_flatten("\n")
+  
+  line_breaks <- tibble(start = 0, end = 0) %>%  
+    bind_rows(str_locate_all(code, "\n") %>% .[[1]] %>%  as_tibble())
+  
+  calculate_position_using_line_breaks <- function(begin_param, end_param){
+    
 
+    beginline <- line_breaks %>% 
+      filter(start <= begin_param) %>% 
+      mutate(
+        beginline = row_number(),
+        begincolumn = begin_param - start
+      ) %>% 
+      slice_tail(1) 
+      
+    endline <- line_breaks %>% 
+      filter(end <= end_param) %>% 
+      mutate(
+        endline = row_number(),
+        endcolumn = end_param - start
+      ) %>% 
+      slice_tail(1) 
+    
+    bind_cols(beginline, endline) %>% 
+      select(
+        beginline,
+        begincolumn,
+        endline,
+        endcolumn
+      )
+    
+  }
+  
+    
+  positions_simple_comments <- str_locate_all(code, "//.+\n") %>% 
+    .[[1]] %>%  as_tibble() %>% 
+    rowwise() %>% 
+    mutate(
+      position = map2(.x = start, .y = end, .f = calculate_position_using_line_breaks  )
+    ) %>% 
+    ungroup() %>% 
+    unnest(position) %>% 
+    mutate(endcolumn = endcolumn - 1)
+  
+  simple_comments <- 
+    
+  positions_multi_comments <- str_locate_all(code, "(?s)\\/\\*.+?\\*\\/") %>% 
+    .[[1]] %>%  as_tibble() %>% 
+    rowwise() %>% 
+    mutate(
+      position = map2(.x = start, .y = end, .f = calculate_position_using_line_breaks  )
+    ) %>% 
+    ungroup() %>% 
+    unnest(position) %>% 
+    mutate(endcolumn = endcolumn - 1) %>% 
+    mutate(endcolumn = endcolumn - 1)
+  
+  
+  
+}
+  
+  
 
 
 
