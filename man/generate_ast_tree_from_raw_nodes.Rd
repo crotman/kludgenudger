@@ -10,7 +10,7 @@ generate_ast_tree_from_raw_nodes(nodes)
 \item{nodes}{raw nodes from read_raw_ast_nodes}
 }
 \value{
-the Abstrac Syntax Tree, a graph
+the Abstract Syntax Tree, a graph
 }
 \description{
 Generate Abstract Syntax Tree from raw nodes

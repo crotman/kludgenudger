@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "crotman@gmail.com",
            comment = c(ORCID = "0000-0003-3102-6310"))
-Description: Extract possible kludges com source code using PMD alerts. Categorize alerts in fixed, open and new
+Description: Extract possible kludges com source code using PMD alerts. Categorize alerts in fixed, open and new.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -29,6 +29,7 @@ Imports:
     tidygraph,
     ggraph,
     tidyselect,
-    knitr
+    knitr,
+    magrittr
 Depends: 
     R (>= 2.10)

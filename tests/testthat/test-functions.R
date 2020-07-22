@@ -153,16 +153,19 @@ test_that("extract_comments_from_code works", {
   function_output <- tribble(
     ~beginline, ~endline, ~begincolumn, ~endcolumn, ~comment,
     5,          5,        4,            33,         "Comentário que vai dar merda",
-    24,         26,       13,           20,         "e outro aqui\n            pulando linha\n,            bonito",
+    24,         26,       13,           20,         "e outro aqui\n            pulando linha\n            bonito",
     28,         28,       13,           18,         "aqui",
     33,         33,        9,           24,         "aqui mais um"           
-  )
+  ) %>% 
+    mutate(
+      across(where(is.numeric), as.integer)
+    )
   
   
   expect_equal(
     function_output, 
     extract_comments_from_code(
-      
+      file_path = "data/caso1_extract_comments_from_code/code.java"
     )
   )
 })
