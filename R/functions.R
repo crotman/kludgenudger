@@ -1,3 +1,9 @@
+
+debuga <- function(x, esse){
+  print(esse)
+}
+
+
 #' Assemble command in order to execute PMD
 #' 
 #' 
@@ -102,7 +108,9 @@ read_pmd_xml <- function(file){
 #'
 #' @examples
 assemble_diff_command <- function(code_path_left, code_path_right, output_path, output_left, output_right){
-  str_glue("git diff -U0 --patience --numstat --summary --output={output_path}{output_left}_{output_right}.diff --no-index {code_path_left} {code_path_right}")
+  saida <- str_glue("git diff -U0 --patience --numstat --summary --output={output_path}{output_left}_{output_right}.diff --no-index {code_path_left} {code_path_right}")
+  print(str_glue("comando diff {saida}"))
+  saida
 }
 
 #' Return number of lines of the file in the path
@@ -138,164 +146,179 @@ read_number_of_lines <- function(file){
 map_lines <- function(file, lines_prev_param, lines_post_param){
   
   
-  
   # file <- "C:\\doutorado\\AnaliseTwitter4j\\match_algorithm_description\\old_original_new_1.diff"
 
   lines_prev_param <- as.integer(lines_prev_param)
   
   lines_post_param <- as.integer(lines_post_param)
   
-  diff_marks <- read_table(file, col_names = FALSE ) %>% 
-    rename(text = 1) %>% 
-    mutate(
-      marca_inicio_diff = str_detect(.data$text, "diff --git"),
-      id_diff = cumsum(.data$marca_inicio_diff),
-      diff_title = if_else(.data$marca_inicio_diff, .data$text, NA_character_)
-    ) %>% 
-    select(-.data$marca_inicio_diff) %>% 
-    fill(.data$diff_title, .direction = "down") %>% 
-    filter(str_starts(.data$text, "@@")) %>% 
-    separate(.data$text, sep = " ", into = c("mark", "minus", "plus"), extra = "drop" ) %>% 
-    select(-.data$mark) %>% 
-    separate(.data$minus, into = c("line_remove", "n_remove"), sep = ",") %>% 
-    separate(.data$plus, into = c("line_add", "n_add"), sep = ",") %>% 
-    mutate(
-      n_remove = if_else(is.na(.data$n_remove),"1",.data$n_remove),
-      n_add = if_else(is.na(.data$n_add),"1",.data$n_add)
-    ) %>% 
-    mutate(
-      line_remove = str_remove(.data$line_remove,"\\-") %>% str_trim(),
-      line_add = str_remove(.data$line_add,"\\+" %>% str_trim())
-    ) %>% 
-    separate(
-      .data$diff_title, 
-      sep = " ", 
-      into = 
-        c(
-          "diff", 
-          "git", 
-          "file_prev",
-          "file_post"
-        ), 
-      extra = "drop" 
-    ) %>% 
-    select(c(-.data$diff,-.data$git)) %>% 
-    mutate(
-      file_post = str_replace(.data$file_post, "b/",""),
-      file_prev = str_replace(.data$file_prev, "a/","")
-    ) %>% 
-    mutate(
-      lines_prev = lines_prev_param,
-      lines_post = lines_post_param
-    ) %>%    
-    mutate_at(
-      vars(ends_with("_add")),
-      as.integer
-    ) %>% 
-    mutate_at(
-      vars(ends_with("_remove")),
-      as.integer
-    ) %>% 
-    mutate(
-      line_add = if_else(.data$n_add == 0, .data$line_add + 1L, .data$line_add)
-    ) %>% 
-    mutate(
-      end_remove = .data$line_remove + .data$n_remove - 1L,
-      end_add = .data$line_add + .data$n_add - 1L
-    ) %>% 
-    mutate(
-      line_remove = if_else(.data$n_remove == 0 | is.na(.data$n_remove) , .data$line_remove+1L, .data$line_remove ),
-      end_remove = if_else(.data$n_remove == 0 | is.na(.data$n_remove) , .data$end_remove+1L, .data$end_remove )
-    ) %>%
-    group_by(.data$id_diff) %>% 
-    mutate(
-      id_diff_id = row_number(),
-      n_diff = n()
-    ) %>% 
-    ungroup() 
+  file_size <- file.size(file)
+  
+  if(file_size != 0){
+  
+    diff_marks <- read_table(file, col_names = FALSE ) %>% 
+      rename(text = 1) %>% 
+      mutate(
+        marca_inicio_diff = str_detect(.data$text, "diff --git"),
+        id_diff = cumsum(.data$marca_inicio_diff),
+        diff_title = if_else(.data$marca_inicio_diff, .data$text, NA_character_)
+      ) %>% 
+      select(-.data$marca_inicio_diff) %>% 
+      fill(.data$diff_title, .direction = "down") %>% 
+      filter(str_starts(.data$text, "@@")) %>% 
+      separate(.data$text, sep = " ", into = c("mark", "minus", "plus"), extra = "drop" ) %>% 
+      select(-.data$mark) %>% 
+      separate(.data$minus, into = c("line_remove", "n_remove"), sep = ",") %>% 
+      separate(.data$plus, into = c("line_add", "n_add"), sep = ",") %>% 
+      mutate(
+        n_remove = if_else(is.na(.data$n_remove),"1",.data$n_remove),
+        n_add = if_else(is.na(.data$n_add),"1",.data$n_add)
+      ) %>% 
+      mutate(
+        line_remove = str_remove(.data$line_remove,"\\-") %>% str_trim(),
+        line_add = str_remove(.data$line_add,"\\+" %>% str_trim())
+      ) %>% 
+      separate(
+        .data$diff_title, 
+        sep = " ", 
+        into = 
+          c(
+            "diff", 
+            "git", 
+            "file_prev",
+            "file_post"
+          ), 
+        extra = "drop" 
+      ) %>% 
+      select(c(-.data$diff,-.data$git)) %>% 
+      mutate(
+        file_post = str_replace(.data$file_post, "b/",""),
+        file_prev = str_replace(.data$file_prev, "a/","")
+      ) %>% 
+      mutate(
+        lines_prev = lines_prev_param,
+        lines_post = lines_post_param
+      ) %>%    
+      mutate_at(
+        vars(ends_with("_add")),
+        as.integer
+      ) %>% 
+      mutate_at(
+        vars(ends_with("_remove")),
+        as.integer
+      ) %>% 
+      mutate(
+        line_add = if_else(.data$n_add == 0, .data$line_add + 1L, .data$line_add)
+      ) %>% 
+      mutate(
+        end_remove = .data$line_remove + .data$n_remove - 1L,
+        end_add = .data$line_add + .data$n_add - 1L
+      ) %>% 
+      mutate(
+        line_remove = if_else(.data$n_remove == 0 | is.na(.data$n_remove) , .data$line_remove+1L, .data$line_remove ),
+        end_remove = if_else(.data$n_remove == 0 | is.na(.data$n_remove) , .data$end_remove+1L, .data$end_remove )
+      ) %>%
+      group_by(.data$id_diff) %>% 
+      mutate(
+        id_diff_id = row_number(),
+        n_diff = n()
+      ) %>% 
+      ungroup() 
+    
+    
+    last_diff <- diff_marks %>% 
+      group_by(.data$id_diff) %>% 
+      summarise(
+        line_remove = first(.data$lines_prev) + 1L ,
+        n_remove = NA,
+        line_add = first(.data$lines_post) + 1L ,
+        n_add = NA,
+        file_prev = first(.data$file_prev),
+        file_post = first(.data$file_post),
+        lines_prev = first(.data$lines_prev),
+        lines_post = first(.data$lines_post),
+        end_remove = NA,
+        end_add = NA,
+        id_diff_id = last(.data$id_diff_id) + 1L,
+        n_diff = first(.data$n_diff)
+      ) %>% 
+      ungroup()
+    
+    map <- diff_marks %>% 
+      bind_rows(last_diff) %>% 
+      arrange(.data$id_diff, .data$id_diff_id) %>% 
+      mutate(
+        end_remove_prev = lag(.data$end_remove),
+        end_add_prev = lag(.data$end_add)
+      ) %>% 
+      mutate(
+        end_remove_prev = if_else(is.na(.data$end_remove_prev),0L, .data$end_remove_prev),
+        end_add_prev = if_else(is.na(.data$end_add_prev),0L, .data$end_add_prev)
+      ) %>% 
+      mutate(
+        line_add = if_else(is.na(.data$line_add),0L, .data$line_add)
+      ) %>% 
+      filter(!is.na(.data$line_remove )) %>% 
+      mutate(
+        map_remove = map2(.x = (.data$end_remove_prev + 1L), .y = (.data$line_remove - 1L),.f = function(x, y) x:y),
+        map_add = map2(.x = (.data$end_add_prev+1L), .y = (.data$line_add - 1L),.f = function(x, y) x:y)
+      ) %>%
+      filter(!is.na(.data$lines_post)) %>%
+      unnest(cols = c(.data$map_remove, .data$map_add )) %>% 
+      select(
+        .data$lines_post,
+        .data$lines_prev,
+        .data$file_prev,
+        .data$file_post,
+        .data$map_remove,
+        .data$map_add
+      ) 
+    
+    
+    post_sem_prev <- diff_marks %>% 
+      select(.data$lines_post, .data$file_post, .data$file_prev) %>% 
+      distinct() %>% 
+      replace_na(list(lines_post = 1)) %>% 
+      mutate( lines =  map(.x = .data$lines_post, .f = function(x){tibble(map_add = 1:x)} )) %>% 
+      unnest(.data$lines) %>% 
+      anti_join(map, by = c("file_post","map_add" )) 
+    
+    prev_sem_post <- diff_marks %>% 
+      select(.data$lines_prev, .data$file_prev, .data$file_post) %>% 
+      distinct() %>% 
+      replace_na(list(lines_prev = 1)) %>% 
+      mutate( lines =  map(.x = .data$lines_prev, .f = function(x){tibble(map_remove = 1:x)} )) %>% 
+      unnest(.data$lines) %>% 
+      anti_join(map, by = c("file_post","map_remove" )) 
+    
+    
+    
+    final_map <- map %>%
+      bind_rows(post_sem_prev) %>%
+      bind_rows(prev_sem_post) %>% 
+      mutate(
+        changed = sum((is.na(.data$map_remove) | is.na(.data$map_add) ))
+      ) %>% 
+      rowwise() %>% 
+      mutate(
+        min_map = max(c(.data$map_remove, .data$map_add), na.rm = TRUE)
+      ) %>%
+      arrange(.data$min_map)   
+    
+    
+    info_map_lines <- list(
+      file = file,
+      lines_prev_param = lines_prev_param,
+      lines_post_param = lines_post_param ,
+      output_function = final_map
+    )
+  }
+  else{
+    final_map <- tibble(map_remove = 1:lines_prev_param, map_add = 1:lines_post_param)
+  }
   
   
-  last_diff <- diff_marks %>% 
-    group_by(.data$id_diff) %>% 
-    summarise(
-      line_remove = first(.data$lines_prev) + 1L ,
-      n_remove = NA,
-      line_add = first(.data$lines_post) + 1L ,
-      n_add = NA,
-      file_prev = first(.data$file_prev),
-      file_post = first(.data$file_post),
-      lines_prev = first(.data$lines_prev),
-      lines_post = first(.data$lines_post),
-      end_remove = NA,
-      end_add = NA,
-      id_diff_id = last(.data$id_diff_id) + 1L,
-      n_diff = first(.data$n_diff)
-    ) %>% 
-    ungroup()
   
-  map <- diff_marks %>% 
-    bind_rows(last_diff) %>% 
-    arrange(.data$id_diff, .data$id_diff_id) %>% 
-    mutate(
-      end_remove_prev = lag(.data$end_remove),
-      end_add_prev = lag(.data$end_add)
-    ) %>% 
-    mutate(
-      end_remove_prev = if_else(is.na(.data$end_remove_prev),0L, .data$end_remove_prev),
-      end_add_prev = if_else(is.na(.data$end_add_prev),0L, .data$end_add_prev)
-    ) %>% 
-    mutate(
-      line_add = if_else(is.na(.data$line_add),0L, .data$line_add)
-    ) %>% 
-    filter(!is.na(.data$line_remove )) %>% 
-    mutate(
-      map_remove = map2(.x = (.data$end_remove_prev + 1L), .y = (.data$line_remove - 1L),.f = function(x, y) x:y),
-      map_add = map2(.x = (.data$end_add_prev+1L), .y = (.data$line_add - 1L),.f = function(x, y) x:y)
-    ) %>%
-    filter(!is.na(.data$lines_post)) %>%
-    unnest(cols = c(.data$map_remove, .data$map_add )) %>% 
-    select(
-      .data$lines_post,
-      .data$lines_prev,
-      .data$file_prev,
-      .data$file_post,
-      .data$map_remove,
-      .data$map_add
-    ) 
-  
-  
-  post_sem_prev <- diff_marks %>% 
-    select(.data$lines_post, .data$file_post, .data$file_prev) %>% 
-    distinct() %>% 
-    replace_na(list(lines_post = 1)) %>% 
-    mutate( lines =  map(.x = .data$lines_post, .f = function(x){tibble(map_add = 1:x)} )) %>% 
-    unnest(.data$lines) %>% 
-    anti_join(map, by = c("file_post","map_add" )) 
-  
-  prev_sem_post <- diff_marks %>% 
-    select(.data$lines_prev, .data$file_prev, .data$file_post) %>% 
-    distinct() %>% 
-    replace_na(list(lines_prev = 1)) %>% 
-    mutate( lines =  map(.x = .data$lines_prev, .f = function(x){tibble(map_remove = 1:x)} )) %>% 
-    unnest(.data$lines) %>% 
-    anti_join(map, by = c("file_post","map_remove" )) 
-  
-  
-  
-  final_map <- map %>%
-    bind_rows(post_sem_prev) %>%
-    bind_rows(prev_sem_post) %>% 
-    mutate(
-      changed = sum((is.na(.data$map_remove) | is.na(.data$map_add) ))
-    ) %>% 
-    rowwise() %>% 
-    mutate(
-      min_map = max(c(.data$map_remove, .data$map_add), na.rm = TRUE)
-    ) %>%
-    arrange(.data$min_map)   
-  
-  
-
   final_map
   
 
@@ -1005,9 +1028,7 @@ cross_versions <- function(
   
   # examples_executed <- examples_sec2_executed
   
-  print("examples_executed")
-  print(examples_executed)
-  
+
   examples_executed_selected_fields_left <-
     examples_executed %>% select(.data$id, .data$name, .data$path, .data$output) %>%
     rename_all(
@@ -1025,33 +1046,35 @@ cross_versions <- function(
     )
   
 
+  print("##################Entrando 1028")
   saida <- examples_executed_selected_fields_left %>%
-    crossing(examples_executed_selected_fields_right) %>%
-    filter(.data$id_left < .data$id_right) %T>%
-    print(
-      str_glue("path_left:{path_left}")
-    ) %>% 
+    crossing(examples_executed_selected_fields_right) %>% 
+    filter(.data$id_left < .data$id_right) %T>% 
+    debuga("ANTES DIFF COMMAND") %>% 
     mutate(diff_command =
              map2(
                .x = .data$path_left,
                .y = .data$path_right,
-               ~ assemble_diff_command(
+               ~assemble_diff_command(
                  code_path_left = .x,
                  code_path_right = .y,
                  output_path = "",
                  output_left = .data$output_left,
                  output_right = .data$output_right
                )
-             )) %>% 
+             )) %T>% 
+    debuga("depois diff command") %>% 
     mutate(lines_left = read_number_of_lines(.data$path_left),
-           lines_right = read_number_of_lines(.data$path_right)) %>%
+           lines_right = read_number_of_lines(.data$path_right)) %T>%
+    debuga(.data$diff_command) %>% 
     mutate(
       output_diff_command = map(
         .x = .data$diff_command,
         .f = ~ system(command =  .x)
       ),
       file_diff = str_glue("{output_path}{output_left}_{output_right}.diff")
-    ) %>%
+    ) %T>%
+    debuga(str_glue("rodou")) %>% 
     mutate(lines_map = pmap(
       .l = list(
         file = .data$file_diff  ,
@@ -1420,6 +1443,8 @@ graph_path_from_alert <- function(graph, id_node){
 #' * categorised_alerts: dataframe with old and new alerts categorised in fixed, open and new
 #' 
 #' @export
+#'
+#'@importFrom magrittr %T>% 
 #'
 #' @examples
 calculate_features_from_versions <- function(

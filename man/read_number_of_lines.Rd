@@ -4,7 +4,7 @@
 \alias{read_number_of_lines}
 \title{Return number of lines of the file in the path}
 \usage{
-read_number_of_lines(dir)
+read_number_of_lines(file)
 }
 \arguments{
 \item{dir}{directory, string}

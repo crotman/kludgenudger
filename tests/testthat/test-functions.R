@@ -24,6 +24,20 @@ test_that("map_lines works", {
     )
   )
   
+  
+  caso_3 <- tibble(map_remove = 1:10, map_add = 1:10)
+  expect_equal(
+    caso_3, 
+    map_lines(
+      file = "data/zero_sized.diff",
+      lines_prev_param = 10,
+      lines_post_param = 10
+    )
+  )
+  
+  
+  
+  
 })
 
 
@@ -219,6 +233,18 @@ test_that("calculate_features_from_versions works", {
 })
 
 
+test_that("calculate_features_from_versions works with same files", {
+  output <- read_rds("data/calculate_same_files.rds")
+  output_function <- calculate_features_from_versions(
+    code_file_new = "data/caso_arquivos_iguais_novo/code.java",
+    code_file_old = "data/caso_arquivos_iguais_velho/code.java",
+    pmd_path = "pmd/bin/pmd.bat"
+  )$categorised_alerts
+  expect_equal(
+    output, 
+    output_function
+  )
+})
 
 
 
