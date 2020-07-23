@@ -110,7 +110,7 @@ test_that("cross_versions works", {
   old <- read_lines("data/caso1_velho/code.java")
   new <- read_lines("data/caso1_new/code.java")
   param <- caso_1$examples_executed %>% 
-    mutate(path = c("data/caso1_velho", "data/caso1_new"))
+    mutate(path = c("data/caso1_velho/code.java", "data/caso1_new/code.java"))
   expect_equal(
     caso_1$function_output$lines_map[[1]] %>%  select(-c(file_prev, file_post)), 
     cross_versions(
@@ -217,6 +217,16 @@ test_that("calculate_features_from_versions works", {
     output_function
   )
 })
+
+
+
+
+
+
+
+
+
+
 
 
 

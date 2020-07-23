@@ -115,12 +115,9 @@ assemble_diff_command <- function(code_path_left, code_path_right, output_path, 
 #' @importFrom readr read_table
 #' 
 #' @examples
-read_number_of_lines <- function(dir){
+read_number_of_lines <- function(file){
   
-  files <- list.files(dir)
-  print("dir")
-  print(dir)
-  saida <- readr::read_table(file = str_glue("{dir}\\{files}"), col_names = FALSE, skip_empty_rows = FALSE) %>% 
+  saida <- readr::read_table(file = file, col_names = FALSE, skip_empty_rows = FALSE) %>% 
     nrow() 
   print(saida)
   saida
@@ -1008,6 +1005,9 @@ cross_versions <- function(
   
   # examples_executed <- examples_sec2_executed
   
+  print("examples_executed")
+  print(examples_executed)
+  
   examples_executed_selected_fields_left <-
     examples_executed %>% select(.data$id, .data$name, .data$path, .data$output) %>%
     rename_all(
@@ -1027,7 +1027,10 @@ cross_versions <- function(
 
   saida <- examples_executed_selected_fields_left %>%
     crossing(examples_executed_selected_fields_right) %>%
-    filter(.data$id_left < .data$id_right) %>%
+    filter(.data$id_left < .data$id_right) %T>%
+    print(
+      str_glue("path_left:{path_left}")
+    ) %>% 
     mutate(diff_command =
              map2(
                .x = .data$path_left,
@@ -1475,8 +1478,8 @@ calculate_features_from_versions <- function(
   examples_sec2 <- tribble(
     
     ~name,                  ~path,      ~output,          
-    "Simple old",  path_code_file_old ,  output_code_file_old %>% as.character(),
-    "Simple new",  path_code_file_new ,  output_code_file_new %>%  as.character(),
+    "Simple old",  code_file_old ,  output_code_file_old %>% as.character(),
+    "Simple new",  code_file_new ,  output_code_file_new %>%  as.character(),
     
   ) %>% 
     mutate(id = row_number()) 
@@ -2207,8 +2210,57 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
     select(
       .data$same_alert
     )
-  
 
+}
+
+
+
+#' Compare two versions of a source-code in terms of kludges
+#' 
+#' Lists all the java files, gets the PMD alerts and categorise the alerts in "open", "fixed" and "new"
+#'
+#' @param dir_old old version
+#' @param dir_new new version
+#'
+#' @return alerts categorised in "new", "fixed" and "open"
+#' @export
+#'
+#' @examples
+compare_versions <- function(dir_old, dir_new){
+  
+  # dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3"
+  # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
+  
+  files_old <- list.files(path = dir_old, "\\.java$", recursive = TRUE) %>% 
+    enframe(name = "id_old", value = "file_old") %>% 
+    mutate(
+      original_file_old = str_glue("{dir_old}/{file_old}")
+    )
+  
+  files_new <- list.files(path = dir_old, "\\.java$", recursive = TRUE) %>% 
+    enframe(name = "id_new", value = "file_new") %>% 
+    mutate(
+      original_file_new = str_glue("{dir_new}/{file_new}")
+    )
+  
+  joined_files <- files_new %>% 
+    inner_join(files_old, by = c("file_new" = "file_old")) %>% 
+    filter(row_number() == 1) %>% 
+    mutate(
+      alerts = map2(
+        .x = original_file_new,
+        .y = original_file_old, 
+        .f = ~calculate_features_from_versions(
+          code_file_new = .x,
+          code_file_old = .y,
+          pmd_path = "pmd/bin/pmd.bat"
+        ) 
+        ) %>% extract2("categorised_alerts")
+    )
+  
+  
+  
+  
   
 }
 
