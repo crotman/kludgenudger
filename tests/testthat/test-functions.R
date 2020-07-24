@@ -248,6 +248,24 @@ test_that("calculate_features_from_versions works with same files", {
 
 
 
+test_that("join_ast_alerts works", {
+  case <- read_rds("data/info_join_ast_alerts.rds")
+  output_function <- join_ast_alerts(
+    ast = case$ast,
+    alerts = case$alerts
+  )
+  expect_equal(
+    case$output_function %>% activate("nodes") %>% as_tibble(), 
+    output_function  %>% activate("nodes") %>% as_tibble()
+  )
+  
+  expect_equal(
+    case$output_function %>% activate("edges") %>% as_tibble(), 
+    output_function  %>% activate("edges") %>% as_tibble()
+  )
+  
+})
+
 
 
 

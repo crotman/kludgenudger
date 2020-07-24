@@ -113,9 +113,9 @@ assemble_diff_command <- function(code_path_left, code_path_right, output_path, 
   saida
 }
 
-#' Return number of lines of the file in the path
+#' Return number of lines of the file
 #'
-#' @param dir directory, string
+#' @param file file to be read
 #'
 #' @return number of lines
 #' @export
@@ -769,7 +769,7 @@ read_raw_ast_nodes <-  function(
   # code_location <- code_file_old
   # output_location <- output_old
   
-  system(str_glue("{pmd_location}/pmd.bat -d {code_location} -f xml -R {blockrules_location} -reportfile {output_location}"))
+  system(str_glue("{pmd_location}/pmd.bat -d {code_location} -f xml -R {blockrules_location} -reportfile {output_location}"), show.output.on.console =  FALSE, invisible = TRUE)
   
   code_all_lines <- read_lines(code_location)
   
@@ -1070,7 +1070,7 @@ cross_versions <- function(
     mutate(
       output_diff_command = map(
         .x = .data$diff_command,
-        .f = ~ system(command =  .x)
+        .f = ~ system(command =  .x, show.output.on.console = FALSE)
       ),
       file_diff = str_glue("{output_path}{output_left}_{output_right}.diff")
     ) %T>%
@@ -1083,6 +1083,8 @@ cross_versions <- function(
       ),
       .f = map_lines
     ))
+  
+  print("fim cross_versions")
   
   saida
    
@@ -1525,7 +1527,7 @@ calculate_features_from_versions <- function(
              )) %>%
     mutate(pmd_command_output = map(
       .x = .data$pmd_command,
-      .f =  ~ system(command =  .x)
+      .f =  ~ system(command =  .x, show.output.on.console = FALSE)
     )) %>%
     mutate(pmd_output = map(.x = str_glue("{output_path}{.data$output}.xml"), .f = read_pmd_xml))
   
@@ -1543,6 +1545,8 @@ calculate_features_from_versions <- function(
   
   output_new <-  code_file_new %>% 
     str_replace(".java", ".xml") 
+  
+  print("get nodes")
   
   nodes_old <- read_raw_ast_nodes(
     code_location = code_file_old,
@@ -1594,6 +1598,7 @@ calculate_features_from_versions <- function(
       ~str_glue("{.x}_end")
     )
   
+  print("match nodes")
   
   match_nodes <- nodes_old %>% 
     left_join(
@@ -1692,6 +1697,12 @@ calculate_features_from_versions <- function(
       id_group = if_else(is.na(.data$id_group), -row_number()-offset_id_group_na, .data$id_group)
     )        
   
+  print("match nodes")
+  
+  print("aqui o pmd_output")
+  print(examples_sec2_executed$pmd_output[[1]])
+  
+  print("printou pmd output")
   
   alerts_old <- examples_sec2_executed$pmd_output[[1]] %>% 
     rename_all(
@@ -1709,10 +1720,19 @@ calculate_features_from_versions <- function(
       one = 1
     )
   
+  print("1723")
+  print("alerts old")
+  print(alerts_old)
   
+  write_rds(alerts_old, "alerts_old.rds")
+  
+    
+  print('grafo')
+  print(graph_old_with_group)
   
   graph_old_with_alert <- graph_old_with_group %>% 
-    activate("nodes") %>% 
+    activate("nodes") %T>% 
+    debuga("nodes") %>% 
     mutate(
       one = 1
     ) %>% 
@@ -1723,7 +1743,8 @@ calculate_features_from_versions <- function(
         "endline" = "endline_alert", 
         "begincolumn" = "begincolumn_alert", 
         "endcolumn" = "endcolumn_alert")
-    ) %>% 
+    ) %T>% 
+    debuga("mutate texts") %>% 
     mutate(
       text_alert = if_else(is.na(.data$id_alert_alert),
                            "",
@@ -1746,6 +1767,7 @@ calculate_features_from_versions <- function(
       
     ) 
   
+  print("1760")
   
   
   
@@ -1811,6 +1833,7 @@ calculate_features_from_versions <- function(
   graphs_from_alerts_new <- nodes_alerts_new %>% 
     mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_new_reverted, id_node = .x )   )) 
   
+  print("1825")
   
   graphs_from_alerts_new <- graphs_from_alerts_new %>%  rename(
     id_alert_new = .data$id_alert,
@@ -2273,8 +2296,8 @@ compare_versions <- function(dir_old, dir_new){
     filter(row_number() == 1) %>% 
     mutate(
       alerts = map2(
-        .x = original_file_new,
-        .y = original_file_old, 
+        .x = .data$original_file_new,
+        .y = .data$original_file_old, 
         .f = ~calculate_features_from_versions(
           code_file_new = .x,
           code_file_old = .y,
@@ -2283,13 +2306,145 @@ compare_versions <- function(dir_old, dir_new){
         ) %>% extract2("categorised_alerts")
     )
   
-  
-  
-  
-  
 }
 
 
+
+#' Join a graph containing the ast and the alerts
+#' 
+#' In this join, the function must consider if there is more than one alert for each node of the ast.
+#' If this is the case, the function must duplicate these nodes
+# 
+#'
+#' @param ast graph the Abstract Syntax Tree
+#' @param alerts dataframe containing the alerts
+#'
+#' @return the graph containing the ast and the related alerts 
+#' @export
+#'
+#' @examples
+join_ast_alerts <- function(ast, alerts){
+  
+  # info <- read_rds("data/info_join_ast_alerts.rds")
+  # ast <- info$ast
+  # alerts <- info$alerts
+  
+  
+  alerts_multi <- alerts %>% 
+    group_by(
+      .data$beginline_alert, 
+      .data$endline_alert, 
+      .data$begincolumn_alert, 
+      .data$endcolumn_alert) %>% 
+    summarise(
+      n = n()
+    ) %>% 
+    filter(
+      .data$n > 1
+    ) %>% 
+    ungroup()
+  
+  n_nodes <- ast %>% activate("nodes") %>% as_tibble() %>% nrow() 
+
+  nodes_must_be_included <- ast %>% 
+    activate("nodes") %>% 
+    as_tibble() %>% 
+    right_join(alerts_multi,
+              by = c(   
+                "beginline" = "beginline_alert", 
+                "endline" = "endline_alert", 
+                "begincolumn" = "begincolumn_alert", 
+                "endcolumn" = "endcolumn_alert")
+    )
+    
+   edges_must_be_included <- ast %>% 
+     activate("edges") %>% 
+     as_tibble() %>% 
+     semi_join(
+       nodes_must_be_included,
+       by = c("to" = ".tidygraph_node_index")
+     ) 
+   
+    
+   nodes_must_be_included_multi <- nodes_must_be_included %>% 
+     rowwise() %>% 
+     mutate(
+       temporario_id_multi = list(2:n)
+     ) %>% 
+     ungroup() %>% 
+     unnest(.data$temporario_id_multi) %>% 
+     mutate(
+       temporario_id = row_number(),
+       temporario_new_id = n_nodes + .data$temporario_id
+     ) %>% 
+     left_join(
+       edges_must_be_included,
+       by = c(".tidygraph_node_index" = "to")
+     )
+   
+   edges_to_be_included <- nodes_must_be_included_multi %>% 
+     select(
+       to = .data$temporario_new_id,
+       from
+     ) 
+   
+   nodes_to_be_included <- nodes_must_be_included_multi %>% 
+     select(
+       !matches("temporario")
+     ) %>% 
+     select(
+       -c(.data$from, .data$n, .data$.tidygraph_node_index)
+     ) %>% 
+     group_by(id_alert) %>% 
+     mutate(index_inside_original_node = row_number() + 1) %>% 
+     ungroup()
+   
+   ast_for_join <- ast %>% 
+     bind_nodes(nodes_to_be_included) %>% 
+     bind_edges(edges_to_be_included) %>% 
+     activate("nodes") %>% 
+     mutate( 
+       index_inside_original_node = if_else(
+         is.na(.data$index_inside_original_node),
+         1,
+         .data$index_inside_original_node
+       )
+     ) 
+  
+   alerts_indexed_inside_node <- alerts %>% 
+     group_by(
+       .data$beginline_alert, 
+       .data$endline_alert, 
+       .data$begincolumn_alert, 
+       .data$endcolumn_alert) %>% 
+     mutate(
+       index_inside_original_node = row_number()
+     ) 
+   
+   output <- ast_for_join %>% 
+     left_join(
+       alerts_indexed_inside_node,
+       by =  c(
+         "beginline" = "beginline_alert", 
+         "endline" = "endline_alert", 
+         "begincolumn" = "begincolumn_alert", 
+         "endcolumn" = "endcolumn_alert",
+         "index_inside_original_node" = "index_inside_original_node"
+         )
+     )
+   
+   # info_join_ast_alerts <- list(
+   #    ast = ast,
+   #    alerts = alerts,
+   #    output_function = output
+   # )
+   # 
+   # write_rds(info_join_ast_alerts, "data/info_join_ast_alerts.rds")
+   
+   output
+   
+   
+}
 
 
 

@@ -2,16 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{read_number_of_lines}
 \alias{read_number_of_lines}
-\title{Return number of lines of the file in the path}
+\title{Return number of lines of the file}
 \usage{
 read_number_of_lines(file)
 }
 \arguments{
-\item{dir}{directory, string}
+\item{file}{file to be read}
 }
 \value{
 number of lines
 }
 \description{
-Return number of lines of the file in the path
+Return number of lines of the file
 }
