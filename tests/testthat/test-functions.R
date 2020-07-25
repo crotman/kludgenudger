@@ -266,11 +266,43 @@ test_that("join_ast_alerts works", {
   
 })
 
+test_that("read_pmd_xml works with empty" ,{
+  
+  empty <- tibble(
+    linha  = numeric(),
+    beginline = integer(),
+    endline   = integer(),
+    begincolumn = integer(),
+    endcolumn = integer(),
+    rule = character(),
+    ruleset = character(),
+    package = character(),
+    class = character(),
+    priority= integer(),
+    variable = character(),
+    method= character(),
+    id_alert  = integer()
+  )
+  
+  expect_equal(
+    read_pmd_xml("data/empty_pmd_output.xml"),
+    empty
+  )
+  
+})
 
-
-
-
-
-
-
-
+# 
+# teste_20 <- compare_versions(
+#   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
+#   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
+#   pmd_path = "pmd/bin/pmd.bat",
+#   limit_executions = TRUE,
+#   n_limit = 20
+# )
+# 
+# teste <- calculate_features_from_versions(
+#   code_file_new = "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
+#   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
+#   pmd_path = "pmd/bin/pmd.bat"
+# )
+# 

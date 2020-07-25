@@ -71,24 +71,52 @@ decorate_code <- function(strings, size_line_of_code = 80) {
 #' @examples
 read_pmd_xml <- function(file){
   
+  #file <- "internal.xml"
 
+  empty <- tibble(
+    linha  = numeric(),
+    beginline = integer(),
+    endline   = integer(),
+    begincolumn = integer(),
+    endcolumn = integer(),
+    rule = character(),
+    ruleset = character(),
+    package = character(),
+    class = character(),
+    priority= integer(),
+    variable = character(),
+    method= character(),
+    id_alert  = integer()
+  )
+    
   content_xml <- xml2::read_xml(file)
   
-  alerts <- content_xml %>% 
+  alerts_initial <- content_xml %>% 
     xml2::xml_children() %>% 
     xml2::xml_children() %>% 
     xml2::xml_attrs() %>% 
-    map_df(.f = ~enframe(x = .x )) %>% 
-    mutate(primeiro_campo = if_else(.data$name == "beginline", 1, 0)  ) %>% 
-    mutate(linha = cumsum(.data$primeiro_campo) ) %>% 
-    select(-.data$primeiro_campo) %>% 
-    pivot_wider(names_from = .data$name, values_from = .data$value) %>% 
-    mutate(id_alert = row_number()) %>% 
-    mutate_at(
-      vars(one_of(c("beginline", "endline", "begincolumn", "endcolumn", "priority"))),
-      as.integer
-    )
+    map_df(.f = ~enframe(x = .x ))
   
+  
+  if (nrow(alerts_initial) != 0){
+    alerts <- alerts_initial %>% 
+      mutate(primeiro_campo = if_else(.data$name == "beginline", 1, 0)  ) %>% 
+      mutate(linha = cumsum(.data$primeiro_campo) ) %>% 
+      select(-.data$primeiro_campo) %>% 
+      pivot_wider(names_from = .data$name, values_from = .data$value) %>% 
+      mutate(id_alert = row_number()) %>% 
+      mutate_at(
+        vars(one_of(c("beginline", "endline", "begincolumn", "endcolumn", "priority"))),
+        as.integer
+      )
+  }
+  else{
+    alerts <- empty
+  }
+  
+  write_rds(alerts, "alerts.rds")
+  
+  alerts
 }
 
 
@@ -109,7 +137,6 @@ read_pmd_xml <- function(file){
 #' @examples
 assemble_diff_command <- function(code_path_left, code_path_right, output_path, output_left, output_right){
   saida <- str_glue("git diff -U0 --patience --numstat --summary --output={output_path}{output_left}_{output_right}.diff --no-index {code_path_left} {code_path_right}")
-  print(str_glue("comando diff {saida}"))
   saida
 }
 
@@ -127,7 +154,6 @@ read_number_of_lines <- function(file){
   
   saida <- readr::read_table(file = file, col_names = FALSE, skip_empty_rows = FALSE) %>% 
     nrow() 
-  print(saida)
   saida
 }
 
@@ -1046,11 +1072,9 @@ cross_versions <- function(
     )
   
 
-  print("##################Entrando 1028")
   saida <- examples_executed_selected_fields_left %>%
     crossing(examples_executed_selected_fields_right) %>% 
-    filter(.data$id_left < .data$id_right) %T>% 
-    debuga("ANTES DIFF COMMAND") %>% 
+    filter(.data$id_left < .data$id_right) %>% 
     mutate(diff_command =
              map2(
                .x = .data$path_left,
@@ -1062,19 +1086,16 @@ cross_versions <- function(
                  output_left = .data$output_left,
                  output_right = .data$output_right
                )
-             )) %T>% 
-    debuga("depois diff command") %>% 
+             )) %>% 
     mutate(lines_left = read_number_of_lines(.data$path_left),
-           lines_right = read_number_of_lines(.data$path_right)) %T>%
-    debuga(.data$diff_command) %>% 
+           lines_right = read_number_of_lines(.data$path_right)) %>%
     mutate(
       output_diff_command = map(
         .x = .data$diff_command,
         .f = ~ system(command =  .x, show.output.on.console = FALSE)
       ),
       file_diff = str_glue("{output_path}{output_left}_{output_right}.diff")
-    ) %T>%
-    debuga(str_glue("rodou")) %>% 
+    ) %>%
     mutate(lines_map = pmap(
       .l = list(
         file = .data$file_diff  ,
@@ -1084,8 +1105,7 @@ cross_versions <- function(
       .f = map_lines
     ))
   
-  print("fim cross_versions")
-  
+
   saida
    
 }
@@ -1110,280 +1130,285 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   # graph_new <- graphs_from_alerts_new$graph_new[[2]]
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
   
-  alert_old <- graph_old %>% 
-    activate("nodes") %>% 
-    as_tibble() %>% 
-    select(
-      .data$beginline,
-      .data$endline,
-      .data$rule,
-      .data$id_group,
-      .data$method,
-      .data$rule_alert,
-      .data$code
-    ) %>% 
-    rowwise() %>% 
-    mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
-    ungroup() %>% 
-    left_join(
-      coordinates %>% select(-.data$new),
-      by = c("beginline" = "old")
-    ) %>% 
-    rename(
-      begin_common_line = .data$common_line
-    ) %>% 
-    left_join(
-      coordinates %>%  select(-.data$new),
-      by = c("endline" = "old")
-    ) %>% 
-    rename(
-      end_common_line = .data$common_line
-    ) %>% 
-    mutate(
-      node = row_number()
-    ) %>% 
-    rename_all(
-      .funs = ~str_glue("{.x}_old")
-    )
-  
-  alert_new <- graph_new %>% 
-    activate("nodes") %>% 
-    as_tibble() %>%
-    select(
-      .data$beginline,
-      .data$endline,
-      .data$rule,
-      .data$id_group,
-      .data$method,
-      .data$rule_alert,
-      .data$code
-    ) %>% 
-    rowwise() %>% 
-    mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
-    ungroup() %>% 
-    left_join(
-      coordinates %>% select(-.data$old),
-      by = c("beginline" = "new")
-    ) %>% 
-    rename(
-      begin_common_line = .data$common_line
-    ) %>% 
-    left_join(
-      coordinates %>%  select(-.data$old),
-      by = c("endline" = "new")
-    ) %>% 
-    rename(
-      end_common_line = .data$common_line
-    ) %>% 
-    mutate(
-      node = row_number()
-    ) %>% 
-    rename_all(
-      .funs = ~str_glue("{.x}_new")
-    )
-  
-  
-  match_path <- alert_old %>% 
-    full_join(
-      alert_new,
-      by = c("node_old" = "node_new")
-    ) 
-  
-  
-  features_match_path <- match_path %>% 
-    mutate(
-      last_method_id_old = if_else(
-        .data$rule_old %in% c(
+
+    alert_old <- graph_old %>% 
+      activate("nodes") %>% 
+      as_tibble() %>% 
+      select(
+        .data$beginline,
+        .data$endline,
+        .data$rule,
+        .data$id_group,
+        .data$method,
+        .data$rule_alert,
+        .data$code
+      ) %>% 
+      rowwise() %>% 
+      mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
+      ungroup() %>% 
+      left_join(
+        coordinates %>% select(-.data$new),
+        by = c("beginline" = "old")
+      ) %>% 
+      rename(
+        begin_common_line = .data$common_line
+      ) %>% 
+      left_join(
+        coordinates %>%  select(-.data$new),
+        by = c("endline" = "old")
+      ) %>% 
+      rename(
+        end_common_line = .data$common_line
+      ) %>% 
+      mutate(
+        node = row_number()
+      ) %>% 
+      rename_all(
+        .funs = ~str_glue("{.x}_old")
+      )
+    
+    alert_new <- graph_new %>% 
+      activate("nodes") %>% 
+      as_tibble() %>%
+      select(
+        .data$beginline,
+        .data$endline,
+        .data$rule,
+        .data$id_group,
+        .data$method,
+        .data$rule_alert,
+        .data$code
+      ) %>% 
+      rowwise() %>% 
+      mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
+      ungroup() %>% 
+      left_join(
+        coordinates %>% select(-.data$old),
+        by = c("beginline" = "new")
+      ) %>% 
+      rename(
+        begin_common_line = .data$common_line
+      ) %>% 
+      left_join(
+        coordinates %>%  select(-.data$old),
+        by = c("endline" = "new")
+      ) %>% 
+      rename(
+        end_common_line = .data$common_line
+      ) %>% 
+      mutate(
+        node = row_number()
+      ) %>% 
+      rename_all(
+        .funs = ~str_glue("{.x}_new")
+      )
+    
+    
+    match_path <- alert_old %>% 
+      full_join(
+        alert_new,
+        by = c("node_old" = "node_new")
+      ) 
+    
+    
+    features_match_path <- match_path %>% 
+      mutate(
+        last_method_id_old = if_else(
+          .data$rule_old %in% c(
+            "compilation_unit", 
+            "constructor_declaration", 
+            "method"
+          ), 
+          .data$id_group_old, 
+          NA_integer_
+        ),
+        last_method_id_new = if_else(.data$rule_new %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        .data$id_group_old, 
+        .data$id_group_new, 
         NA_integer_
-      ),
-      last_method_id_new = if_else(.data$rule_new %in% c(
-        "compilation_unit", 
-        "constructor_declaration", 
-        "method"
-      ), 
-      .data$id_group_new, 
-      NA_integer_
-      ),
-      last_method_begin_line_old = if_else(
-        .data$rule_old %in% c(
+        ),
+        last_method_begin_line_old = if_else(
+          .data$rule_old %in% c(
+            "compilation_unit", 
+            "constructor_declaration", 
+            "method"
+          ), 
+          .data$begin_common_line_old, 
+          NA_integer_
+        ),
+        last_method_begin_line_new = if_else(.data$rule_new %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
         ), 
-        .data$begin_common_line_old, 
+        .data$begin_common_line_new, 
         NA_integer_
-      ),
-      last_method_begin_line_new = if_else(.data$rule_new %in% c(
-        "compilation_unit", 
-        "constructor_declaration", 
-        "method"
-      ), 
-      .data$begin_common_line_new, 
-      NA_integer_
-      ),
-      last_method_end_line_old = if_else(
-        .data$rule_old %in% c(   
+        ),
+        last_method_end_line_old = if_else(
+          .data$rule_old %in% c(   
+            "compilation_unit", 
+            "constructor_declaration", 
+            "method"
+          ), 
+          .data$end_common_line_old, 
+          NA_integer_
+        ),
+        last_method_end_line_new = if_else(.data$rule_new %in% c(
           "compilation_unit", 
           "constructor_declaration", 
           "method"
-        ), 
-        .data$end_common_line_old, 
+        ),    
+        .data$end_common_line_new, 
         NA_integer_
-      ),
-      last_method_end_line_new = if_else(.data$rule_new %in% c(
-        "compilation_unit", 
-        "constructor_declaration", 
-        "method"
-      ),    
-      .data$end_common_line_new, 
-      NA_integer_
-      ),
-      
-      last_method_code_old = if_else(
-        .data$rule_old %in% c(
-          "compilation_unit", 
-          "constructor_declaration", 
-          "method"
-        ), 
-        .data$code_old, 
-        NA_character_
-      ),
-      
-      
-      last_method_code_new = if_else(
-        .data$rule_new %in% c(
-          "compilation_unit", 
-          "constructor_declaration", 
-          "method"
-        ), 
-        .data$code_new, 
-        NA_character_
-      ),
-      
-      last_code_new = .data$code_new,
-      last_code_old = .data$code_old,
-      
-      
-      last_block_id_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$id_group_old, NA_integer_),
-      last_block_id_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$id_group_new, NA_integer_),
-      
-      last_block_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$begin_common_line_old, NA_integer_),
-      last_block_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$begin_common_line_new, NA_integer_),
-      
-      last_block_end_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$end_common_line_old, NA_integer_),
-      last_block_end_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$end_common_line_new, NA_integer_),
-      
-      last_class_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit"), .data$begin_common_line_old, NA_integer_),
-      last_class_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit"), .data$begin_common_line_new, NA_integer_),
-      
-      last_class_end_line_old = if_else(.data$rule_old %in% c("compilation_unit"), .data$end_common_line_old, NA_integer_),
-      last_class_end_line_new = if_else(.data$rule_new %in% c("compilation_unit"), .data$end_common_line_new, NA_integer_),
-      
-      last_block_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$begin_common_line_old, NA_integer_),
-      last_block_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$begin_common_line_new, NA_integer_),
-      
-      
-      last_id_group_old = .data$id_group_old,
-      last_id_group_new = .data$id_group_new,
-      
-      last_common_group_begin_line = if_else(
-        .data$id_group_new == .data$id_group_old, 
-        .data$begin_common_line_old, 
-        NA_integer_
-      ),
-      
-      last_common_group_end_line = if_else(
-        .data$id_group_new == .data$id_group_old, 
-        .data$end_common_line_old, 
-        NA_integer_
-      ),
-      
-      last_method_name_old = .data$method_old,
-      
-      last_method_name_new = .data$method_new
-      
-      
-    ) %>% 
-    fill(
-      .data$last_method_id_old,
-      .data$last_method_id_new,
-      .data$last_method_begin_line_new,
-      .data$last_method_begin_line_old,
-      .data$last_method_end_line_new,
-      .data$last_method_end_line_old,
-      .data$last_id_group_old,
-      .data$last_id_group_new,
-      .data$last_block_id_old,
-      .data$last_block_id_new,
-      .data$last_block_begin_line_old,
-      .data$last_block_begin_line_new,
-      .data$last_block_end_line_old,
-      .data$last_block_end_line_new,
-      .data$begin_common_line_new,
-      .data$begin_common_line_old,
-      .data$end_common_line_new,
-      .data$end_common_line_old,
-      .data$last_common_group_begin_line,
-      .data$last_common_group_end_line,
-      .data$id_group_new,
-      .data$id_group_old,
-      .data$last_class_begin_line_old,
-      .data$last_class_begin_line_new,
-      .data$last_class_end_line_old,
-      .data$last_class_end_line_new,
-      .data$rule_alert_new, 
-      .data$rule_alert_old,
-      .data$last_method_name_old,
-      .data$last_method_name_new,
-      .data$last_method_code_new,
-      .data$last_method_code_old,
-      .data$last_code_new,
-      .data$last_code_old
-      
-    ) %>%
-    mutate(
-      same_rule = .data$rule_alert_new == .data$rule_alert_old,
-      same_id_group = .data$id_group_new == .data$id_group_old,  
-      same_method_group = .data$last_method_id_new == .data$last_method_id_old,
-      same_method_name = .data$last_method_name_old == .data$last_method_name_new,
-      same_block = .data$last_block_id_new == .data$last_block_id_old,
-      last_common_group_mean_line = (.data$last_common_group_begin_line + .data$last_common_group_end_line)/2,
-      mean_line_new = (.data$begin_common_line_new + .data$end_common_line_new)/2,
-      mean_line_old = (.data$begin_common_line_old + .data$end_common_line_old)/2,
-      mean_line_last_common_group = (.data$last_common_group_begin_line + .data$last_common_group_end_line)/2,
-      dist_line = abs(.data$mean_line_new - .data$mean_line_old),
-      size_last_block = .data$last_common_group_end_line - .data$last_common_group_begin_line,
-      dist_line_normalized_block = .data$dist_line/if_else(.data$size_last_block == 0, 1L , .data$size_last_block ),
-      size_unit = .data$last_class_end_line_new - .data$last_class_begin_line_new,
-      size_method = if_else(
+        ),
+        
+        last_method_code_old = if_else(
+          .data$rule_old %in% c(
+            "compilation_unit", 
+            "constructor_declaration", 
+            "method"
+          ), 
+          .data$code_old, 
+          NA_character_
+        ),
+        
+        
+        last_method_code_new = if_else(
+          .data$rule_new %in% c(
+            "compilation_unit", 
+            "constructor_declaration", 
+            "method"
+          ), 
+          .data$code_new, 
+          NA_character_
+        ),
+        
+        last_code_new = .data$code_new,
+        last_code_old = .data$code_old,
+        
+        
+        last_block_id_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$id_group_old, NA_integer_),
+        last_block_id_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$id_group_new, NA_integer_),
+        
+        last_block_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$begin_common_line_old, NA_integer_),
+        last_block_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$begin_common_line_new, NA_integer_),
+        
+        last_block_end_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$end_common_line_old, NA_integer_),
+        last_block_end_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$end_common_line_new, NA_integer_),
+        
+        last_class_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit"), .data$begin_common_line_old, NA_integer_),
+        last_class_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit"), .data$begin_common_line_new, NA_integer_),
+        
+        last_class_end_line_old = if_else(.data$rule_old %in% c("compilation_unit"), .data$end_common_line_old, NA_integer_),
+        last_class_end_line_new = if_else(.data$rule_new %in% c("compilation_unit"), .data$end_common_line_new, NA_integer_),
+        
+        last_block_begin_line_old = if_else(.data$rule_old %in% c("compilation_unit","block"), .data$begin_common_line_old, NA_integer_),
+        last_block_begin_line_new = if_else(.data$rule_new %in% c("compilation_unit","block"), .data$begin_common_line_new, NA_integer_),
+        
+        
+        last_id_group_old = .data$id_group_old,
+        last_id_group_new = .data$id_group_new,
+        
+        last_common_group_begin_line = if_else(
+          .data$id_group_new == .data$id_group_old, 
+          .data$begin_common_line_old, 
+          NA_integer_
+        ),
+        
+        last_common_group_end_line = if_else(
+          .data$id_group_new == .data$id_group_old, 
+          .data$end_common_line_old, 
+          NA_integer_
+        ),
+        
+        last_method_name_old = .data$method_old,
+        
+        last_method_name_new = .data$method_new
+        
+        
+      ) %>% 
+      fill(
+        .data$last_method_id_old,
+        .data$last_method_id_new,
+        .data$last_method_begin_line_new,
+        .data$last_method_begin_line_old,
+        .data$last_method_end_line_new,
+        .data$last_method_end_line_old,
+        .data$last_id_group_old,
+        .data$last_id_group_new,
+        .data$last_block_id_old,
+        .data$last_block_id_new,
+        .data$last_block_begin_line_old,
+        .data$last_block_begin_line_new,
+        .data$last_block_end_line_old,
+        .data$last_block_end_line_new,
+        .data$begin_common_line_new,
+        .data$begin_common_line_old,
+        .data$end_common_line_new,
+        .data$end_common_line_old,
+        .data$last_common_group_begin_line,
+        .data$last_common_group_end_line,
+        .data$id_group_new,
+        .data$id_group_old,
+        .data$last_class_begin_line_old,
+        .data$last_class_begin_line_new,
+        .data$last_class_end_line_old,
+        .data$last_class_end_line_new,
+        .data$rule_alert_new, 
+        .data$rule_alert_old,
+        .data$last_method_name_old,
+        .data$last_method_name_new,
+        .data$last_method_code_new,
+        .data$last_method_code_old,
+        .data$last_code_new,
+        .data$last_code_old
+        
+      ) %>%
+      mutate(
+        same_rule = .data$rule_alert_new == .data$rule_alert_old,
+        same_id_group = .data$id_group_new == .data$id_group_old,  
+        same_method_group = .data$last_method_id_new == .data$last_method_id_old,
+        same_method_name = .data$last_method_name_old == .data$last_method_name_new,
+        same_block = .data$last_block_id_new == .data$last_block_id_old,
+        last_common_group_mean_line = (.data$last_common_group_begin_line + .data$last_common_group_end_line)/2,
+        mean_line_new = (.data$begin_common_line_new + .data$end_common_line_new)/2,
+        mean_line_old = (.data$begin_common_line_old + .data$end_common_line_old)/2,
+        mean_line_last_common_group = (.data$last_common_group_begin_line + .data$last_common_group_end_line)/2,
+        dist_line = abs(.data$mean_line_new - .data$mean_line_old),
+        size_last_block = .data$last_common_group_end_line - .data$last_common_group_begin_line,
+        dist_line_normalized_block = .data$dist_line/if_else(.data$size_last_block == 0, 1L , .data$size_last_block ),
+        size_unit = .data$last_class_end_line_new - .data$last_class_begin_line_new,
+        size_method = if_else(
+          .data$same_method_group,
+          .data$last_method_end_line_new - .data$last_method_begin_line_new,
+          .data$size_unit
+        ),  
+        dist_line_normalized_method = .data$dist_line/.data$size_method,
+        dist_line_normalized_unit = .data$dist_line/.data$size_unit,
+        same_code = str_trim(.data$last_code_old) == str_trim(.data$last_code_new),
+        same_method_code = str_trim(.data$last_method_code_old) == str_trim(.data$last_method_code_new)
+      ) %>% 
+      select(
+        .data$same_rule,
+        .data$same_id_group,
         .data$same_method_group,
-        .data$last_method_end_line_new - .data$last_method_begin_line_new,
-        .data$size_unit
-      ),  
-      dist_line_normalized_method = .data$dist_line/.data$size_method,
-      dist_line_normalized_unit = .data$dist_line/.data$size_unit,
-      same_code = str_trim(.data$last_code_old) == str_trim(.data$last_code_new),
-      same_method_code = str_trim(.data$last_method_code_old) == str_trim(.data$last_method_code_new)
-    ) %>% 
-    select(
-      .data$same_rule,
-      .data$same_id_group,
-      .data$same_method_group,
-      .data$same_method_name,
-      .data$same_block,
-      .data$same_code,
-      .data$same_method_code,
-      .data$dist_line,
-      .data$dist_line_normalized_block,
-      .data$dist_line_normalized_method,
-      .data$dist_line_normalized_unit
-    ) %>% 
-    slice_tail(n = 1) 
+        .data$same_method_name,
+        .data$same_block,
+        .data$same_code,
+        .data$same_method_code,
+        .data$dist_line,
+        .data$dist_line_normalized_block,
+        .data$dist_line_normalized_method,
+        .data$dist_line_normalized_unit
+      ) %>% 
+      slice_tail(n = 1) 
+
+
+
+  features_match_path
   
 }
 
@@ -1478,7 +1503,9 @@ calculate_features_from_versions <- function(
   # rule_path = "rulesets/java/quickstart.xml"
   # blockrules_location = "data/blockrules/blockrules.xml"
   
-  
+  print("calculando")
+  print(code_file_old)
+  print(code_file_new)
   
   if(code_new != ""){
     
@@ -1528,7 +1555,8 @@ calculate_features_from_versions <- function(
     mutate(pmd_command_output = map(
       .x = .data$pmd_command,
       .f =  ~ system(command =  .x, show.output.on.console = FALSE)
-    )) %>%
+    )) %T>%
+    print() %>% 
     mutate(pmd_output = map(.x = str_glue("{output_path}{.data$output}.xml"), .f = read_pmd_xml))
   
   examples_sec2_crossed <- cross_versions(examples_sec2_executed) 
@@ -1546,8 +1574,7 @@ calculate_features_from_versions <- function(
   output_new <-  code_file_new %>% 
     str_replace(".java", ".xml") 
   
-  print("get nodes")
-  
+
   nodes_old <- read_raw_ast_nodes(
     code_location = code_file_old,
     output_location =  output_old,
@@ -1598,8 +1625,7 @@ calculate_features_from_versions <- function(
       ~str_glue("{.x}_end")
     )
   
-  print("match nodes")
-  
+
   match_nodes <- nodes_old %>% 
     left_join(
       map_begin,
@@ -1697,13 +1723,8 @@ calculate_features_from_versions <- function(
       id_group = if_else(is.na(.data$id_group), -row_number()-offset_id_group_na, .data$id_group)
     )        
   
-  print("match nodes")
-  
-  print("aqui o pmd_output")
-  print(examples_sec2_executed$pmd_output[[1]])
-  
-  print("printou pmd output")
-  
+
+
   alerts_old <- examples_sec2_executed$pmd_output[[1]] %>% 
     rename_all(
       ~str_glue("{.x}_alert")
@@ -1719,32 +1740,14 @@ calculate_features_from_versions <- function(
     mutate(
       one = 1
     )
-  
-  print("1723")
-  print("alerts old")
-  print(alerts_old)
-  
-  write_rds(alerts_old, "alerts_old.rds")
-  
     
-  print('grafo')
-  print(graph_old_with_group)
-  
+
   graph_old_with_alert <- graph_old_with_group %>% 
-    activate("nodes") %T>% 
-    debuga("nodes") %>% 
+    activate("nodes") %>% 
     mutate(
       one = 1
     ) %>% 
-    left_join(
-      alerts_old,
-      by = c(
-        "beginline" = "beginline_alert", 
-        "endline" = "endline_alert", 
-        "begincolumn" = "begincolumn_alert", 
-        "endcolumn" = "endcolumn_alert")
-    ) %T>% 
-    debuga("mutate texts") %>% 
+    join_ast_alerts(alerts_old) %>% 
     mutate(
       text_alert = if_else(is.na(.data$id_alert_alert),
                            "",
@@ -1767,8 +1770,7 @@ calculate_features_from_versions <- function(
       
     ) 
   
-  print("1760")
-  
+
   
   
   graph_new_with_alert <- graph_new_with_group %>% 
@@ -1776,14 +1778,7 @@ calculate_features_from_versions <- function(
     mutate(
       one = 1
     ) %>% 
-    left_join(
-      alerts_new,
-      by = c(
-        "beginline" = "beginline_alert", 
-        "endline" = "endline_alert", 
-        "begincolumn" = "begincolumn_alert", 
-        "endcolumn" = "endcolumn_alert")
-    ) %>% 
+    join_ast_alerts(alerts_new) %>% 
     mutate(
       text_alert = if_else(is.na(.data$id_alert_alert),
                            "",
@@ -1833,8 +1828,7 @@ calculate_features_from_versions <- function(
   graphs_from_alerts_new <- nodes_alerts_new %>% 
     mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_new_reverted, id_node = .x )   )) 
   
-  print("1825")
-  
+
   graphs_from_alerts_new <- graphs_from_alerts_new %>%  rename(
     id_alert_new = .data$id_alert,
     graph_new = .data$graph
@@ -1844,72 +1838,87 @@ calculate_features_from_versions <- function(
     ungroup() %>% 
     mutate(common_line = row_number()) 
   
-  match_alerts_alg2 <- graphs_from_alerts_new %>% 
-    crossing(graphs_from_alerts_old) %>% 
-    rowwise() %>% 
-    mutate(
-      features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
-    ) 
+
+  if (graphs_from_alerts_new %>% nrow() == 0 & graphs_from_alerts_old %>% nrow() == 0){
+    match_alerts_alg2 <-  tibble(id_alert_new = integer(), id_alert_old = integer())
+    categorised_alerts <- tibble(version = character())
+  }else{
+
+    match_alerts_alg2 <- graphs_from_alerts_new %T>%
+      debuga("antes crosing") %>%
+      crossing(graphs_from_alerts_old) %>% 
+      rowwise() %T>%
+      debuga("depois") %>% 
+      mutate(
+        features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
+      ) 
   
-  
-  saida <- list(
-    versions_executed = examples_sec2_executed,
-    versions_crossed = examples_sec2_crossed,
-    graph_old_with_alert =  graph_old_with_alert,
-    graph_new_with_alert = graph_new_with_alert,
-    graph_old_with_group = graph_old_with_group,
-    graph_new_with_group = graph_new_with_group,
-    graphs_from_alerts_old = graphs_from_alerts_old,
-    graphs_from_alerts_new = graphs_from_alerts_new,
-    features = match_alerts_alg2
-  )
-  
-  combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
-    calculated_features = saida
-  ) %>%
-    decide_heurist_if_same_alert() %>%
-    bind_cols(saida$features) %>%
-    filter(.data$same_alert) %>% 
-    select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
-
-  combinations_same_alerts_old <- combinations_same_alerts %>%
-    select(.data$id_alert_old, .data$same_alert ) %>%
-    distinct()
-
-  combinations_same_alerts_new <- combinations_same_alerts %>%
-    select(.data$id_alert_new, .data$same_alert ) %>%
-    distinct()
-
-
-  alerts_old <- saida$graph_old_with_alert %>%
-    activate("nodes") %>%
-    as_tibble() %>%
-    filter(!is.na(.data$id_alert_alert)) %>%
-    left_join(
-      combinations_same_alerts_old,
-      by = c("id_alert" = "id_alert_old")
-    ) %>%
-    replace_na(list(same_alert = FALSE)) %>%
-    mutate(
-      version = "old",
-      category = if_else(.data$same_alert, "open", "fixed")
+    print(1845)
+    
+    saida <- list(
+      versions_executed = examples_sec2_executed,
+      versions_crossed = examples_sec2_crossed,
+      graph_old_with_alert =  graph_old_with_alert,
+      graph_new_with_alert = graph_new_with_alert,
+      graph_old_with_group = graph_old_with_group,
+      graph_new_with_group = graph_new_with_group,
+      graphs_from_alerts_old = graphs_from_alerts_old,
+      graphs_from_alerts_new = graphs_from_alerts_new,
+      features = match_alerts_alg2
     )
-
-  alerts_new <- saida$graph_new_with_alert %>%
-    activate("nodes") %>%
-    as_tibble() %>%
-    filter(!is.na(.data$id_alert_alert)) %>%
-    left_join(
-      combinations_same_alerts_new,
-      by = c("id_alert" = "id_alert_new")
+    
+    combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
+      calculated_features = saida
     ) %>%
-    replace_na(list(same_alert = FALSE)) %>%
-    mutate(
-      version = "new",
-      category = if_else(.data$same_alert, "open", "new")
-    )
+      decide_heurist_if_same_alert() %>%
+      bind_cols(saida$features) %>%
+      filter(.data$same_alert) %>% 
+      select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
   
-  categorised_alerts <- bind_rows(alerts_new, alerts_old)
+    combinations_same_alerts_old <- combinations_same_alerts %>%
+      select(.data$id_alert_old, .data$same_alert ) %>%
+      distinct()
+  
+    print(1883)
+    
+    combinations_same_alerts_new <- combinations_same_alerts %>%
+      select(.data$id_alert_new, .data$same_alert ) %>%
+      distinct()
+  
+    print(1887)
+  
+    alerts_old <- saida$graph_old_with_alert %>%
+      activate("nodes") %>%
+      as_tibble() %>%
+      filter(!is.na(.data$id_alert_alert)) %>%
+      left_join(
+        combinations_same_alerts_old,
+        by = c("id_alert" = "id_alert_old")
+      ) %>%
+      replace_na(list(same_alert = FALSE)) %>%
+      mutate(
+        version = "old",
+        category = if_else(.data$same_alert, "open", "fixed")
+      )
+    
+    print(1905)
+  
+    alerts_new <- saida$graph_new_with_alert %>%
+      activate("nodes") %>%
+      as_tibble() %>%
+      filter(!is.na(.data$id_alert_alert)) %>%
+      left_join(
+        combinations_same_alerts_new,
+        by = c("id_alert" = "id_alert_new")
+      ) %>%
+      replace_na(list(same_alert = FALSE)) %>%
+      mutate(
+        version = "new",
+        category = if_else(.data$same_alert, "open", "new")
+      )
+    
+    categorised_alerts <- bind_rows(alerts_new, alerts_old)
+  }
   
   saida <- list(
     versions_executed = examples_sec2_executed,
@@ -2274,7 +2283,7 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 #' @export
 #'
 #' @examples
-compare_versions <- function(dir_old, dir_new){
+compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALSE, n_limit = 20 ){
   
   # dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3"
   # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
@@ -2293,7 +2302,7 @@ compare_versions <- function(dir_old, dir_new){
   
   joined_files <- files_new %>% 
     inner_join(files_old, by = c("file_new" = "file_old")) %>% 
-    filter(row_number() == 1) %>% 
+    filter( row_number() < n_limit | !limit_executions) %>% 
     mutate(
       alerts = map2(
         .x = .data$original_file_new,
@@ -2302,9 +2311,10 @@ compare_versions <- function(dir_old, dir_new){
           code_file_new = .x,
           code_file_old = .y,
           pmd_path = "pmd/bin/pmd.bat"
+        ) %>% extract2("categorised_alerts") 
         ) 
-        ) %>% extract2("categorised_alerts")
-    )
+    ) %>% 
+    unnest(alerts)
   
 }
 
@@ -2329,13 +2339,78 @@ join_ast_alerts <- function(ast, alerts){
   # ast <- info$ast
   # alerts <- info$alerts
   
+  # write_rds(ast, "ast_debug.rds")
+  # write_rds(alerts, "alerts_debug.rds")
+  ast <- read_rds("ast_debug.rds")
+  alerts <- read_rds("alerts_debug.rds")
+  nodes <- ast %>% activate("nodes") %>% as_tibble()
+   
+  max_column_nodes <- max(nodes$endcolumn)
+  max_column_alerts <- max(alerts$endcolumn_alert)
   
-  alerts_multi <- alerts %>% 
+  max_column <- max(c(max_column_nodes, max_column_alerts)) + 1
+  
+  alerts_position <- alerts %>% 
+    mutate(
+      beginposition_alert = beginline_alert * max_column + begincolumn_alert,
+      endposition_alert = endline_alert * max_column + endcolumn_alert
+    ) %>% 
+    select(
+      id_alert_alert,
+      beginposition_alert,
+      endposition_alert,
+      beginline_alert,
+      endline_alert,
+      begincolumn_alert,
+      endcolumn_alert
+      
+    )
+  
+  nodes_position <- nodes %>% 
+    mutate(
+      beginposition = beginline * max_column + begincolumn,
+      endposition =  endline * max_column + endcolumn
+    ) %>% 
+    select(
+      beginline,
+      endline,
+      begincolumn,
+      endcolumn,
+      .tidygraph_node_index,
+      beginposition,
+      endposition
+    )
+  
+  elements_to_join <- alerts_position %>% 
+    crossing(nodes_position) %>% 
+    filter(
+      beginposition_alert >= beginposition,
+      endposition_alert <= endposition
+    ) %>% 
+    mutate(
+      looseness = (beginposition_alert - beginposition) + (endposition - endposition_alert)
+    ) %>% 
     group_by(
-      .data$beginline_alert, 
-      .data$endline_alert, 
-      .data$begincolumn_alert, 
-      .data$endcolumn_alert) %>% 
+      id_alert_alert
+    ) %>% 
+    slice_min(looseness,n = 1, with_ties = FALSE) %>% 
+    ungroup() %>% 
+    select(
+      id_alert_alert,
+      .tidygraph_node_index
+    ) %>% 
+    group_by(
+      .tidygraph_node_index
+    ) %>% 
+    mutate(
+      index_inside_original_node = row_number()
+    )
+    
+
+  alerts_multi <- elements_to_join %>% 
+    group_by(
+      .tidygraph_node_index
+    ) %>% 
     summarise(
       n = n()
     ) %>% 
@@ -2344,84 +2419,110 @@ join_ast_alerts <- function(ast, alerts){
     ) %>% 
     ungroup()
   
-  n_nodes <- ast %>% activate("nodes") %>% as_tibble() %>% nrow() 
-
-  nodes_must_be_included <- ast %>% 
-    activate("nodes") %>% 
-    as_tibble() %>% 
-    right_join(alerts_multi,
-              by = c(   
-                "beginline" = "beginline_alert", 
-                "endline" = "endline_alert", 
-                "begincolumn" = "begincolumn_alert", 
-                "endcolumn" = "endcolumn_alert")
-    )
-    
-   edges_must_be_included <- ast %>% 
-     activate("edges") %>% 
-     as_tibble() %>% 
-     semi_join(
-       nodes_must_be_included,
-       by = c("to" = ".tidygraph_node_index")
-     ) 
-   
-    
-   nodes_must_be_included_multi <- nodes_must_be_included %>% 
-     rowwise() %>% 
-     mutate(
-       temporario_id_multi = list(2:n)
-     ) %>% 
-     ungroup() %>% 
-     unnest(.data$temporario_id_multi) %>% 
-     mutate(
-       temporario_id = row_number(),
-       temporario_new_id = n_nodes + .data$temporario_id
-     ) %>% 
-     left_join(
-       edges_must_be_included,
-       by = c(".tidygraph_node_index" = "to")
-     )
-   
-   edges_to_be_included <- nodes_must_be_included_multi %>% 
-     select(
-       to = .data$temporario_new_id,
-       from
-     ) 
-   
-   nodes_to_be_included <- nodes_must_be_included_multi %>% 
-     select(
-       !matches("temporario")
-     ) %>% 
-     select(
-       -c(.data$from, .data$n, .data$.tidygraph_node_index)
-     ) %>% 
-     group_by(id_alert) %>% 
-     mutate(index_inside_original_node = row_number() + 1) %>% 
-     ungroup()
-   
-   ast_for_join <- ast %>% 
-     bind_nodes(nodes_to_be_included) %>% 
-     bind_edges(edges_to_be_included) %>% 
-     activate("nodes") %>% 
-     mutate( 
-       index_inside_original_node = if_else(
-         is.na(.data$index_inside_original_node),
-         1,
-         .data$index_inside_original_node
-       )
-     ) 
+  if(nrow(alerts_multi > 0)){
   
-   alerts_indexed_inside_node <- alerts %>% 
-     group_by(
-       .data$beginline_alert, 
-       .data$endline_alert, 
-       .data$begincolumn_alert, 
-       .data$endcolumn_alert) %>% 
-     mutate(
-       index_inside_original_node = row_number()
-     ) 
+    n_nodes <- ast %>% activate("nodes") %>% as_tibble() %>% nrow() 
+  
+    nodes_must_be_included <- ast %>% 
+      activate("nodes") %>% 
+      as_tibble() %>% 
+      right_join(alerts_multi,
+                by = c(   
+                  ".tidygraph_node_index"
+                )
+      )
+      
+     edges_must_be_included <- ast %>% 
+       activate("edges") %>% 
+       as_tibble() %>% 
+       semi_join(
+         nodes_must_be_included,
+         by = c("to" = ".tidygraph_node_index")
+       ) 
+     
+      
+     nodes_must_be_included_multi <- nodes_must_be_included %>% 
+       rowwise() %>% 
+       mutate(
+         temporario_id_multi = list(2:n)
+       ) %>% 
+       ungroup() %>% 
+       unnest(.data$temporario_id_multi) %>% 
+       mutate(
+         temporario_id = row_number(),
+         temporario_new_id = n_nodes + .data$temporario_id
+       ) %>% 
+       left_join(
+         edges_must_be_included,
+         by = c(".tidygraph_node_index" = "to")
+       )
+     
+     edges_to_be_included <- nodes_must_be_included_multi %>% 
+       select(
+         to = .data$temporario_new_id,
+         .data$from
+       ) 
+     
+     nodes_to_be_included <- nodes_must_be_included_multi %>% 
+       select(
+         !matches("temporario")
+       ) %>% 
+       select(
+         -c(.data$from, .data$n)
+       ) %>% 
+       rename(
+         .tidygraph_node_index_original = .data$.tidygraph_node_index
+       ) %>% 
+       group_by(.data$id_alert) %>% 
+       mutate(index_inside_original_node = row_number() + 1) %>% 
+       ungroup()
+     
+     print("vai executar bind edges")
+     
+     ast_for_join <- ast %>% 
+       activate("nodes") %>% 
+       mutate(
+         .tidygraph_node_index_original = .data$.tidygraph_node_index
+       ) %>% 
+       bind_nodes(nodes_to_be_included) %>% 
+       bind_edges(edges_to_be_included) %>% 
+       activate("nodes") %>% 
+       mutate( 
+         index_inside_original_node = if_else(
+           is.na(.data$index_inside_original_node),
+           1,
+           .data$index_inside_original_node
+         )
+       ) 
+     
+     print("executou bind edges")
+     
+    
+  }else{
+    ast_for_join <- ast %>% 
+      activate("nodes") %>% 
+      mutate(
+        .tidygraph_node_index_original = .data$.tidygraph_node_index
+      ) %>% 
+      mutate(index_inside_original_node = 1)
+  }
+   
+  alerts_indexed_inside_node <- alerts %>% 
+    left_join(
+      elements_to_join,
+      by = c("id_alert_alert")
+    ) %>% 
+    group_by(
+      .tidygraph_node_index
+    ) %>% 
+    mutate(
+      index_inside_original_node = row_number()
+    ) 
    
    output <- ast_for_join %>% 
+     left_join(
+       
+     )
      left_join(
        alerts_indexed_inside_node,
        by =  c(
@@ -2431,6 +2532,9 @@ join_ast_alerts <- function(ast, alerts){
          "endcolumn" = "endcolumn_alert",
          "index_inside_original_node" = "index_inside_original_node"
          )
+     ) %>% 
+     select(
+       -.data$index_inside_original_node
      )
    
    # info_join_ast_alerts <- list(
