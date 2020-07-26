@@ -149,18 +149,20 @@ test_that("calculate_features works", {
 
 
 
+
 test_that("calculate_features_from_versions works", {
   caso_1 <- read_rds("data/info_calculate_features_from_versions.rds")
+  esperado <- caso_1$output_function$features$features
+  resultado <- calculate_features_from_versions(
+    code_file_new = "data/caso1_calculate_features_from_versions_novo/code.java",
+    code_file_old = "data/caso1_calculate_features_from_versions_velho/code.java",
+    pmd_path = "pmd/bin/pmd.bat"
+  )$features$features
   expect_equal(
-    caso_1$output_function$features$features, 
-    calculate_features_from_versions(
-      code_file_new = "data/caso1_calculate_features_from_versions_novo/code.java",
-      code_file_old = "data/caso1_calculate_features_from_versions_velho/code.java",
-      pmd_path = "pmd/bin/pmd.bat"
-    )$features$features
+    esperado, 
+    resultado
   )
 })
-
 
 test_that("extract_comments_from_code works", {
   
@@ -220,7 +222,7 @@ test_that("decide_heurist_if_same_alert works", {
 
 
 test_that("calculate_features_from_versions works", {
-  output <- read_rds("data/info_calculate_features_from_versions_categorised_alerts.rds")
+  output <- read_rds("data/info_calculate_features_from_versions_categorised_alerts.rds")    
   output_function <- calculate_features_from_versions(
     code_file_new = "data/caso1_calculate_features_from_versions_novo-v2/code.java",
     code_file_old = "data/caso1_calculate_features_from_versions_velho-v2/code.java",
@@ -249,18 +251,20 @@ test_that("calculate_features_from_versions works with same files", {
 
 
 test_that("join_ast_alerts works", {
-  case <- read_rds("data/info_join_ast_alerts.rds")
+  ast <- read_rds("data/info_join_ast_alerts_ast.rds")
+  alerts <- read_rds("data/info_join_ast_alerts_alerts.rds")
+  output <- read_rds("data/info_join_ast_alerts_output.rds")
   output_function <- join_ast_alerts(
-    ast = case$ast,
-    alerts = case$alerts
+    ast = ast,
+    alerts = alerts
   )
   expect_equal(
-    case$output_function %>% activate("nodes") %>% as_tibble(), 
+    output_function %>% activate("nodes") %>% as_tibble(), 
     output_function  %>% activate("nodes") %>% as_tibble()
   )
   
   expect_equal(
-    case$output_function %>% activate("edges") %>% as_tibble(), 
+    output_function %>% activate("edges") %>% as_tibble(), 
     output_function  %>% activate("edges") %>% as_tibble()
   )
   
@@ -291,18 +295,9 @@ test_that("read_pmd_xml works with empty" ,{
   
 })
 
-# 
-# teste_20 <- compare_versions(
-#   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
-#   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
-#   pmd_path = "pmd/bin/pmd.bat",
-#   limit_executions = TRUE,
-#   n_limit = 20
-# )
-# 
 # teste <- calculate_features_from_versions(
 #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
 #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
 #   pmd_path = "pmd/bin/pmd.bat"
 # )
-# 
+

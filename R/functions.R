@@ -2278,6 +2278,9 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 #'
 #' @param dir_old old version
 #' @param dir_new new version
+#' @param pmd_path path to pmd 
+#' @param limit_executions must the files be limitef
+#' @param n_limit if the files must be limited, how many?
 #'
 #' @return alerts categorised in "new", "fixed" and "open"
 #' @export
@@ -2314,7 +2317,7 @@ compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALS
         ) %>% extract2("categorised_alerts") 
         ) 
     ) %>% 
-    unnest(alerts)
+    unnest(.data$alerts)
   
 }
 
@@ -2339,10 +2342,11 @@ join_ast_alerts <- function(ast, alerts){
   # ast <- info$ast
   # alerts <- info$alerts
   
-  # write_rds(ast, "ast_debug.rds")
-  # write_rds(alerts, "alerts_debug.rds")
-  ast <- read_rds("ast_debug.rds")
-  alerts <- read_rds("alerts_debug.rds")
+  # write_rds(ast, "data/info_join_ast_alerts_ast.rds")
+  # write_rds(alerts, "data/info_join_ast_alerts_alerts.rds")
+  # ast <- read_rds("data/info_join_ast_alerts_ast.rds")
+  # alerts <- read_rds("data/info_join_ast_alerts_alerts.rds")
+  
   nodes <- ast %>% activate("nodes") %>% as_tibble()
    
   max_column_nodes <- max(nodes$endcolumn)
@@ -2352,55 +2356,55 @@ join_ast_alerts <- function(ast, alerts){
   
   alerts_position <- alerts %>% 
     mutate(
-      beginposition_alert = beginline_alert * max_column + begincolumn_alert,
-      endposition_alert = endline_alert * max_column + endcolumn_alert
+      beginposition_alert = .data$beginline_alert * max_column + .data$begincolumn_alert,
+      endposition_alert = .data$endline_alert * max_column + .data$endcolumn_alert
     ) %>% 
     select(
-      id_alert_alert,
-      beginposition_alert,
-      endposition_alert,
-      beginline_alert,
-      endline_alert,
-      begincolumn_alert,
-      endcolumn_alert
+      .data$id_alert_alert,
+      .data$beginposition_alert,
+      .data$endposition_alert,
+      .data$beginline_alert,
+      .data$endline_alert,
+      .data$begincolumn_alert,
+      .data$endcolumn_alert
       
     )
   
   nodes_position <- nodes %>% 
     mutate(
-      beginposition = beginline * max_column + begincolumn,
-      endposition =  endline * max_column + endcolumn
+      beginposition = .data$beginline * max_column + .data$begincolumn,
+      endposition =  .data$endline * max_column + .data$endcolumn
     ) %>% 
     select(
-      beginline,
-      endline,
-      begincolumn,
-      endcolumn,
-      .tidygraph_node_index,
-      beginposition,
-      endposition
+      .data$beginline,
+      .data$endline,
+      .data$begincolumn,
+      .data$endcolumn,
+      .data$.tidygraph_node_index,
+      .data$beginposition,
+      .data$endposition
     )
   
   elements_to_join <- alerts_position %>% 
     crossing(nodes_position) %>% 
     filter(
-      beginposition_alert >= beginposition,
-      endposition_alert <= endposition
+      .data$beginposition_alert >= .data$beginposition,
+      .data$endposition_alert <= .data$endposition
     ) %>% 
     mutate(
-      looseness = (beginposition_alert - beginposition) + (endposition - endposition_alert)
+      looseness = (.data$beginposition_alert - .data$beginposition) + (.data$endposition - .data$endposition_alert)
     ) %>% 
     group_by(
-      id_alert_alert
+      .data$id_alert_alert
     ) %>% 
-    slice_min(looseness,n = 1, with_ties = FALSE) %>% 
+    slice_min(.data$looseness,n = 1, with_ties = FALSE) %>% 
     ungroup() %>% 
     select(
-      id_alert_alert,
-      .tidygraph_node_index
+      .data$id_alert_alert,
+      .data$.tidygraph_node_index
     ) %>% 
     group_by(
-      .tidygraph_node_index
+      .data$.tidygraph_node_index
     ) %>% 
     mutate(
       index_inside_original_node = row_number()
@@ -2409,7 +2413,7 @@ join_ast_alerts <- function(ast, alerts){
 
   alerts_multi <- elements_to_join %>% 
     group_by(
-      .tidygraph_node_index
+      .data$.tidygraph_node_index
     ) %>% 
     summarise(
       n = n()
@@ -2513,7 +2517,7 @@ join_ast_alerts <- function(ast, alerts){
       by = c("id_alert_alert")
     ) %>% 
     group_by(
-      .tidygraph_node_index
+      .data$.tidygraph_node_index
     ) %>% 
     mutate(
       index_inside_original_node = row_number()
@@ -2521,20 +2525,22 @@ join_ast_alerts <- function(ast, alerts){
    
    output <- ast_for_join %>% 
      left_join(
-       
-     )
+       elements_to_join,
+       by = c(
+         ".tidygraph_node_index_original" = ".tidygraph_node_index",
+         "index_inside_original_node"
+       ),
+       suffix = c("",".y")
+     ) %>% 
      left_join(
        alerts_indexed_inside_node,
        by =  c(
-         "beginline" = "beginline_alert", 
-         "endline" = "endline_alert", 
-         "begincolumn" = "begincolumn_alert", 
-         "endcolumn" = "endcolumn_alert",
-         "index_inside_original_node" = "index_inside_original_node"
-         )
+         "id_alert_alert" 
+         ),
+       suffix = c("",".z")
      ) %>% 
      select(
-       -.data$index_inside_original_node
+       .data$linha, .data$beginline, .data$endline, .data$begincolumn, .data$endcolumn, .data$rule, .data$ruleset, .data$package, .data$class, .data$priority, .data$variable, .data$method, .data$id_alert, .data$small_rule, .data$code, .data$n_descendents, .data$name, .data$.tidygraph_node_index, .data$id_group, .data$mostra, one.x = .data$one, .data$linha_alert, .data$rule_alert, .data$ruleset_alert, .data$package_alert, .data$class_alert, .data$method_alert, .data$externalInfoUrl_alert, .data$priority_alert, .data$id_alert_alert, one.y = .data$one
      )
    
    # info_join_ast_alerts <- list(
@@ -2543,7 +2549,7 @@ join_ast_alerts <- function(ast, alerts){
    #    output_function = output
    # )
    # 
-   # write_rds(info_join_ast_alerts, "data/info_join_ast_alerts.rds")
+   #write_rds(output, "data/info_join_ast_alerts_output.rds")
    
    output
    

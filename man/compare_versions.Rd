@@ -4,12 +4,24 @@
 \alias{compare_versions}
 \title{Compare two versions of a source-code in terms of kludges}
 \usage{
-compare_versions(dir_old, dir_new)
+compare_versions(
+  dir_old,
+  dir_new,
+  pmd_path,
+  limit_executions = FALSE,
+  n_limit = 20
+)
 }
 \arguments{
 \item{dir_old}{old version}
 
 \item{dir_new}{new version}
+
+\item{pmd_path}{path to pmd}
+
+\item{limit_executions}{must the files be limitef}
+
+\item{n_limit}{if the files must be limited, how many?}
 }
 \value{
 alerts categorised in "new", "fixed" and "open"
