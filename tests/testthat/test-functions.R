@@ -286,7 +286,7 @@ test_that("read_pmd_xml works with empty" ,{
     variable = character(),
     method= character(),
     id_alert  = integer()
-  )
+  )   
   
   expect_equal(
     read_pmd_xml("data/empty_pmd_output.xml"),
@@ -295,9 +295,56 @@ test_that("read_pmd_xml works with empty" ,{
   
 })
 
+
+test_that("compare_versions works",{
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
+    dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
+    limit_executions = TRUE,
+    n_limit = 20
+  )
+  tictoc::toc()
+  
+  output <- read_rds("data/output_compare_versions.rds")
+  
+  expect_equal(
+    output,
+    output_function
+  )
+  
+  
+})
+
+
+# 
 # teste <- calculate_features_from_versions(
 #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
 #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
 #   pmd_path = "pmd/bin/pmd.bat"
 # )
-
+# 
+# 
+# tictoc::tic("compare")
+# 
+# teste <- compare_versions(
+#   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
+#   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
+#   limit_executions = TRUE,
+#   n_limit = 20
+# )
+# 
+# tictoc::toc()
+# # 
+# # teste <- calculate_features_from_versions(
+# #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
+# #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
+# #   pmd_path = "pmd/bin/pmd.bat"
+# # )
+# # 
+# # 
+# # 
+# # 
+# # c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
+# # c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java

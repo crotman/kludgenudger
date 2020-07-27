@@ -2539,10 +2539,45 @@ join_ast_alerts <- function(ast, alerts){
          ),
        suffix = c("",".z")
      ) %>% 
+     mutate(
+       one.x = one,
+       one.y = one
+     ) %>%
      select(
-       .data$linha, .data$beginline, .data$endline, .data$begincolumn, .data$endcolumn, .data$rule, .data$ruleset, .data$package, .data$class, .data$priority, .data$variable, .data$method, .data$id_alert, .data$small_rule, .data$code, .data$n_descendents, .data$name, .data$.tidygraph_node_index, .data$id_group, .data$mostra, one.x = .data$one, .data$linha_alert, .data$rule_alert, .data$ruleset_alert, .data$package_alert, .data$class_alert, .data$method_alert, .data$externalInfoUrl_alert, .data$priority_alert, .data$id_alert_alert, one.y = .data$one
-     )
-   
+       any_of(
+       c("linha", 
+       "beginline", 
+       "endline",
+       "begincolumn", 
+       "endcolumn", 
+       "rule", 
+       "ruleset", 
+       "package", 
+       "class", 
+       "priority", 
+       "variable", 
+       "method", 
+       "id_alert", 
+       "small_rule", 
+       "code", 
+       "n_descendents", 
+       "name", 
+       ".tidygraph_node_index", 
+       "id_group", 
+       "mostra", 
+       "one.x", 
+       "linha_alert", 
+       "rule_alert", 
+       "ruleset_alert", 
+       "package_alert", 
+       "class_alert", 
+       "method_alert", 
+       "externalInfoUrl_alert", 
+       "priority_alert", 
+       "id_alert_alert",
+       "one.y"))
+     )  
+
    # info_join_ast_alerts <- list(
    #    ast = ast,
    #    alerts = alerts,
