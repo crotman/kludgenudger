@@ -2271,6 +2271,22 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 }
 
 
+calculate_features_from_versions_and_extract_categorised_alerts <- function(
+  code_file_new,
+  code_file_old,
+  pmd_path){
+  
+  calculate_features_from_versions(
+    code_file_new = code_file_new,
+    code_file_old = code_file_old,
+    pmd_path = pmd_path
+  ) %>% 
+    extract2("categorised_alerts")
+  
+  
+}
+  
+
 
 #' Compare two versions of a source-code in terms of kludges
 #' 
@@ -2282,6 +2298,10 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 #' @param limit_executions must the files be limitef
 #' @param n_limit if the files must be limited, how many?
 #'
+#' @import furrr
+#' @import future
+#' 
+#'
 #' @return alerts categorised in "new", "fixed" and "open"
 #' @export
 #'
@@ -2290,7 +2310,7 @@ compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALS
   
   # dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3"
   # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
-  
+  future::plan(future::multiprocess)
   files_old <- list.files(path = dir_old, "\\.java$", recursive = TRUE) %>% 
     enframe(name = "id_old", value = "file_old") %>% 
     mutate(
@@ -2310,11 +2330,12 @@ compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALS
       alerts = map2(
         .x = .data$original_file_new,
         .y = .data$original_file_old, 
-        .f = ~calculate_features_from_versions(
+        .f = ~calculate_features_from_versions_and_extract_categorised_alerts(
           code_file_new = .x,
           code_file_old = .y,
           pmd_path = "pmd/bin/pmd.bat"
-        ) %>% extract2("categorised_alerts") 
+        ) 
+        #.progress = TRUE
         ) 
     ) %>% 
     unnest(.data$alerts)
