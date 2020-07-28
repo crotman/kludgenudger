@@ -107,7 +107,8 @@ read_pmd_xml <- function(file){
       mutate_at(
         vars(one_of(c("beginline", "endline", "begincolumn", "endcolumn", "priority"))),
         as.integer
-      )
+      ) %>% 
+      bind_rows(empty)
   }
   else{
     alerts <- empty
@@ -1124,11 +1125,13 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   
   # graph_new <- graphs_from_alerts_new$graph_new[[2]]
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
-  
+  print("get alerts")
 
     alert_old <- graph_old %>% 
-      activate("nodes") %>% 
-      as_tibble() %>% 
+      activate("nodes") %T>%
+      debuga("vai pegar tibble") %>% 
+      as_tibble() %T>% 
+      write_rds("antes_erro.rds") %>% 
       select(
         .data$beginline,
         .data$endline,
@@ -1137,9 +1140,12 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
         .data$method,
         .data$rule_alert,
         .data$code
-      ) %>% 
-      rowwise() %>% 
-      mutate( code = str_flatten(.data$code, collapse = "\n") ) %>%
+      ) %T>% 
+      debuga("deu select") %>% 
+      rowwise() %T>% 
+      debuga("vai dar flatten") %>% 
+      mutate( code = str_flatten(.data$code, collapse = "\n") ) %T>%
+      debuga("deu flatten") %>% 
       ungroup() %>% 
       left_join(
         coordinates %>% select(-.data$new),
@@ -1198,6 +1204,8 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
         .funs = ~str_glue("{.x}_new")
       )
     
+    print("dá match")
+    
     
     match_path <- alert_old %>% 
       full_join(
@@ -1205,7 +1213,7 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
         by = c("node_old" = "node_new")
       ) 
     
-    
+    print("calcula")
     features_match_path <- match_path %>% 
       mutate(
         last_method_id_old = if_else(
@@ -1401,7 +1409,8 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
       ) %>% 
       slice_tail(n = 1) 
 
-
+    print("calcula foi")
+    
 
   features_match_path
   
@@ -1672,6 +1681,8 @@ calculate_features_from_versions <- function(
       id_group = row_number()
     )
   
+  print("matched")
+  
 
   offset_id_group_na <- 0L
   
@@ -1715,7 +1726,7 @@ calculate_features_from_versions <- function(
       id_group = if_else(is.na(.data$id_group), -row_number()-offset_id_group_na, .data$id_group)
     )        
   
-
+  print("vai pegar pmd output")
 
   alerts_old <- examples_sec2_executed$pmd_output[[1]] %>% 
     rename_all(
@@ -1826,11 +1837,18 @@ calculate_features_from_versions <- function(
     graph_new = .data$graph
   ) 
   
+  
+  print("vai pegar coordenadas")
+  
   coordinates <- map %>% 
     ungroup() %>% 
     mutate(common_line = row_number()) 
   
-
+  print("pegou coordenadas")
+  
+  print(graphs_from_alerts_old$graph_old[1])
+  print(graphs_from_alerts_new$graph_new[1])
+  
   if (graphs_from_alerts_new %>% nrow() == 0 & graphs_from_alerts_old %>% nrow() == 0){
     match_alerts_alg2 <-  tibble(id_alert_new = integer(), id_alert_old = integer())
     categorised_alerts <- tibble(version = character())
@@ -1843,6 +1861,9 @@ calculate_features_from_versions <- function(
         features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
       ) 
   
+    
+    print("pegou coordenadas")
+    
     print(1845)
     
     saida <- list(
@@ -2275,15 +2296,22 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 calculate_features_from_versions_and_extract_categorised_alerts <- function(
   code_file_new,
   code_file_old,
-  pmd_path){
+  pmd_path,
+  id = 0
+  ){
   
-  print(search())
-  calculate_features_from_versions(
+  print("sou MAIS novo")
+  saida <- calculate_features_from_versions(
     code_file_new = code_file_new,
     code_file_old = code_file_old,
     pmd_path = pmd_path
   ) %>%
     extract2("categorised_alerts")
+  
+  print(saida)
+  print(str_glue("comprimento:{length(saida)}"))
+  write_rds(saida, str_glue("data/log/{id}.rds"))
+  saida
 }
 
 
@@ -2304,11 +2332,25 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
 #' @export
 #'
 #' @examples
-compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALSE, n_limit = 20 ){
+compare_versions <- function(
+  dir_old, 
+  dir_new, 
+  pmd_path, 
+  limit_executions = FALSE, 
+  n_limit = 20,
+  parallel = FALSE
+  
+  ){
   
   # dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3"
   # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
-  future::plan(future::multisession)
+  
+  if(parallel){
+    future::plan(future::multisession)
+  }
+  else{
+    future::plan(future::sequential)
+  }
   files_old <- list.files(path = dir_old, "\\.java$", recursive = TRUE) %>% 
     enframe(name = "id_old", value = "file_old") %>% 
     mutate(
@@ -2330,9 +2372,16 @@ compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALS
     inner_join(files_old, by = c("file_new" = "file_old")) %>% 
     filter( row_number() < n_limit | !limit_executions) %>% 
     mutate(
-      alerts = furrr::future_map2(
-        .x = original_file_new,
-        .y = original_file_old, 
+      id = row_number()
+    ) %T>% 
+    write_rds("data/log/df.rds") %>% 
+    mutate(
+      alerts = furrr::future_pmap(
+        .l = list(
+          code_file_new = original_file_new,
+          code_file_old = original_file_old,
+          id = id
+        ),
         .f = calculate_features_from_versions_and_extract_categorised_alerts,
         .progress = TRUE,
         #.options = furrr::future_options(packages = "kludgenudger"),
