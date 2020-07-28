@@ -7,7 +7,6 @@
 assemble_diff_command(
   code_path_left,
   code_path_right,
-  output_path,
   output_left,
   output_right
 )
@@ -16,8 +15,6 @@ assemble_diff_command(
 \item{code_path_left}{path to "left" file}
 
 \item{code_path_right}{path to "right" file}
-
-\item{output_path}{output path without the file}
 
 \item{output_left}{piece of output file name representing left}
 

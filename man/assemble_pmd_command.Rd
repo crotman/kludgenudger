@@ -4,7 +4,7 @@
 \alias{assemble_pmd_command}
 \title{Assemble command in order to execute PMD}
 \usage{
-assemble_pmd_command(pmd_path, code_path, rule_path, output_path, output)
+assemble_pmd_command(pmd_path, code_path, rule_path, output)
 }
 \arguments{
 \item{pmd_path}{path to PMD}
@@ -12,8 +12,6 @@ assemble_pmd_command(pmd_path, code_path, rule_path, output_path, output)
 \item{code_path}{path to code file}
 
 \item{rule_path}{path to rule}
-
-\item{output_path}{path to output xml with alerts}
 
 \item{output}{name of the output xml file, without extension}
 }

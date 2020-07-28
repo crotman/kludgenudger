@@ -4,12 +4,10 @@
 \alias{cross_versions}
 \title{Adds the line map to the dataframe used inside calculate_features_from_versions}
 \usage{
-cross_versions(examples_executed, output_path = "")
+cross_versions(examples_executed)
 }
 \arguments{
 \item{examples_executed}{dataframe with the versions and their pmd output}
-
-\item{output_path}{path to write the diff file}
 }
 \value{
 dataframe with line maps info

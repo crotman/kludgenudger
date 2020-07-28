@@ -295,27 +295,27 @@ test_that("read_pmd_xml works with empty" ,{
   
 })
 
-
-test_that("compare_versions works",{
-
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
-    dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
-    limit_executions = TRUE,
-    n_limit = 20
-  )  
-  tictoc::toc()
-  
-  output <- read_rds("data/output_compare_versions.rds")
-  
-  expect_equal(
-    output,
-    output_function
-  )
-  
-  
-})
+# 
+# test_that("compare_versions works",{
+# 
+  # tictoc::tic("compare_versions")
+  # output_function <- compare_versions(
+  #   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
+  #   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
+  #   limit_executions = TRUE,
+  #   n_limit = 20
+  # )
+  # tictoc::toc()
+  # 
+  # output <- read_rds("data/output_compare_versions.rds")
+  # 
+#   expect_equal(
+#     output,
+#     output_function
+#   )
+#   
+#   
+# })
 
 # 
 # # 
@@ -332,7 +332,7 @@ test_that("compare_versions works",{
 #   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
 #   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
 #   limit_executions = TRUE,
-#   n_limit = 2
+#   n_limit = 4
 # )
 # 
 # tictoc::toc()

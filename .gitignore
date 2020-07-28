@@ -4,3 +4,8 @@
 .Ruserdata
 tests/testthat/pmd
 tests/testthat/eclipse
+tests/testthat/*.xml
+tests/testthat/*.diff
+
+
+

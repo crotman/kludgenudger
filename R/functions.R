@@ -12,7 +12,6 @@ debuga <- function(x, esse){
 #' @param pmd_path path to PMD
 #' @param code_path path to code file
 #' @param rule_path path to rule
-#' @param output_path path to output xml with alerts
 #' @param output name of the output xml file, without extension
 #' 
 #' @import stringr
@@ -21,8 +20,8 @@ debuga <- function(x, esse){
 #' @export
 #'
 #' @examples
-assemble_pmd_command <- function(pmd_path, code_path, rule_path, output_path, output){
-  command <- str_glue("{pmd_path} -d {code_path} -f xml -R {rule_path} -reportfile {output_path}{output}.xml")
+assemble_pmd_command <- function(pmd_path, code_path, rule_path, output){
+  command <- str_glue("{pmd_path} -d {code_path} -f xml -R {rule_path} -reportfile {output}.xml")
 }
 
 
@@ -124,7 +123,6 @@ read_pmd_xml <- function(file){
 #'
 #' @param code_path_left path to "left" file
 #' @param code_path_right path to "right" file 
-#' @param output_path output path without the file
 #' @param output_left piece of output file name representing left
 #' @param output_right piece of output file name representing right 
 #'
@@ -135,8 +133,8 @@ read_pmd_xml <- function(file){
 #'
 #'
 #' @examples
-assemble_diff_command <- function(code_path_left, code_path_right, output_path, output_left, output_right){
-  saida <- str_glue("git diff -U0 --patience --numstat --summary --output={output_path}{output_left}_{output_right}.diff --no-index {code_path_left} {code_path_right}")
+assemble_diff_command <- function(code_path_left, code_path_right,  output_left, output_right){
+  saida <- str_glue("git diff -U0 --patience --numstat --summary --output={output_left}_{output_right}.diff --no-index {code_path_left} {code_path_right}")
   saida
 }
 
@@ -1042,14 +1040,12 @@ show_ast <-  function(
 #' Adds the line map to the dataframe used inside calculate_features_from_versions
 #'
 #' @param examples_executed dataframe with the versions and their pmd output
-#' @param output_path path to write the diff file
-#'=
 #' @return dataframe with line maps info
 #'
 #' @examples
 cross_versions <- function(
-  examples_executed,
-  output_path = ""
+  examples_executed
+  
 ){
   
   # examples_executed <- examples_sec2_executed
@@ -1082,7 +1078,6 @@ cross_versions <- function(
                ~assemble_diff_command(
                  code_path_left = .x,
                  code_path_right = .y,
-                 output_path = "",
                  output_left = .data$output_left,
                  output_right = .data$output_right
                )
@@ -1094,7 +1089,7 @@ cross_versions <- function(
         .x = .data$diff_command,
         .f = ~ system(command =  .x, show.output.on.console = FALSE)
       ),
-      file_diff = str_glue("{output_path}{output_left}_{output_right}.diff")
+      file_diff = str_glue("{output_left}_{output_right}.diff")
     ) %>%
     mutate(lines_map = pmap(
       .l = list(
@@ -1449,7 +1444,6 @@ graph_path_from_alert <- function(graph, id_node){
 #' @param glue_string template of a string that will be passed to str_glue and will be available in the returned info
 #' @param rule_path path to the rules used for the PMD alerts
 #' @param blockrules_location path to the rules for the Abstract Syntax Tree
-#' @param output_path path where temporary files are created
 #' 
 #' @import readr
 #'
@@ -1482,7 +1476,6 @@ calculate_features_from_versions <- function(
   pmd_path,
   rule_path = "rulesets/java/quickstart.xml",
   blockrules_location = "data/blockrules/blockrules.xml",
-  output_path = "",
   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
   mostra_old = c(10, 42, 41, 15, 16, 43),
   glue_string = ""
@@ -1492,7 +1485,6 @@ calculate_features_from_versions <- function(
   
   # code_new = ""
   # code_old = ""
-  # output_path = ""
   # mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
   # mostra_old = c(10, 42, 41, 15, 16, 43)
   # glue_string = ""
@@ -1522,11 +1514,9 @@ calculate_features_from_versions <- function(
   path_code_file_new <- code_file_new %>% 
     str_remove("/[^/]*$") 
   
-  output_code_file_old <- path_code_file_old %>% 
-    str_match("[^/]*$") 
+  output_code_file_old <- uuid::UUIDgenerate()
   
-  output_code_file_new <- path_code_file_new %>% 
-    str_match("[^/]*$") 
+  output_code_file_new <- uuid::UUIDgenerate()
   
   
   examples_sec2 <- tribble(
@@ -1544,11 +1534,10 @@ calculate_features_from_versions <- function(
              map2(
                .x = .data$path,
                .y = .data$output,
-               ~ assemble_pmd_command(
+               ~assemble_pmd_command(
                  pmd_path = pmd_path,
                  code_path = .x ,
                  rule_path = rule_path,
-                 output_path = "",
                  output = .y
                )
              )) %>%
@@ -1557,9 +1546,11 @@ calculate_features_from_versions <- function(
       .f =  ~ system(command =  .x, show.output.on.console = FALSE)
     )) %T>%
     print() %>% 
-    mutate(pmd_output = map(.x = str_glue("{output_path}{.data$output}.xml"), .f = read_pmd_xml))
+    mutate(pmd_output = map(.x = str_glue("{.data$output}.xml"), .f = read_pmd_xml))
   
+  print("cross")
   examples_sec2_crossed <- cross_versions(examples_sec2_executed) 
+  print("crossed")
   
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
@@ -1625,6 +1616,7 @@ calculate_features_from_versions <- function(
       ~str_glue("{.x}_end")
     )
   
+  print("match")
 
   match_nodes <- nodes_old %>% 
     left_join(
@@ -1844,11 +1836,9 @@ calculate_features_from_versions <- function(
     categorised_alerts <- tibble(version = character())
   }else{
 
-    match_alerts_alg2 <- graphs_from_alerts_new %T>%
-      debuga("antes crosing") %>%
+    match_alerts_alg2 <- graphs_from_alerts_new %>%
       crossing(graphs_from_alerts_old) %>% 
-      rowwise() %T>%
-      debuga("depois") %>% 
+      rowwise() %>%
       mutate(
         features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
       ) 
@@ -2271,21 +2261,31 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 }
 
 
+
+#' Title
+#'
+#' @param dir_old old version
+#' @param dir_new new version
+#' @param pmd_path path to pmd 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_features_from_versions_and_extract_categorised_alerts <- function(
   code_file_new,
   code_file_old,
   pmd_path){
   
+  print(search())
   calculate_features_from_versions(
     code_file_new = code_file_new,
     code_file_old = code_file_old,
     pmd_path = pmd_path
-  ) %>% 
+  ) %>%
     extract2("categorised_alerts")
-  
-  
 }
-  
+
 
 
 #' Compare two versions of a source-code in terms of kludges
@@ -2298,8 +2298,6 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
 #' @param limit_executions must the files be limitef
 #' @param n_limit if the files must be limited, how many?
 #'
-#' @import furrr
-#' @import future
 #' 
 #'
 #' @return alerts categorised in "new", "fixed" and "open"
@@ -2310,7 +2308,7 @@ compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALS
   
   # dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3"
   # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
-  future::plan(future::multiprocess)
+  future::plan(future::multisession)
   files_old <- list.files(path = dir_old, "\\.java$", recursive = TRUE) %>% 
     enframe(name = "id_old", value = "file_old") %>% 
     mutate(
@@ -2323,19 +2321,22 @@ compare_versions <- function(dir_old, dir_new, pmd_path, limit_executions = FALS
       original_file_new = str_glue("{dir_new}/{file_new}")
     )
   
+  # teste <- function(a, b, pmd_path){
+  #   print(search()) 
+  #   1
+  # }
+  
   joined_files <- files_new %>% 
     inner_join(files_old, by = c("file_new" = "file_old")) %>% 
     filter( row_number() < n_limit | !limit_executions) %>% 
     mutate(
-      alerts = map2(
-        .x = .data$original_file_new,
-        .y = .data$original_file_old, 
-        .f = ~calculate_features_from_versions_and_extract_categorised_alerts(
-          code_file_new = .x,
-          code_file_old = .y,
-          pmd_path = "pmd/bin/pmd.bat"
-        ) 
-        #.progress = TRUE
+      alerts = furrr::future_map2(
+        .x = original_file_new,
+        .y = original_file_old, 
+        .f = calculate_features_from_versions_and_extract_categorised_alerts,
+        .progress = TRUE,
+        #.options = furrr::future_options(packages = "kludgenudger"),
+        pmd_path = "pmd/bin/pmd.bat"
         ) 
     ) %>% 
     unnest(.data$alerts)

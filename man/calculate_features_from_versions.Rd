@@ -12,7 +12,6 @@ calculate_features_from_versions(
   pmd_path,
   rule_path = "rulesets/java/quickstart.xml",
   blockrules_location = "data/blockrules/blockrules.xml",
-  output_path = "",
   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
   mostra_old = c(10, 42, 41, 15, 16, 43),
   glue_string = ""
@@ -32,8 +31,6 @@ calculate_features_from_versions(
 \item{rule_path}{path to the rules used for the PMD alerts}
 
 \item{blockrules_location}{path to the rules for the Abstract Syntax Tree}
-
-\item{output_path}{path where temporary files are created}
 
 \item{mostra_new}{which nodes of the new version must appear?}
 
