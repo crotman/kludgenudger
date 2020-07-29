@@ -79,7 +79,7 @@ test_that("extract_piece_of_code works", {
   expect_equal(
     "int varX = function(paramX, paramY);", 
   extract_piece_of_code(
-      strings_param = read_lines("data/caso1_extract_piece_of_code/code.java") %>% str_flatten("\n"),
+      strings_param = read_lines("data/caso1_extract_piece_of_code/code.java"),
       begin_line = 9,
       end_line = 9,
       begin_column = 9,
@@ -295,56 +295,118 @@ test_that("read_pmd_xml works with empty" ,{
   
 })
 
-# 
-# test_that("compare_versions works",{
-# 
-  # tictoc::tic("compare_versions")
-  # output_function <- compare_versions(
-  #   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
-  #   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
-  #   limit_executions = TRUE,
-  #   n_limit = 20
-  # )
-  # tictoc::toc()
-  # 
-  # output <- read_rds("data/output_compare_versions.rds")
-  # 
-#   expect_equal(
-#     output,
-#     output_function
-#   )
-#   
-#   
-# })
+
+test_that("calculate_features_from_versions works with no method", {
+  output <- read_rds("data/output_info_no_method.rds")$categorised_alerts
+  output_function <- calculate_features_from_versions(
+    code_file_new = "data/caso_no_method/novo/MarkersInternalPreferences.java",
+    code_file_old = "data/caso_no_method/velho/MarkersInternalPreferences.java",
+    pmd_path = "pmd/bin/pmd.bat"
+  )$categorised_alerts
+  expect_equal(
+    output, 
+    output_function
+  )
+})
+
 
 # 
-# # 
-# # teste <- calculate_features_from_versions(
-# #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
-# #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-ui/plugins/org.eclipse.ui.examples.filesystem/src/org/eclipse/core/internal/filesystem/zip/ZipFileSystem.java",
-# #   pmd_path = "pmd/bin/pmd.bat"
-# # )
-# # 
-# # 
-# tictoc::tic("compare")
 # 
-# teste <- compare_versions(
-#   dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3",
-#   dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4",
-#   limit_executions = TRUE,
-#   n_limit = 4
+# test_that("read_raw_ast_nodes works", {
+#     output_esperado <- read_rds("data/info_read_raw_ast_big.rds")
+# 
+#     tictoc::tic("read")
+#     teste <- read_raw_ast_nodes(
+#       code_location = "data/big-novo/facade.java",
+#       output_location = "data/big-novo/facade.xml",
+#       pmd_location = "C:/doutorado/AnaliseTwitter4j/pmd/bin",
+#       blockrules_location = "data/blockrules/blockrules.xml"
+#     )
+#     tictoc::toc()
+# 
+# })
+# 
+# 
+#   
+# 
+# 
+# 
+# 
+
+
+# :/doutorado/ArgoUML/0_33_1/src/argouml-app/src/org/argouml/cognitive/ui/ActionSnooze.java
+# # 
+# # test_that("compare_versions works",{
+# # 
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_33_1",
+    dir_new <-  "C:/doutorado/ArgoUML/0_34",
+    parallel = TRUE
+  )
+  tictoc::toc()
+#   # 
+#   # output <- read_rds("data/output_compare_versions.rds")
+#   # 
+# #   expect_equal(
+# #     output,
+# #     output_function
+# #   )
+# #   
+# #   
+# # })
+# 
+# # 
+# # # 
+# teste <- calculate_features_from_versions(
+#   code_file_new = "data\eclipse_novo",
+#   code_file_old = "data\eclipse_velho",
+#   pmd_path = "pmd/bin/pmd.bat"
 # )
+# # # 
+# # # 
+      # # # # 
+# # # # teste <- calculate_features_from_versions(
+# # # #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
+# # # #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
+# # # #   pmd_path = "pmd/bin/pmd.bat"
+# # # # )
+# # # # 
+# # # # 
+# # # # 
+# # # # 
+# # # # c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
+# # # # c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
 # 
-# tictoc::toc()
-# # # 
-# # # teste <- calculate_features_from_versions(
-# # #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
-# # #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
-# # #   pmd_path = "pmd/bin/pmd.bat"
-# # # )
-# # # 
-# # # 
-# # # 
-# # # 
-# # # c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
-# # # c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
+# 
+# 
+# 
+# 
+# 
+# 
+# arquivos <- read_rds("data/log/df.rds") %>% 
+#   mutate(
+#     teste = map(.x = str_glue("data/log/{id}.rds"), read_rds)
+#   )
+# 
+# 
+# 
+# 
+# teste <-  read_rds("antes_erro.rds")
+# 
+# teste %>% 
+# select(
+#   .data$beginline,
+#   .data$endline,
+#   .data$rule,
+#   .data$id_group,
+#   .data$method,
+#   .data$rule_alert,
+#   .data$code
+# ) 
+# 
+# 
+# 
+# 
+# 
+# 

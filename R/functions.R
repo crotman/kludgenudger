@@ -736,35 +736,24 @@ read_and_decorate_code_and_alerts_mapped <-
 extract_piece_of_code <-  function(strings_param, begin_line, end_line, begin_column, end_column){
   
   
-  #for debug
-  # strings_param <- read_lines("data/caso1_extract_piece_of_code/code.java") %>% str_flatten("\n")
+  # #for debug
+  # strings_param <- read_lines("data/caso1_extract_piece_of_code/code.java")
   # begin_line <- 9
   # end_line <- 9
   # begin_column <- 9
-  # end_column <- 44   
-  
-  strings <- str_split(strings_param, pattern = "\n") %>% unlist()
-  
-  piece <- strings %>% 
-    enframe(name = "line", value = "code") %>% 
-    filter(
-      between(.data$line, begin_line, end_line)
-    ) %>% 
-    mutate(
-      code = case_when(
-        .data$line == begin_line & .data$line == end_line ~ str_sub(.data$code, start = begin_column , end_column),
-        .data$line == begin_line ~  str_sub(.data$code, start = begin_column),
-        .data$line == end_line ~str_sub(.data$code, end = end_column),
-        TRUE ~ code
-      )   
-    ) %>% 
-    pull(.data$code) %>% 
-    str_flatten(collapse = "\n") 
+  # end_column <- 44
   
   
-  piece
-  
-  
+ output <- strings_param[begin_line:end_line]
+ 
+ output[1] <- str_sub(output[1], start = begin_column)
+ if(begin_line == end_line){
+   end_column <- end_column - begin_column + 1 
+ }
+ output[end_line-begin_line + 1] <- str_sub(output[end_line-begin_line + 1], 1, end_column)
+ 
+ output %>% str_flatten(collapse = "\n")
+
 }
 
 
@@ -811,13 +800,13 @@ read_raw_ast_nodes <-  function(
     mutate(
       code = pmap(
         .l =  list(
-          strings_param = str_flatten(code_all_lines, collapse = "\n"), 
           begin_line = .data$beginline, 
           end_line = .data$endline, 
           begin_column = .data$begincolumn, 
           end_column = .data$endcolumn                
         ),
-        .f = extract_piece_of_code 
+        .f = extract_piece_of_code ,
+        strings_param = code_all_lines
       )
     )
   
@@ -2310,7 +2299,7 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   
   print(saida)
   print(str_glue("comprimento:{length(saida)}"))
-  write_rds(saida, str_glue("data/log/{id}.rds"))
+  write_rds(saida, str_glue("data/log/v2_{id}.rds"))
   saida
 }
 
