@@ -2357,6 +2357,12 @@ compare_versions <- function(
   #   1
   # }
   
+  calculate_possibly <- possibly(
+    .f =calculate_features_from_versions_and_extract_categorised_alerts,
+    otherwise = tibble(category = "error")
+  )
+  
+  
   joined_files <- files_new %>% 
     inner_join(files_old, by = c("file_new" = "file_old")) %>% 
     filter( row_number() < n_limit | !limit_executions) %>% 
@@ -2371,7 +2377,7 @@ compare_versions <- function(
           code_file_old = original_file_old,
           id = id
         ),
-        .f = calculate_features_from_versions_and_extract_categorised_alerts,
+        .f = calculate_possibly,
         .progress = TRUE,
         #.options = furrr::future_options(packages = "kludgenudger"),
         pmd_path = "pmd/bin/pmd.bat"

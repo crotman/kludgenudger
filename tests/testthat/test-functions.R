@@ -338,13 +338,13 @@ test_that("calculate_features_from_versions works with no method", {
 # # 
 # # test_that("compare_versions works",{
 # # 
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_33_1",
-    dir_new <-  "C:/doutorado/ArgoUML/0_34",
-    parallel = TRUE
-  )
-  tictoc::toc()
+  # tictoc::tic("compare_versions")
+  # output_function <- compare_versions(
+  #   dir_old <- "C:/doutorado/ArgoUML/0_33_1",
+  #   dir_new <-  "C:/doutorado/ArgoUML/0_34",
+  #   parallel = TRUE
+  # )
+  # tictoc::toc()
 #   # 
 #   # output <- read_rds("data/output_compare_versions.rds")
 #   # 
