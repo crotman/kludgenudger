@@ -2294,13 +2294,22 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
     code_file_new = code_file_new,
     code_file_old = code_file_old,
     pmd_path = pmd_path
-  ) %>%
-    extract2("categorised_alerts")
+  ) 
   
-  print(saida)
-  print(str_glue("comprimento:{length(saida)}"))
-  write_rds(saida, str_glue("data/log/v2_{id}.rds"))
-  saida
+  print(id)
+  readr::write_csv(tibble::tibble(id = 1), "data/progress.rds", append = TRUE)
+  
+  
+  write_rds(saida$versions_executed, str_glue("data/log/versions_executed/{id}.rds"))
+  write_rds(saida$versions_crossed, str_glue("data/log/versions_crossed/{id}.rds"))
+  write_rds(saida$graph_new_with_alert, str_glue("data/log/graph_new_with_alert/{id}.rds"))
+  write_rds(saida$graph_old_with_alert, str_glue("data/log/graph_old_with_alert/{id}.rds"))
+  write_rds(saida$features, str_glue("data/log/features/{id}.rds"))
+  write_rds(saida$categorised_alerts, str_glue("data/log/categorised_alerts/{id}.rds"))
+  
+    
+  saida %>%
+    extract2("categorised_alerts")
 }
 
 
@@ -2327,7 +2336,8 @@ compare_versions <- function(
   pmd_path, 
   limit_executions = FALSE, 
   n_limit = 20,
-  parallel = FALSE
+  parallel = FALSE,
+  resume = FALSE
   
   ){
   
@@ -2335,7 +2345,7 @@ compare_versions <- function(
   # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
   
   if(parallel){
-    future::plan(future::multisession)
+    future::plan(future::multisession, workers = 3)
   }
   else{
     future::plan(future::sequential)
@@ -2362,6 +2372,17 @@ compare_versions <- function(
     otherwise = tibble(category = "error")
   )
   
+  if(resume){
+    anti <- list.files("data/log/categorised_alerts") %>% 
+      str_match("([0-9]*)\\.rds") %>% 
+      .[,2] %>% 
+      enframe(name = "row", value = "id") %>% 
+      select(id) %>% 
+      mutate(id = as.integer(id)) %>% 
+      filter(!is.na(id)) 
+  }else{
+    anti <- tibble(id = integer())
+  }
   
   joined_files <- files_new %>% 
     inner_join(files_old, by = c("file_new" = "file_old")) %>% 
@@ -2370,6 +2391,10 @@ compare_versions <- function(
       id = row_number()
     ) %T>% 
     write_rds("data/log/df.rds") %>% 
+    anti_join(
+      anti,
+      by = c("id")
+    ) %>% 
     mutate(
       alerts = furrr::future_pmap(
         .l = list(
