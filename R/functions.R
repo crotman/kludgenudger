@@ -824,36 +824,59 @@ read_raw_ast_nodes <-  function(
 #'
 #' @param nodes raw nodes from read_raw_ast_nodes
 #' @import tidygraph
+#' @import fuzzyjoin
 #' @return the Abstract Syntax Tree, a graph
 #' @export
 #'
 #' @examples
 generate_ast_tree_from_raw_nodes <-  function(nodes){
   
+  #nodes <- read_rds(    
   max_column <- max(nodes$endcolumn)
   
-  nodes_from <- nodes %>%  rename_all(.funs = ~str_glue("{.x}_from"))
-  
-  nodes_to <- nodes %>%  rename_all(.funs = ~str_glue("{.x}_to"))
-  
-  all_edges <- nodes_from %>% 
-    crossing(nodes_to) %>% 
+  nodes_from <- nodes %>%  rename_all(.funs = ~str_glue("{.x}_from")) %>% 
     mutate(
       location_begin_from = .data$beginline_from * max_column + .data$begincolumn_from,
-      location_begin_to = .data$beginline_to * max_column + .data$begincolumn_to,
       location_end_from = .data$endline_from * max_column + .data$endcolumn_from,
-      location_end_to = .data$endline_to * max_column + .data$endcolumn_to
+    )
+  
+  nodes_to <- nodes %>%  rename_all(.funs = ~str_glue("{.x}_to")) %>% 
+    mutate(
+      location_begin_to = .data$beginline_to * max_column + .data$begincolumn_to,
+      location_end_to = .data$endline_to * max_column + .data$endcolumn_to 
+    )
+  
+  
+  all_edges <- fuzzyjoin::interval_inner_join(nodes_to, nodes_from,
+                               by = c("location_begin_to" = "location_begin_from", "location_end_to" = "location_end_from"),
+                               type = "within"
     ) %>% 
     filter(.data$id_alert_from != .data$id_alert_to) %>% 
-    filter(
-      .data$location_begin_from <= .data$location_begin_to & .data$location_end_from >= .data$location_end_to
-    ) %>% 
     select(
       from = .data$id_alert_from,
       to = .data$id_alert_to
     ) 
   
-  
+    
+  # 
+  # all_edges <- nodes_from %>% 
+  #   crossing(nodes_to) %>% 
+  #   mutate(
+  #     location_begin_from = .data$beginline_from * max_column + .data$begincolumn_from,
+  #     location_begin_to = .data$beginline_to * max_column + .data$begincolumn_to,
+  #     location_end_from = .data$endline_from * max_column + .data$endcolumn_from,
+  #     location_end_to = .data$endline_to * max_column + .data$endcolumn_to
+  #   ) %>% 
+  #   filter(.data$id_alert_from != .data$id_alert_to) %>% 
+  #   filter(
+  #     .data$location_begin_from <= .data$location_begin_to & .data$location_end_from >= .data$location_end_to
+  #   ) %>% 
+  #   select(
+  #     from = .data$id_alert_from,
+  #     to = .data$id_alert_to
+  #   ) 
+  # 
+  # 
   descendents <- all_edges %>% 
     group_by(.data$from) %>% 
     summarise(n_descendents = n()) 
@@ -1495,20 +1518,18 @@ calculate_features_from_versions <- function(
 ){
   
 # 
-#   code_new = ""
-#   code_old = ""
-#   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
-#   mostra_old = c(10, 42, 41, 15, 16, 43)
-#   glue_string = ""
-# 
-#   code_file_new = "data/caso1_calculate_features_from_versions_novo-v2/code.java"
-#   code_file_old = "data/caso1_calculate_features_from_versions_velho-v2/code.java"
-#   code_file_new = "C:/doutorado/ArgoUML/0_33_1/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java"
-#   code_file_old = "C:/doutorado/ArgoUML/0_34/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java"
-#   pmd_path = "pmd/bin/pmd.bat"
-#   rule_path = "rulesets/java/quickstart.xml"
-#   blockrules_location = "data/blockrules/blockrules.xml"
-  
+  # code_new = ""
+  # code_old = ""
+  # mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
+  # mostra_old = c(10, 42, 41, 15, 16, 43)
+  # glue_string = ""
+  # 
+  # code_file_new = "C:/doutorado/ArgoUML/0_33_1/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java"
+  # code_file_old = "C:/doutorado/ArgoUML/0_34/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java"
+  # pmd_path = "pmd/bin/pmd.bat"
+  # rule_path = "rulesets/java/quickstart.xml"
+  # blockrules_location = "data/blockrules/blockrules.xml"
+  # 
   print("calculando")
   print(code_file_old)
   print(code_file_new)
@@ -1588,6 +1609,8 @@ calculate_features_from_versions <- function(
     blockrules_location = blockrules_location
   )
   
+  
+
   graph_old <- generate_ast_tree_from_raw_nodes(nodes_old)
   
   nodes_new <- read_raw_ast_nodes(

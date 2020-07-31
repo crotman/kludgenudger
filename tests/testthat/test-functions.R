@@ -338,15 +338,15 @@ test_that("calculate_features_from_versions works with no method", {
 # :/doutorado/ArgoUML/0_33_1/src/argouml-app/src/org/argouml/cognitive/ui/ActionSnooze.java
 # # 
 # # test_that("compare_versions works",{
-# # 
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_33_1",
-    dir_new <-  "C:/doutorado/ArgoUML/0_34",
-    parallel = TRUE,
-    resume = TRUE
-  )
-  tictoc::toc()
+# # # 
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_32",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_33_1",
+#     parallel = TRUE,
+#     resume = TRUE
+#   )
+#   tictoc::toc()
 #   # 
 #   # output <- read_rds("data/output_compare_versions.rds")
 #   # 
@@ -412,14 +412,7 @@ test_that("calculate_features_from_versions works with no method", {
 # 
 # 
   
-#   
-# #   
-# teste <- calculate_features_from_versions(
-#   code_file_new = "C:/doutorado/ArgoUML/0_33_1/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java",
-#   code_file_old = "C:/doutorado/ArgoUML/0_34/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java",
-#   pmd_path = "pmd/bin/pmd.bat"
-# )
-# #   
+
 # 
 # # 
 # 
@@ -432,5 +425,6 @@ test_that("calculate_features_from_versions works with no method", {
 
 
 
-
-
+# 
+# list <-  read_rds("data/log/df.rds") %>% 
+#   filter(id %in% c(1877, 1421))
