@@ -337,11 +337,15 @@ map_lines <- function(file, lines_prev_param, lines_post_param){
       lines_post_param = lines_post_param ,
       output_function = final_map
     )
+    
+    final_map <- final_map %>% 
+      mutate(equal = FALSE)
+    
   }
   else{
-    final_map <- tibble(map_remove = 1:lines_prev_param, map_add = 1:lines_post_param)
+    final_map <- tibble(map_remove = 1:lines_prev_param, map_add = 1:lines_post_param) %>% 
+      mutate(equal = TRUE)
   }
-  
   
   
   final_map
@@ -1114,7 +1118,6 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   
   # graph_new <- graphs_from_alerts_new$graph_new[[2]]
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
-  print("get alerts")
 
     alert_old <- graph_old %>% 
       activate("nodes") %T>%
@@ -1193,8 +1196,7 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
         .funs = ~str_glue("{.x}_new")
       )
     
-    print("dá match")
-    
+
     
     match_path <- alert_old %>% 
       full_join(
@@ -1202,7 +1204,6 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
         by = c("node_old" = "node_new")
       ) 
     
-    print("calcula")
     features_match_path <- match_path %>% 
       mutate(
         last_method_id_old = if_else(
@@ -1398,14 +1399,27 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
       ) %>% 
       slice_tail(n = 1) 
 
-    print("calcula foi")
-    
+
 
   features_match_path
   
 }
 
-
+calculate_features_when_equal <- function(){
+  tibble(
+    same_rule = TRUE,
+    same_id_group = TRUE,
+    same_method_group = TRUE,
+    same_method_name = TRUE,
+    same_block = TRUE,
+    same_code = TRUE,
+    same_method_code = TRUE,
+    dist_line = 0,
+    dist_line_normalized_block = 0,
+    dist_line_normalized_method = 0,
+    dist_line_normalized_unit = 0
+  )
+}
 
 nodes_path_from_alert <- function(graph, id_node){
   output <- graph %>% 
@@ -1480,18 +1494,20 @@ calculate_features_from_versions <- function(
   
 ){
   
-  
-  # code_new = ""
-  # code_old = ""
-  # mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
-  # mostra_old = c(10, 42, 41, 15, 16, 43)
-  # glue_string = ""
-  # 
-  # code_file_new = "data/caso1_calculate_features_from_versions_novo-v2/code.java"
-  # code_file_old = "data/caso1_calculate_features_from_versions_velho-v2/code.java"
-  # pmd_path = "pmd/bin/pmd.bat"
-  # rule_path = "rulesets/java/quickstart.xml"
-  # blockrules_location = "data/blockrules/blockrules.xml"
+# 
+#   code_new = ""
+#   code_old = ""
+#   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
+#   mostra_old = c(10, 42, 41, 15, 16, 43)
+#   glue_string = ""
+# 
+#   code_file_new = "data/caso1_calculate_features_from_versions_novo-v2/code.java"
+#   code_file_old = "data/caso1_calculate_features_from_versions_velho-v2/code.java"
+#   code_file_new = "C:/doutorado/ArgoUML/0_33_1/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java"
+#   code_file_old = "C:/doutorado/ArgoUML/0_34/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java"
+#   pmd_path = "pmd/bin/pmd.bat"
+#   rule_path = "rulesets/java/quickstart.xml"
+#   blockrules_location = "data/blockrules/blockrules.xml"
   
   print("calculando")
   print(code_file_old)
@@ -1553,7 +1569,8 @@ calculate_features_from_versions <- function(
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
       old = .data$map_remove,
-      new = .data$map_add
+      new = .data$map_add,
+      equal
     )
   
   
@@ -1599,7 +1616,8 @@ calculate_features_from_versions <- function(
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
       old = .data$map_remove,
-      new = .data$map_add
+      new = .data$map_add,
+      equal
     )
   
 
@@ -1794,8 +1812,12 @@ calculate_features_from_versions <- function(
   nodes_alerts_old <- graph_old_reverted %>% 
     activate("nodes") %>% 
     filter(!is.na(.data$id_alert_alert)) %>% 
-    select(.data$id_alert) %>% 
-    as_tibble()
+    as_tibble() %>% 
+    select(
+      .data$id_alert,
+      .data$id_group,
+      .data$rule_alert
+    ) 
   
   graphs_from_alerts_old <- nodes_alerts_old %>% 
     mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_old_reverted, id_node = .x )   )) 
@@ -1803,6 +1825,8 @@ calculate_features_from_versions <- function(
   
   graphs_from_alerts_old <- graphs_from_alerts_old %>% rename(
     id_alert_old = .data$id_alert,
+    id_group_old = .data$id_group,
+    rule_alert_old = .data$rule_alert,
     graph_old = .data$graph
   ) 
   
@@ -1814,8 +1838,13 @@ calculate_features_from_versions <- function(
   nodes_alerts_new <- graph_new_reverted %>% 
     activate("nodes") %>% 
     filter(!is.na(.data$id_alert_alert)) %>% 
-    select(.data$id_alert) %>% 
-    as_tibble()
+    as_tibble() %>% 
+    select(
+      .data$id_alert,
+      .data$id_group,
+      .data$rule_alert
+    ) 
+    
   
   graphs_from_alerts_new <- nodes_alerts_new %>% 
     mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_new_reverted, id_node = .x )   )) 
@@ -1823,7 +1852,9 @@ calculate_features_from_versions <- function(
 
   graphs_from_alerts_new <- graphs_from_alerts_new %>%  rename(
     id_alert_new = .data$id_alert,
-    graph_new = .data$graph
+    graph_new = .data$graph,
+    id_group_new = .data$id_group,
+    rule_alert_new = .data$rule_alert
   ) 
   
   
@@ -1838,54 +1869,189 @@ calculate_features_from_versions <- function(
   print(graphs_from_alerts_old$graph_old[1])
   print(graphs_from_alerts_new$graph_new[1])
   
+  
+
+  
   if (graphs_from_alerts_new %>% nrow() == 0 & graphs_from_alerts_old %>% nrow() == 0){
     match_alerts_alg2 <-  tibble(id_alert_new = integer(), id_alert_old = integer())
     categorised_alerts <- tibble(version = character())
   }else{
+    
 
-    match_alerts_alg2 <- graphs_from_alerts_new %>%
-      crossing(graphs_from_alerts_old) %>% 
-      rowwise() %>%
-      mutate(
-        features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
-      ) 
-  
+    write_rds(graphs_from_alerts_new, "graphs_from_alerts_new.rds")
+    write_rds(graphs_from_alerts_old, "graphs_from_alerts_old.rds")
+    
+    if(sum(coordinates$equal) > 0){
+      
+      print("!!!!!!!!!!!!EQUAL!!!!!!!!!!!")
+      
+      match_alerts_alg2 <- graphs_from_alerts_new %>%
+        inner_join(
+          graphs_from_alerts_old,
+          by = c("id_group_new" = "id_group_old", "rule_alert_new" = "rule_alert_old")
+        ) %>% 
+        rowwise() %>% 
+        mutate(
+          features = calculate_features_when_equal() %>% list()
+        )
+      
+      saida <- list(
+        versions_executed = examples_sec2_executed,
+        versions_crossed = examples_sec2_crossed,
+        graph_old_with_alert =  graph_old_with_alert,
+        graph_new_with_alert = graph_new_with_alert,
+        graph_old_with_group = graph_old_with_group,
+        graph_new_with_group = graph_new_with_group,
+        graphs_from_alerts_old = graphs_from_alerts_old,
+        graphs_from_alerts_new = graphs_from_alerts_new,
+        features = match_alerts_alg2
+      )
+      
+      combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
+        calculated_features = saida
+      ) %>%
+        decide_heurist_if_same_alert() %>%
+        bind_cols(saida$features) %>%
+        filter(.data$same_alert) %>% 
+        select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
+      
+      
+      
+    }else{
+      
+      print("!!!!!!!!!!!!NOT EQUAL!!!!!!!!!!!")
+      print(coordinates)
+      
+      print("1925")
+      
+      print(graphs_from_alerts_new %>% as_tibble())
+      print(graphs_from_alerts_old %>% as_tibble())
+      
+      match_alerts_alg2 <- graphs_from_alerts_new %>%
+        inner_join(
+          graphs_from_alerts_old,
+          by = c("rule_alert_new" = "rule_alert_old", "id_group_new" = "id_group_old")
+        ) 
+      
+      print("1936")
+      
+      print(match_alerts_alg2)
+      
+      print(nrow(match_alerts_alg2))
+      
+      if(nrow(match_alerts_alg2) > 0){
+        
+        print("nrow>0")
+        
+        match_alerts_alg2 <-  match_alerts_alg2 %>% 
+          rowwise() %>%
+          mutate(
+            features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
+          ) 
+        
+        print("1936")
+        saida <- list(
+          versions_executed = examples_sec2_executed,
+          versions_crossed = examples_sec2_crossed,
+          graph_old_with_alert =  graph_old_with_alert,
+          graph_new_with_alert = graph_new_with_alert,
+          graph_old_with_group = graph_old_with_group,
+          graph_new_with_group = graph_new_with_group,
+          graphs_from_alerts_old = graphs_from_alerts_old,
+          graphs_from_alerts_new = graphs_from_alerts_new,
+          features = match_alerts_alg2
+        )
+        
+        print("1948")
+        
+        combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
+          calculated_features = saida
+        ) %>%
+          decide_heurist_if_same_alert() %>%
+          bind_cols(saida$features) %>%
+          filter(.data$same_alert) %>% 
+          select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
+        
+      }else{
+        
+        match_alerts_alg2 <- tibble(id_alert_new = integer())
+        
+        combinations_same_alerts <- tibble(
+          same_alert = logical(), 
+          id_alert_new = integer(),
+          id_alert_old = integer()
+        )
+        
+      }
+      
+
+      
+      print("1956")
+      
+      graph_new_no_match <- graphs_from_alerts_new %>% 
+        anti_join(
+          combinations_same_alerts,
+          by = c("id_alert_new")
+        )
+      
+      graph_old_no_match <- graphs_from_alerts_old %>% 
+        anti_join(
+          combinations_same_alerts,
+          by = c("id_alert_old")
+        )
+      
+      print("1970")
+      match_alerts_rest <- graph_new_no_match %>%
+        crossing(
+          graph_old_no_match
+        )
+      
+      if(nrow(match_alerts_rest) > 0){
+        
+        match_alerts_rest <- match_alerts_rest %>% 
+          rowwise() %>%
+          mutate(
+            features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
+          ) 
+        
+        saida <- list(
+          versions_executed = examples_sec2_executed,
+          versions_crossed = examples_sec2_crossed,
+          graph_old_with_alert =  graph_old_with_alert,
+          graph_new_with_alert = graph_new_with_alert,
+          graph_old_with_group = graph_old_with_group,
+          graph_new_with_group = graph_new_with_group,
+          graphs_from_alerts_old = graphs_from_alerts_old,
+          graphs_from_alerts_new = graphs_from_alerts_new,
+          features = match_alerts_rest
+        )
+        
+        combinations_same_alerts_rest <- clean_features <- extract_clean_features_from_calculated_features(
+          calculated_features = saida
+        ) %>%
+          decide_heurist_if_same_alert() %>%
+          bind_cols(saida$features) %>%
+          filter(.data$same_alert) %>% 
+          select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
+        
+        combinations_same_alerts <- combinations_same_alerts %>% 
+          bind_rows(
+            combinations_same_alerts_rest
+          )
+      } 
+    }
     
     print("pegou coordenadas")
     
     print(1845)
     
-    saida <- list(
-      versions_executed = examples_sec2_executed,
-      versions_crossed = examples_sec2_crossed,
-      graph_old_with_alert =  graph_old_with_alert,
-      graph_new_with_alert = graph_new_with_alert,
-      graph_old_with_group = graph_old_with_group,
-      graph_new_with_group = graph_new_with_group,
-      graphs_from_alerts_old = graphs_from_alerts_old,
-      graphs_from_alerts_new = graphs_from_alerts_new,
-      features = match_alerts_alg2
-    )
-    
-    combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
-      calculated_features = saida
-    ) %>%
-      decide_heurist_if_same_alert() %>%
-      bind_cols(saida$features) %>%
-      filter(.data$same_alert) %>% 
-      select(.data$id_alert_new, .data$id_alert_old, .data$same_alert)
-  
     combinations_same_alerts_old <- combinations_same_alerts %>%
       select(.data$id_alert_old, .data$same_alert ) %>%
       distinct()
   
-    print(1883)
-    
     combinations_same_alerts_new <- combinations_same_alerts %>%
       select(.data$id_alert_new, .data$same_alert ) %>%
       distinct()
-  
-    print(1887)
   
     alerts_old <- saida$graph_old_with_alert %>%
       activate("nodes") %>%
@@ -1901,8 +2067,6 @@ calculate_features_from_versions <- function(
         category = if_else(.data$same_alert, "open", "fixed")
       )
     
-    print(1905)
-  
     alerts_new <- saida$graph_new_with_alert %>%
       activate("nodes") %>%
       as_tibble() %>%
@@ -1918,6 +2082,7 @@ calculate_features_from_versions <- function(
       )
     
     categorised_alerts <- bind_rows(alerts_new, alerts_old)
+    
   }
   
   saida <- list(
@@ -1929,7 +2094,7 @@ calculate_features_from_versions <- function(
     graph_new_with_group = graph_new_with_group,
     graphs_from_alerts_old = graphs_from_alerts_old,
     graphs_from_alerts_new = graphs_from_alerts_new,
-    features = match_alerts_alg2,
+    features = saida$features,
     categorised_alerts = categorised_alerts
   )
   
@@ -2277,6 +2442,9 @@ decide_heurist_if_same_alert <- function(clean_calculated_features){
 #' @param dir_old old version
 #' @param dir_new new version
 #' @param pmd_path path to pmd 
+#' 
+#' @importFrom pryr object_size
+#' @importFrom pryr mem_used
 #'
 #' @return
 #' @export
@@ -2289,6 +2457,8 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   id = 0
   ){
   
+  inicio <- Sys.time()
+  
   print("sou MAIS novo")
   saida <- calculate_features_from_versions(
     code_file_new = code_file_new,
@@ -2299,6 +2469,8 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   print(id)
   readr::write_csv(tibble::tibble(id = 1), "data/progress.rds", append = TRUE)
   
+  fim <- Sys.time()
+  
   
   write_rds(saida$versions_executed, str_glue("data/log/versions_executed/{id}.rds"))
   write_rds(saida$versions_crossed, str_glue("data/log/versions_crossed/{id}.rds"))
@@ -2306,7 +2478,13 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   write_rds(saida$graph_old_with_alert, str_glue("data/log/graph_old_with_alert/{id}.rds"))
   write_rds(saida$features, str_glue("data/log/features/{id}.rds"))
   write_rds(saida$categorised_alerts, str_glue("data/log/categorised_alerts/{id}.rds"))
+  execution_tibble <- tibble(
+    time = fim - inicio,
+    object_size = pryr::object_size(saida),
+    mem_used = pryr::mem_used()
+  )
   
+  write_rds(execution_tibble, str_glue("data/log/execution/{id}.rds"))
     
   saida %>%
     extract2("categorised_alerts")
@@ -2345,7 +2523,7 @@ compare_versions <- function(
   # dir_new <-  "c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4"
   
   if(parallel){
-    future::plan(future::multisession, workers = 3)
+    future::plan(future::multisession, workers = 4)
   }
   else{
     future::plan(future::sequential)

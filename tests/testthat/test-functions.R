@@ -5,7 +5,7 @@ library(stringr)
 test_that("map_lines works", {
   caso_1 <- read_rds("data/info_map_lines_info_teste_1.rds")
   expect_equal(
-    caso_1$function_output, 
+    caso_1$function_output %>% mutate(equal = FALSE), 
     map_lines(
       file = str_glue("data/caso1_map_lines/{caso_1$file}"),
       lines_prev_param = caso_1$lines_prev_param,
@@ -16,7 +16,7 @@ test_that("map_lines works", {
   
   caso_2 <- read_rds("data/info_map_lines_info_teste_2.rds")
   expect_equal(
-    caso_1$function_output, 
+    caso_1$function_output %>%  mutate(equal = FALSE), 
     map_lines(
       file = str_glue("data/caso1_map_lines/{caso_2$file}"),
       lines_prev_param = caso_1$lines_prev_param,
@@ -25,7 +25,7 @@ test_that("map_lines works", {
   )
   
   
-  caso_3 <- tibble(map_remove = 1:10, map_add = 1:10)
+  caso_3 <- tibble(map_remove = 1:10, map_add = 1:10, equal = TRUE)
   expect_equal(
     caso_3, 
     map_lines(
@@ -126,7 +126,8 @@ test_that("cross_versions works", {
   param <- caso_1$examples_executed %>% 
     mutate(path = c("data/caso1_velho/code.java", "data/caso1_new/code.java"))
   expect_equal(
-    caso_1$function_output$lines_map[[1]] %>%  select(-c(file_prev, file_post)), 
+    caso_1$function_output$lines_map[[1]] %>%  select(-c(file_prev, file_post)) %>% 
+      mutate(equal = FALSE), 
     cross_versions(
       examples_executed = param
     )$lines_map[[1]] %>%  select(-c(file_prev, file_post))
@@ -411,9 +412,25 @@ test_that("calculate_features_from_versions works with no method", {
 # 
 # 
   
-  
-  
-teste <-  compar  
-  
-
+#   
+# #   
+# teste <- calculate_features_from_versions(
+#   code_file_new = "C:/doutorado/ArgoUML/0_33_1/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java",
+#   code_file_old = "C:/doutorado/ArgoUML/0_34/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/ModelAccessModelInterpreter.java",
+#   pmd_path = "pmd/bin/pmd.bat"
+# )
+# #   
 # 
+# # 
+# 
+# 
+# 
+# alert <- read_rds("graphs_from_alerts_new.rds")
+# 
+# 
+# 
+
+
+
+
+
