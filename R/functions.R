@@ -2908,7 +2908,7 @@ extract_comments_from_directory <- function(dir, dest_file){
     ) %>% 
     unnest(comments)
   
-  print("writing {dest_file}", dest_file)
+  print("writing {dest_file}" %>%  str_glue(), dest_file)
   write_rds(comments, dest_file)
   
   

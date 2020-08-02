@@ -478,8 +478,59 @@ test_that("calculate_features_from_versions works with no method", {
   
   
   
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_24",
+  dest_file = "comments_24.rds"
+)
   
-  
-  
-  
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_25",
+  dest_file = "comments_25.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_26",
+  dest_file = "comments_26.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_27",
+  dest_file = "comments_27.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_28",
+  dest_file = "comments_28.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_29",
+  dest_file = "comments_29.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_30",
+  dest_file = "comments_30.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_31",
+  dest_file = "comments_31.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_32",
+  dest_file = "comments_32.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_33",
+  dest_file = "comments_33.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_34",
+  dest_file = "comments_34.rds"
+)
+
 
