@@ -339,15 +339,61 @@ test_that("calculate_features_from_versions works with no method", {
 # # 
 # # test_that("compare_versions works",{
 # # # 
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_32",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_33_1",
-#     parallel = TRUE,
-#     resume = TRUE
-#   )
-#   tictoc::toc()
-#   # 
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_30",
+    dir_new <-  "C:/doutorado/ArgoUML/0_31_1",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-30-31"
+  )
+  tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_29",
+    dir_new <-  "C:/doutorado/ArgoUML/0_30",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-29-30"
+  )
+  tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_28",
+    dir_new <-  "C:/doutorado/ArgoUML/0_29",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-28-29"
+  )
+  tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_27",
+    dir_new <-  "C:/doutorado/ArgoUML/0_28",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-27-28"
+  )
+  tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_26",
+    dir_new <-  "C:/doutorado/ArgoUML/0_27",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-26-27"
+  )
+  tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_24",
+    dir_new <-  "C:/doutorado/ArgoUML/0_25",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-24-25"
+  )
+  tictoc::toc()
+  #   # 
 #   # output <- read_rds("data/output_compare_versions.rds")
 #   # 
 # #   expect_equal(
@@ -428,3 +474,12 @@ test_that("calculate_features_from_versions works with no method", {
 # 
 # list <-  read_rds("data/log/df.rds") %>% 
 #   filter(id %in% c(1877, 1421))
+  
+  
+  
+  
+  
+  
+  
+  
+

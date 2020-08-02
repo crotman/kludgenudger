@@ -2477,7 +2477,8 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   code_file_new,
   code_file_old,
   pmd_path,
-  id = 0
+  id = 0,
+  log = "log"
   ){
   
   inicio <- Sys.time()
@@ -2495,19 +2496,19 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   fim <- Sys.time()
   
   
-  write_rds(saida$versions_executed, str_glue("data/log/versions_executed/{id}.rds"))
-  write_rds(saida$versions_crossed, str_glue("data/log/versions_crossed/{id}.rds"))
-  write_rds(saida$graph_new_with_alert, str_glue("data/log/graph_new_with_alert/{id}.rds"))
-  write_rds(saida$graph_old_with_alert, str_glue("data/log/graph_old_with_alert/{id}.rds"))
-  write_rds(saida$features, str_glue("data/log/features/{id}.rds"))
-  write_rds(saida$categorised_alerts, str_glue("data/log/categorised_alerts/{id}.rds"))
+  write_rds(saida$versions_executed, str_glue("data/{log}/versions_executed/{id}.rds"))
+  write_rds(saida$versions_crossed, str_glue("data/{log}/versions_crossed/{id}.rds"))
+  write_rds(saida$graph_new_with_alert, str_glue("data/{log}/graph_new_with_alert/{id}.rds"))
+  write_rds(saida$graph_old_with_alert, str_glue("data/{log}/graph_old_with_alert/{id}.rds"))
+  write_rds(saida$features, str_glue("data/{log}/features/{id}.rds"))
+  write_rds(saida$categorised_alerts, str_glue("data/{log}/categorised_alerts/{id}.rds"))
   execution_tibble <- tibble(
     time = fim - inicio,
     object_size = pryr::object_size(saida),
     mem_used = pryr::mem_used()
   )
   
-  write_rds(execution_tibble, str_glue("data/log/execution/{id}.rds"))
+  write_rds(execution_tibble, str_glue("data/{log}/execution/{id}.rds"))
     
   saida %>%
     extract2("categorised_alerts")
@@ -2538,8 +2539,8 @@ compare_versions <- function(
   limit_executions = FALSE, 
   n_limit = 20,
   parallel = FALSE,
-  resume = FALSE
-  
+  resume = FALSE,
+  log = "log"
   ){
   
   # dir_old <- "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3"
@@ -2574,7 +2575,7 @@ compare_versions <- function(
   )
   
   if(resume){
-    anti <- list.files("data/log/categorised_alerts") %>% 
+    anti <- list.files("data/{log}/categorised_alerts" %>% str_glue()) %>% 
       str_match("([0-9]*)\\.rds") %>% 
       .[,2] %>% 
       enframe(name = "row", value = "id") %>% 
@@ -2591,7 +2592,7 @@ compare_versions <- function(
     mutate(
       id = row_number()
     ) %T>% 
-    write_rds("data/log/df.rds") %>% 
+    write_rds("data/{log}/df.rds" %>% str_glue()) %>% 
     anti_join(
       anti,
       by = c("id")
@@ -2606,7 +2607,8 @@ compare_versions <- function(
         .f = calculate_possibly,
         .progress = TRUE,
         #.options = furrr::future_options(packages = "kludgenudger"),
-        pmd_path = "pmd/bin/pmd.bat"
+        pmd_path = "pmd/bin/pmd.bat",
+        log = log
         ) 
     ) %>% 
     unnest(.data$alerts)
@@ -2884,9 +2886,33 @@ join_ast_alerts <- function(ast, alerts){
 }
 
 
-
-
-
+extract_comments_from_directory <- function(dir, dest_file){
+  
+  # dir <- "C:/doutorado/ArgoUML/0_29"
+  
+  future::plan(future::multisession)
+  
+  extract_possibly <- possibly(
+    .f =extract_comments_from_code,
+    otherwise = tibble(comment = "error")
+  )
+  
+  
+  comments <- list.files(path = dir, pattern = "\\.java$", recursive = TRUE, full.names = TRUE) %>% 
+    enframe(
+      name = "id",
+      value = "file"
+    ) %>% 
+    mutate(
+      comments = furrr::future_map(.x = file, .f = extract_possibly,.progress = TRUE )
+    ) %>% 
+    unnest(comments)
+  
+  print("writing {dest_file}", dest_file)
+  write_rds(comments, dest_file)
+  
+  
+}
 
 
 
