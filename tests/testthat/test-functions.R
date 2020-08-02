@@ -386,11 +386,11 @@ test_that("calculate_features_from_versions works with no method", {
   tictoc::toc()
   tictoc::tic("compare_versions")
   output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_24",
-    dir_new <-  "C:/doutorado/ArgoUML/0_25",
+    dir_old <- "C:/doutorado/ArgoUML/0_25",
+    dir_new <-  "C:/doutorado/ArgoUML/0_26",
     parallel = TRUE,
     resume = TRUE,
-    log = "log-24-25"
+    log = "log-25-26"
   )
   tictoc::toc()
   #   # 
@@ -508,6 +508,8 @@ extract_comments_from_directory(
   dest_file = "comments_29.rds"
 )
 
+
+
 extract_comments_from_directory(
   dir = "C:/doutorado/ArgoUML/0_30",
   dest_file = "comments_30.rds"
@@ -532,5 +534,137 @@ extract_comments_from_directory(
   dir = "C:/doutorado/ArgoUML/0_34",
   dest_file = "comments_34.rds"
 )
+
+
+
+
+library(tidyverse)
+library(tidygraph)
+library(furrr)
+
+dir <- "C:/doutorado/resultados/log-33-34"
+
+
+categorised_alerts <- list.files(
+  str_glue("{dir}/categorised_alerts"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(categorised_alerts = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(
+    id,
+    categorised_alerts
+  )
+
+
+executions <- list.files(
+  str_glue("{dir}/execution"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(executions = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(
+    executions
+  )
+
+
+features <- list.files(
+  str_glue("{dir}/features"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(features = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(features)
+
+
+graph_old_with_alert <- list.files(
+  str_glue("{dir}/graph_old_with_alert"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(graph_old_with_alert = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(
+    graph_old_with_alert 
+  )
+
+
+graph_new_with_alert <- list.files(
+  str_glue("{dir}/graph_new_with_alert"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(graph_new_with_alert = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(graph_new_with_alert)
+
+versions_crossed <- list.files(
+  str_glue("{dir}/versions_crossed"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(versions_crossed = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(versions_crossed)
+
+versions_executed <- list.files(
+  str_glue("{dir}/versions_crossed"), 
+  full.names = TRUE
+) %>% 
+  enframe(name = "id", value = "file") %>% 
+  mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+  mutate(versions_executed = future_map(
+    .x = file,
+    .f = read_rds,
+    .progress = TRUE
+  )) %>% 
+  select(versions_executed)
+
+
+output <- bind_cols(
+  categorised_alerts,
+  executions,
+  features,
+  graph_new_with_alert,
+  graph_old_with_alert,
+  versions_crossed,
+  versions_executed
+  
+  
+)
+
+
+
+
+
+
+
 
 
