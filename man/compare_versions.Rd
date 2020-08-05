@@ -9,7 +9,10 @@ compare_versions(
   dir_new,
   pmd_path,
   limit_executions = FALSE,
-  n_limit = 20
+  n_limit = 20,
+  parallel = FALSE,
+  resume = FALSE,
+  log = "log"
 )
 }
 \arguments{

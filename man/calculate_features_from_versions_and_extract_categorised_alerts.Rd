@@ -7,7 +7,9 @@
 calculate_features_from_versions_and_extract_categorised_alerts(
   code_file_new,
   code_file_old,
-  pmd_path
+  pmd_path,
+  id = 0,
+  log = "log"
 )
 }
 \arguments{

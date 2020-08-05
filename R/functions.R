@@ -2915,4 +2915,44 @@ extract_comments_from_directory <- function(dir, dest_file){
 }
 
 
+#' Show nodes as latex
+#'
+#' @param nodes nodes to read
+#'
+#' @return latex with the nodes
+#' @export
+#'
+#' @examples
+show_latex_raw_ast_nodes <- function(nodes){
+  
+  nodes %>%
+    select(
+      -c(linha, ruleset, package, class, priority, variable, id_alert, small_rule)
+    ) %>% 
+    rename(
+      line = beginline,
+      endline = endline,
+      col = begincolumn,
+      endcol = endcolumn
+      
+    ) %>% 
+    mutate(
+      code = str_trunc(code,width = 30, ellipsis = "...")
+    ) %>% 
+    arrange(
+      line, col
+    ) %>% 
+    kable(
+      format = "latex",
+      caption = "Elements captured in code\\label{elements_captured}",
+      escape = TRUE
+    ) %>%
+    kable_styling(
+      font_size = 8,
+      latex_options = c("hold_position")
+    )
+  
+  
+}
+
 
