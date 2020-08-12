@@ -1143,8 +1143,7 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
 
     alert_old <- graph_old %>% 
-      activate("nodes") %T>%
-      debuga("vai pegar tibble") %>% 
+      activate("nodes")  %>% 
       as_tibble() %T>% 
       write_rds("antes_erro.rds") %>% 
       select(
@@ -1155,12 +1154,9 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
         .data$method,
         .data$rule_alert,
         .data$code
-      ) %T>% 
-      debuga("deu select") %>% 
-      rowwise() %T>% 
-      debuga("vai dar flatten") %>% 
-      mutate( code = str_flatten(.data$code, collapse = "\n") ) %T>%
-      debuga("deu flatten") %>% 
+      ) %>% 
+      rowwise() %>%  
+      mutate( code = str_flatten(.data$code, collapse = "\n") ) %>% 
       ungroup() %>% 
       left_join(
         coordinates %>% select(-.data$new),
@@ -1530,10 +1526,7 @@ calculate_features_from_versions <- function(
   # rule_path = "rulesets/java/quickstart.xml"
   # blockrules_location = "data/blockrules/blockrules.xml"
   # 
-  print("calculando")
-  print(code_file_old)
-  print(code_file_new)
-  
+
   if(code_new != ""){
     
     write_lines(code_new, "code_files_new/new.java")
@@ -1579,14 +1572,11 @@ calculate_features_from_versions <- function(
     mutate(pmd_command_output = map(
       .x = .data$pmd_command,
       .f =  ~ system(command =  .x, show.output.on.console = FALSE)
-    )) %T>%
-    print() %>% 
+    )) %>% 
     mutate(pmd_output = map(.x = str_glue("{.data$output}.xml"), .f = read_pmd_xml))
   
-  print("cross")
   examples_sec2_crossed <- cross_versions(examples_sec2_executed) 
-  print("crossed")
-  
+
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
       old = .data$map_remove,
@@ -1655,7 +1645,6 @@ calculate_features_from_versions <- function(
       ~str_glue("{.x}_end")
     )
   
-  print("match")
 
   match_nodes <- nodes_old %>% 
     left_join(
@@ -1711,8 +1700,7 @@ calculate_features_from_versions <- function(
       id_group = row_number()
     )
   
-  print("matched")
-  
+
 
   offset_id_group_na <- 0L
   
@@ -1756,7 +1744,6 @@ calculate_features_from_versions <- function(
       id_group = if_else(is.na(.data$id_group), -row_number()-offset_id_group_na, .data$id_group)
     )        
   
-  print("vai pegar pmd output")
 
   alerts_old <- examples_sec2_executed$pmd_output[[1]] %>% 
     rename_all(
@@ -1774,6 +1761,9 @@ calculate_features_from_versions <- function(
       one = 1
     )
     
+  
+  
+  
 
   graph_old_with_alert <- graph_old_with_group %>% 
     activate("nodes") %>% 
@@ -1881,17 +1871,12 @@ calculate_features_from_versions <- function(
   ) 
   
   
-  print("vai pegar coordenadas")
-  
+
   coordinates <- map %>% 
     ungroup() %>% 
     mutate(common_line = row_number()) 
   
-  print("pegou coordenadas")
-  
-  print(graphs_from_alerts_old$graph_old[1])
-  print(graphs_from_alerts_new$graph_new[1])
-  
+
   
 
   
@@ -1906,8 +1891,7 @@ calculate_features_from_versions <- function(
     
     if(sum(coordinates$equal) > 0){
       
-      print("!!!!!!!!!!!!EQUAL!!!!!!!!!!!")
-      
+
       match_alerts_alg2 <- graphs_from_alerts_new %>%
         inner_join(
           graphs_from_alerts_old,
@@ -1942,37 +1926,23 @@ calculate_features_from_versions <- function(
       
     }else{
       
-      print("!!!!!!!!!!!!NOT EQUAL!!!!!!!!!!!")
-      print(coordinates)
-      
-      print("1925")
-      
-      print(graphs_from_alerts_new %>% as_tibble())
-      print(graphs_from_alerts_old %>% as_tibble())
-      
+
       match_alerts_alg2 <- graphs_from_alerts_new %>%
         inner_join(
           graphs_from_alerts_old,
           by = c("rule_alert_new" = "rule_alert_old", "id_group_new" = "id_group_old")
         ) 
       
-      print("1936")
-      
-      print(match_alerts_alg2)
-      
-      print(nrow(match_alerts_alg2))
-      
+
       if(nrow(match_alerts_alg2) > 0){
         
-        print("nrow>0")
-        
+
         match_alerts_alg2 <-  match_alerts_alg2 %>% 
           rowwise() %>%
           mutate(
             features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
           ) 
         
-        print("1936")
         saida <- list(
           versions_executed = examples_sec2_executed,
           versions_crossed = examples_sec2_crossed,
@@ -1985,8 +1955,7 @@ calculate_features_from_versions <- function(
           features = match_alerts_alg2
         )
         
-        print("1948")
-        
+
         combinations_same_alerts <- clean_features <- extract_clean_features_from_calculated_features(
           calculated_features = saida
         ) %>%
@@ -2009,8 +1978,7 @@ calculate_features_from_versions <- function(
       
 
       
-      print("1956")
-      
+
       graph_new_no_match <- graphs_from_alerts_new %>% 
         anti_join(
           combinations_same_alerts,
@@ -2023,7 +1991,6 @@ calculate_features_from_versions <- function(
           by = c("id_alert_old")
         )
       
-      print("1970")
       match_alerts_rest <- graph_new_no_match %>%
         crossing(
           graph_old_no_match
@@ -2064,10 +2031,7 @@ calculate_features_from_versions <- function(
       } 
     }
     
-    print("pegou coordenadas")
-    
-    print(1845)
-    
+
     combinations_same_alerts_old <- combinations_same_alerts %>%
       select(.data$id_alert_old, .data$same_alert ) %>%
       distinct()
@@ -2483,14 +2447,12 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   
   inicio <- Sys.time()
   
-  print("sou MAIS novo")
   saida <- calculate_features_from_versions(
     code_file_new = code_file_new,
     code_file_old = code_file_old,
     pmd_path = pmd_path
   ) 
   
-  print(id)
   readr::write_csv(tibble::tibble(id = 1), "data/progress.rds", append = TRUE)
   
   fim <- Sys.time()
@@ -2500,7 +2462,7 @@ calculate_features_from_versions_and_extract_categorised_alerts <- function(
   write_rds(saida$versions_crossed, str_glue("data/{log}/versions_crossed/{id}.rds"))
   write_rds(saida$graph_new_with_alert, str_glue("data/{log}/graph_new_with_alert/{id}.rds"))
   write_rds(saida$graph_old_with_alert, str_glue("data/{log}/graph_old_with_alert/{id}.rds"))
-  write_rds(saida$features, str_glue("data/{log}/features/{id}.rds"))
+  # write_rds(saida$features, str_glue("data/{log}/features/{id}.rds"))
   write_rds(saida$categorised_alerts, str_glue("data/{log}/categorised_alerts/{id}.rds"))
   execution_tibble <- tibble(
     time = fim - inicio,
@@ -2564,11 +2526,7 @@ compare_versions <- function(
       original_file_new = str_glue("{dir_new}/{file_new}")
     )
   
-  # teste <- function(a, b, pmd_path){
-  #   print(search()) 
-  #   1
-  # }
-  
+
   calculate_possibly <- possibly(
     .f =calculate_features_from_versions_and_extract_categorised_alerts,
     otherwise = tibble(category = "error")
@@ -2775,8 +2733,7 @@ join_ast_alerts <- function(ast, alerts){
        mutate(index_inside_original_node = row_number() + 1) %>% 
        ungroup()
      
-     print("vai executar bind edges")
-     
+
      ast_for_join <- ast %>% 
        activate("nodes") %>% 
        mutate(
@@ -2793,8 +2750,7 @@ join_ast_alerts <- function(ast, alerts){
          )
        ) 
      
-     print("executou bind edges")
-     
+
     
   }else{
     ast_for_join <- ast %>% 
@@ -2908,7 +2864,6 @@ extract_comments_from_directory <- function(dir, dest_file){
     ) %>% 
     unnest(comments)
   
-  print("writing {dest_file}" %>%  str_glue(), dest_file)
   write_rds(comments, dest_file)
   
   
@@ -2954,5 +2909,143 @@ show_latex_raw_ast_nodes <- function(nodes){
   
   
 }
+
+
+
+#' Title
+#'
+#' @param dir 
+#'
+#' @import dplyr
+#' @return
+#' @export
+#'
+#' @examples
+read_results <-  function(dir, version_old, version_new){
+  
+  print(dir)
+
+  categorised_alerts <- list.files(
+    str_glue("{dir}/categorised_alerts"),
+    full.names = TRUE
+  ) %>%
+    enframe(name = "id", value = "file") %>%
+    mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+    mutate(categorised_alerts = furrr::future_map(
+      .x = file,
+      .f = read_rds,
+      .progress = TRUE
+    )) %>%
+    select(
+      id,
+      categorised_alerts
+    )
+  
+  
+  executions <- list.files(
+    str_glue("{dir}/execution"),
+    full.names = TRUE
+  ) %>%
+    enframe(name = "id", value = "file") %>%
+    mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+    mutate(executions = furrr::future_map(
+      .x = file,
+      .f = read_rds,
+      .progress = TRUE
+    )) %>%
+    select(
+      executions
+    )
+  
+  
+  # features <- list.files(
+  #   str_glue("{dir}/features"),
+  #   full.names = TRUE
+  # ) %>%
+  #   enframe(name = "id", value = "file") %>%
+  #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+  #   mutate(features = furrr::future_map(
+  #     .x = file,
+  #     .f = read_rds,
+  #     .progress = TRUE
+  #   )) %>%
+  #   select(features)
+  
+  
+  # graph_old_with_alert <- list.files(
+  #   str_glue("{dir}/graph_old_with_alert"),
+  #   full.names = TRUE
+  # ) %>%
+  #   enframe(name = "id", value = "file") %>%
+  #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+  #   mutate(graph_old_with_alert = furrr::future_map(
+  #     .x = file,
+  #     .f = read_rds,
+  #     .progress = TRUE
+  #   )) %>%
+  #   select(
+  #     graph_old_with_alert
+  #   )
+  # 
+  # 
+  # graph_new_with_alert <- list.files(
+  #   str_glue("{dir}/graph_new_with_alert"),
+  #   full.names = TRUE
+  # ) %>%
+  #   enframe(name = "id", value = "file") %>%
+  #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+  #   mutate(graph_new_with_alert = furrr::future_map(
+  #     .x = file,
+  #     .f = read_rds,
+  #     .progress = TRUE
+  #   )) %>%
+  #   select(graph_new_with_alert)
+  
+  versions_crossed <- list.files(
+    str_glue("{dir}/versions_crossed"),
+    full.names = TRUE
+  ) %>%
+    enframe(name = "id", value = "file") %>%
+    mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+    mutate(versions_crossed = furrr::future_map(
+      .x = file,
+      .f = read_rds,
+      .progress = TRUE
+    )) %>%
+    select(versions_crossed)
+  
+  versions_executed <- list.files(
+    str_glue("{dir}/versions_crossed"),
+    full.names = TRUE
+  ) %>%
+    enframe(name = "id", value = "file") %>%
+    mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>%
+    mutate(versions_executed = furrr::future_map(
+      .x = file,
+      .f = read_rds,
+      .progress = TRUE
+    )) %>%
+    select(versions_executed)
+  
+  
+  output <- bind_cols(
+    categorised_alerts,
+    executions,
+    # features,
+    # graph_new_with_alert,
+    # graph_old_with_alert,
+    versions_crossed,
+    versions_executed
+  ) %>% 
+    mutate(
+      version_old = version_old,
+      version_new = version_new
+    )
+  
+  
+  output
+
+}
+
 
 

@@ -384,15 +384,84 @@ test_that("calculate_features_from_versions works with no method", {
 #     log = "log-26-27"
 #   )
 #   tictoc::toc()
-  # tictoc::tic("compare_versions")
-  # output_function <- compare_versions(
-  #   dir_old <- "C:/doutorado/ArgoUML/0_21",
-  #   dir_new <-  "C:/doutorado/ArgoUML/0_22",
-  #   parallel = TRUE,
-  #   resume = TRUE,
-  #   log = "log-21-22"
-  # )
-  # tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_14",
+    dir_new <-  "C:/doutorado/ArgoUML/0_15",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-14-15"
+  )
+  tictoc::toc()
+  
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_19",
+    dir_new <-  "C:/doutorado/ArgoUML/0_20",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-19-20"
+  )
+  tictoc::toc()
+  
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_18",
+    dir_new <-  "C:/doutorado/ArgoUML/0_19",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-18-19"
+  )
+  tictoc::toc()
+
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_17",
+    dir_new <-  "C:/doutorado/ArgoUML/0_18",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-17-18"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_16",
+    dir_new <-  "C:/doutorado/ArgoUML/0_17",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-16-17"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_15",
+    dir_new <-  "C:/doutorado/ArgoUML/0_16",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-15-16"
+  )
+  tictoc::toc()
+  
+
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions(
+    dir_old <- "C:/doutorado/ArgoUML/0_14",
+    dir_new <-  "C:/doutorado/ArgoUML/0_15",
+    parallel = TRUE,
+    resume = TRUE,
+    log = "log-14-15"
+  )
+  tictoc::toc()
+  
+  
+  
+  
 #   #   # 
 # #   # output <- read_rds("data/output_compare_versions.rds")
 # #   # 
@@ -668,3 +737,111 @@ test_that("calculate_features_from_versions works with no method", {
 # 
 # 
 # 
+  
+
+teste <- read_results(  dir = "C:/doutorado/resultados/log-15-16",
+               version_old = 15,
+               version_new = 16
+)  
+  
+
+all_results <- tibble(
+  version_old = c("13_2","13_3", "13_4", "13_5", "13_6",14:33),
+  version_new = c("13_3", "13_4", "13_5", "13_6", 14:34)
+) %>% 
+  mutate(
+    dir = str_glue("C:/doutorado/resultados/log-{version_old}-{version_new}")
+  ) %>% 
+  mutate(data = pmap(.l = list(dir = dir, version_old = version_old, version_new = version_new), .f = read_results ))
+  
+  
+  
+  
+  
+completo <- list.files("C:/doutorado/resultados/log-13_6-14/graph_new_with_alert") %>% enframe()
+
+faltando <- list.files("C:/doutorado/resultados/log-13_6-14/execution") %>% enframe()
+
+teste <- completo %>% anti_join(faltando, by =c("value"))
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_15",
+  dest_file = "comments_15.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_16",
+  dest_file = "comments_16.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_17",
+  dest_file = "comments_17.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_18",
+  dest_file = "comments_18.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_19",
+  dest_file = "comments_19.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_20",
+  dest_file = "comments_20.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_21",
+  dest_file = "comments_21.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_22",
+  dest_file = "comments_22.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_23",
+  dest_file = "comments_23.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_14",
+  dest_file = "comments_14.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_14",
+  dest_file = "comments_14.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_13_6",
+  dest_file = "comments_13_6.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_13_5",
+  dest_file = "comments_13_5.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_13_4",
+  dest_file = "comments_13_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_13_3",
+  dest_file = "comments_13_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_13_2",
+  dest_file = "comments_13_2.rds"
+)
