@@ -8,6 +8,7 @@ header-includes:
   - \definecolor{darkred}{RGB}{150, 40, 40}
   - \definecolor{darkgreen}{RGB}{30, 120, 30}
   - \definecolor{darkorange}{RGB}{40, 40, 160}
+  - \newcommand{\comentario}[1]{}
 output: 
     pdf_document:
         number_sections: true
@@ -156,7 +157,10 @@ saida_alg2 <- kludgenudger::calculate_features_from_versions(
   code_file_old = "little-tree/code.java",
   code_file_new = "little-tree-new/code.java",
   pmd_path = pmd_path,
-  glue_string = "{.data$id_alert}:line:{.data$beginline},{.data$small_rule}{.data$rule_alert}"
+  glue_string = "{.data$id_alert}:line:{.data$beginline},{.data$small_rule}. alert:{if_else(is.na(.data$rule_alert),'none',.data$rule_alert)}",
+  mostra_new = c(10, 15, 18, 16, 20, 3),
+  mostra_old = c(10, 42,  15,  18, 3) 
+    
 )
 
 
@@ -196,11 +200,6 @@ The AST is used to understand the location of an alert in a version of a code. W
 PMD traverses the source code visiting many different kinds of elements comprising the AST. If we build our own rules, aimed to capture only some
 kinds of elements, we will generate list of ``alerts'' that will contain all the elements of the chosen kinds contained in the AST.
 
-We do not use all the types of nodes recognized by PMD to generate the AST. 
-The kinds of elements that were selected are the following ones:
-
-\begin{itemize}
-
 
 \section{PMD Source Code Analyzer}\label{pmd}
 
@@ -230,7 +229,7 @@ If we build our own simple rules, aimed only to capture some kinds of elements, 
 
 \newpage
 
-We don´t use all the types of nodes recognized by PMD Alert to generate the AST because there are many kinds of nodes and some of them are redundant for our purposes. If we used all the kinds of nodes, we would end up with a tree that would not add value to our analysis but would add compelexity to our algorithm. The kinds of elements that were selected are the following ones:
+We do not use all the types of nodes recognized by PMD Alert to generate the AST because there are many kinds of nodes and some of them are redundant for our purposes. If we used all the kinds of nodes, we would end up with a tree that would not add value to our analysis but would add compelexity to our algorithm. The kinds of elements that were selected are the following ones:
 
 \begin{itemize}
 
@@ -298,6 +297,7 @@ We follow three steps to recreate the AST:
 \end{enumerate}
 
 
+
 %
 % MARCIO: eu não entendi o objetivo do algoritmo acima. Você quer montar a AST somente
 % com os tipos de nós que listou acima? Por quê? Justifique. Depois disso, quer recriar
@@ -306,7 +306,7 @@ We follow three steps to recreate the AST:
 
 %
 % BRUNO: A quantidade de tipos de nós é gigantesca. A árvore fica gigantesca e muito redundante. A ideia é permitir matches que não sejam puramente baseados % na localização das linhas. Expliquei no texto. Às vezes pode não bater exatamente a localização, mas o nó método pai pode bater, portanto, podemos 
-% considerar que os nós estão no mesmo método e se eles forem de mesmo tipo, com o mesmo alerta, debaixo do mesmo método... se tiver muita evidência de que % é a mesma coisa, podemos considerar que é. Aquela história: tem focinho de porco, orelha de porco, pé de porco. É porco? Só nãso sei como escrever isso 
+% considerar que os nós estão no mesmo método e se eles forem de mesmo tipo, com o mesmo alerta, debaixo do mesmo método... se tiver muita evidência de que % é a mesma coisa, podemos considerar que é. Aquela história: tem focinho de porco, orelha de porco, pé de porco. É porco? Só não sei como escrever isso 
 % para um inglês...
 %
 %
@@ -417,12 +417,10 @@ increment in the number of issues and bug fixed nor necessarily represent a degr
 \section{Algorithm to categorize alerts}\label{alg}
 
 This Section discusses the algorithm to categorize alerts, which uses the AST to create features that help to infer if two alerts in different
-versions must be considered the same. This algorithm does not return a single categorical answer for each alert (new, open or fixed), but features, 
-it considers many cases that are ignored by the algorithm described in Section \ref{alg1}.
+versions must be considered the same. This algorithm does not return a single categorical answer for each alert (new, open or fixed), but features that must be evaluated by some heuristic or possibly a statistical learning tool.
 
-In the Section \ref{feature_creation}, we show how the features are created. 
-Even though it is not possible to be sure if a pair alerts in different versions are same alert, we think that these features can provide some clues.
-The features can be an input to a heuristic or a machine learning tool which can decide if the alerts are the same.
+In Section \ref{source_used} the source code used in this description is shown. Section \ref{map} describes how the source code lines are mapped. In the Section \ref{feature_creation}, we show how the features are created. 
+Even though it is not possible to be sure if a pair alerts in different versions are same alert, we think that these features can provide some clues. The heuristic we used for this work is described in Section \ref{heuristic}.
 
 
 %
@@ -437,43 +435,123 @@ The features can be an input to a heuristic or a machine learning tool which can
 % classificação do alerta. Vc acha que vale a pena eu escrever essas coisas no texto?
 
 
+\newpage
+
+\blandscape
+
+\subsection{Source code used}\label{source_used}
+
+In this Section, we will consider the old and new version of a source code as presented in Figure
+\ref{old_simple_code} and the new version in Figure
+\ref{new_simple_code}. In the new version, the alert generated in the
+line 11 of the old version was fixed.
+
+```{java showing codes, code=kludgenudger::read_and_decorate_code_and_alerts_mapped("little-tree/code.java", saida_alg2$versions_executed$pmd_output[[1]], "little-tree-new/code.java", saida_alg2$versions_executed$pmd_output[[2]],saida_alg2$versions_crossed$lines_map[[1]], TRUE, 20), echo=TRUE, size="scriptsize"  }
+```
+
+![Source code used in the description of the algorithm](figures/fake.png)
+
+\elandscape    
+
+\newpage 
+
+
+
+\subsection{Using information from git diff, create a relation between the lines}\label{map}
+
+
+For each difference stated in the output (the sections of the diff file starting with "@@"), there is an indication of the number of lines removed from the old version and the number of lines added to the new one.
+The line in which the lines are removed from the old version and the line at which the lines are added is indicated, too.  
+By using this information we create a relation between the lines of the old version and the equivalent lines in the new version.
+For the new and old versions presented in Section \ref{codes}, the relation is shown in Table \ref{table_map}.
+
+
+```{r showing map  }
+saida_alg2$versions_crossed$lines_map[[1]] %>% 
+  ungroup() %>% 
+  mutate(
+    row = row_number(),
+    na_mark = if_else(is.na(map_remove) | is.na(map_add), row , NA_integer_  ),
+    next_na = na_mark,
+    last_na = na_mark
+  ) %>% 
+  fill(
+    next_na, .direction = "up"
+  ) %>% 
+  fill(
+    last_na, .direction = "down"
+  ) %>% 
+  replace_na(
+    list(
+      last_na = 0,
+      next_na = nrow(saida_alg2$versions_crossed$lines_map[[1]]) + 1
+    )
+  ) %>%
+  mutate(
+    dist_next = next_na - row,
+    dist_last = row - last_na + 0.1
+  ) %>%
+  rowwise() %>% 
+  mutate(
+    min_dist = min(dist_next, dist_last)
+  ) %>% 
+  filter(
+    min_dist < 4
+  ) %>%
+  ungroup() %>% 
+  mutate(    
+    map_remove = 
+      case_when(
+        min_dist == 3.1 ~ str_glue("{lag(map_remove)+1}-"),
+        min_dist == 3.0 ~ str_glue("-{lead(map_remove)-1}"),
+        TRUE ~ map_remove %>% as.character()
+      ),
+    map_add = 
+      case_when(
+        min_dist == 3.1 ~ str_glue("{lag(map_add)+1}-"),
+        min_dist == 3.0 ~ str_glue("-{lead(map_add)-1}"),
+        TRUE ~ map_add %>% as.character()
+      )
+  ) %>% 
+  select(old = map_remove, new = map_add) %>% 
+  mutate(  
+    old = if_else(is.na(old), str_glue("\\textcolor{{white}}{{{row_number()}}}"), old),
+    new = if_else(is.na(new), str_glue("\\textcolor{{white}}{{{row_number()}}}"), new)
+  ) %>% 
+  pivot_wider(
+    names_from = old,
+    values_from = new,
+    names_repair = "minimal"
+  ) %>% 
+  kable(
+    caption = "Relation between lines of the old version and lines of the new version\\label{table_map}",
+    escape = FALSE
+  ) %>% 
+  kable_styling(
+    font_size = ,
+    latex_options = c("scale_down")
+  )
+```
+
+
+
+
+
 
 \subsection{Feature engineering} \label{feature_creation}
 
-In this Section, we will consider the old version of a source code as presented in Figure \ref{old_simple_code} and the new version in Figure \ref{new_simple_code}. 
-In the new version, the alert generated in the line 11 of the old version was fixed.
-
-\newpage
-
-```{java code old version, code=kludgenudger::read_and_decorate_code_and_alerts("little-tree/code.java", saida_alg2$versions_executed$pmd_output[[1]], FALSE, 20), echo = TRUE }
-
-```
+In Figure \ref{AST_compare_id_alerts} we can see the ASTs for the old and the new versions. We can see the kind of nodes and the PMD alert if there is one. In this figures, the numbers in the nodes are meaningless and are presented only for reference.
 
 
-![Old version  \label{old_simple_code}](figures/fake.png)
-
-\newpage
-
-```{java code new version, code=kludgenudger::read_and_decorate_code_and_alerts("little-tree-new/code.java", saida_alg2$versions_executed$pmd_output[[2]], FALSE, 20), echo = TRUE }
-
-```
-
-
-![New version  \label{new_simple_code}](figures/fake.png)
-
-In Figure \ref{AST_compare_id_alerts} we can see the ASTs for the old and the new versions. We can see the alerts linked to their nodes. Figure
-\ref{AST_compare} shows the kinds of nodes located near the alert that exists in both versions.  In these figures, the numbers in the nodes are meaningless and are presented only for reference between the figures.
-
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=20, fig.height=20, fig.cap="Abstract Syntax Trees. New and old versions, with alerts \\label{AST_compare_id_alerts}", fig.pos="H"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=15, fig.height=15, fig.cap="Abstract Syntax Trees. New and old versions, with alerts \\label{AST_compare_id_alerts}", fig.pos="H"}
 
 chart_graph_new <- kludgenudger::show_ast(
   saida_alg2$graph_new_with_alert,
   size_label = 5,
   show_label = TRUE,
   alpha_label = "mostra",
-  name_field = "glue"
+  name_field = "glue",
+  aspect = 2
 
 )
 
@@ -482,7 +560,8 @@ chart_graph_old <- kludgenudger::show_ast(
   size_label = 5,
   show_label = "TRUE",
   alpha_label = "mostra",
-  name_field = "glue"
+  name_field = "glue",
+  aspect = 2
 
 )
 
@@ -493,54 +572,16 @@ chart_graph_old + chart_graph_new
 
 ```
 
+\begin{itemize}
+\item
+  Considering the relation between the lines of the two versions constructed as we saw in Section \ref{map}, the nodes in both trees begin and end in related lines;
+
+\item
+  The nodes are of the same kind.
+\end{itemize}
 
 
-
-```{r , echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=12, fig.height=8, fig.cap="Abstract Syntax Trees compared. New and old versions, with the type of some AST nodes \\label{AST_compare}", fig.pos="H"}
-
-
-
-chart_graph_old <- kludgenudger::show_ast(
-  saida_alg2$graph_old_with_group, 
-  size_label = 4, 
-  show_label = TRUE, 
-  alpha_label = "mostra",
-  title = "Old version"
-) 
-
-chart_graph_new <- kludgenudger::show_ast(
-  saida_alg2$graph_new_with_group, 
-  size_label = 4, 
-  show_label = TRUE, 
-  alpha_label = "mostra",
-  title = "New version"
-)
-  
-
-chart_graph_old + chart_graph_new
-
-
-
-
-```
-
-
-\textcolor{red}{Prof. Márcio, a diferença entre as árvores \ref{AST_compare_id_alerts} e \ref{AST_compare}, que coloquei na legenda agora, é que uma mostra os alertas e a outra mostra os tipos de nós da AST localizados perto do alerta que ficou nas duas versões. Se colocasse tudo junto ia embolar }
-
-In Figure \ref{AST_with_alerts} the numbers inside the nodes are the number of the group: nodes with the same number are equivalent. We define that a node from an AST is equivalent to a node of the AST of the subsequent version if:
-   
-- Considering the relation between the lines of the two versions constructed as we saw in Section \ref{map}, the nodes in both trees begin and end in related lines.
-
-- The nodes are of the same kind
-
-\textcolor{red}{Prof. Márcio, sim, agora ser o mesmo nó significa apenas estar nas mesmas linhas (levando em conta o diff) e ser do mesmo tipo. As outras carascterísticas vão ser indicadas nas features que serão construídas mais pra frente}
-
-
-\textcolor{red}{Prof. Márcio, eu fui colocando várias árvores pra tentar fazer as coisas passo a passo. Apresentei primeiro os nós equivalentes e depois coloquei os alertas. Mas agora eu apresentei só uma dessas duas árvores, com uma legenda melhor }
-
-
-
-```{r , echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=20, fig.height=20, fig.cap="Abstract Syntax Tree. Nodes with the same number are equivalent \\label{AST_with_alerts}", fig.pos="H"}
+```{r , echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=15, fig.height=15, fig.cap="Abstract Syntax Tree. Nodes with the same number are equivalent \\label{AST_with_alerts}", fig.pos="H"}
 
 
 chart_graph_old <- kludgenudger::show_ast(
@@ -549,7 +590,8 @@ chart_graph_old <- kludgenudger::show_ast(
   show_label = TRUE, 
   alpha_label = 1, 
   node_text_field = "id_group",
-  name_field = "text_alert"
+  name_field = "text_alert",
+  aspect = 2
   
 )
 
@@ -560,7 +602,8 @@ chart_graph_new <- kludgenudger::show_ast(
   show_label = TRUE, 
   alpha_label = 1, 
   node_text_field = "id_group",
-  name_field = "text_alert"
+  name_field = "text_alert",
+  aspect = 2
   
 )
 
@@ -571,14 +614,15 @@ chart_graph_old + chart_graph_new
 
 ```
 
-The path between the alert and the root of the AST can be seen in \ref{AST_alert_1}
+The path between the alert and the root of the AST can be seen in \ref{AST_alert_1}. Comparing the path of different alerts is possible to determine if the nodes belong to the same method, for instance.
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=12, fig.height=6, fig.cap="Abstract Syntax Tree \\label{AST_alert_1}", fig.pos="H"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=10, fig.height=3, fig.cap="Abstract Syntax Tree \\label{AST_alert_1}", fig.pos="H"}
 
 kludgenudger::show_ast(
   saida_alg2$graphs_from_alerts_old %>%  rename( id_alert = id_alert_old, graph = graph_old) %$% graph[[1]] , 
-  size_label = 4
+  size_label = 4,
+  aspect = 0.2
 )
 
 
@@ -870,6 +914,22 @@ kludgenudger::report_features(changing_method_order_2, "Resulting features: chan
 
 
 ```
+
+
+\subsection{Heuristic to decide based on the features}\label{heuristic}
+
+
+The heuristic chosen in this work follow these rules when :
+
+\begin{itemize}
+\item If all the boolean features are TRUE and **Line Distance** is true, then the new and old alerts are declared the same and open;
+\item If **Same Method Code** is TRUE, then we consider it's the same method, even if the name or the group is not the same. But if the method code is the same, then the alert code and the kind of the alert must be the same. So if the features **Same Rule**, **Same Method Code** and 
+**Same Code** are TRUE, then the new and old alerts are declared the same and open;
+\item If it is the same id_group, then they are mapped to the same lines. 
+If this happens, the kind of alert is the same and one of the features about the method is the same, then the new and old alerts are declared the same and open. 
+The features about the method are all;
+\end{itemize}
+
 
 
 \section{Comparing new alerts with new SATD comments}\label{results}

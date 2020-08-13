@@ -974,10 +974,11 @@ show_ast <-  function(
   node_text_field = "id_alert", 
   name_field = "name", 
   show_label = TRUE,
-  title = ""
+  title = "",
+  aspect = 1.3
 ){
   
-  # graph_dfs_tree <- graph_old
+  #graph_dfs_tree <- grafo
   
   # graph_selected <- graph_dfs_tree %>% 
   #     activate(nodes) %>% 
@@ -986,6 +987,12 @@ show_ast <-  function(
   #     ) %>% 
   #     as_tibble()
   
+  # size_label = 5.5 
+  # alpha_label = 1
+  # node_text_field = "id_alert" 
+  # name_field = "name" 
+  # show_label = TRUE
+  # title = ""
   
   
   
@@ -997,7 +1004,7 @@ show_ast <-  function(
         label.size = 0.3,
         repel = TRUE,
         size = size_label,
-        label.padding = 0.4,
+        label.padding =  0.4,
         alpha = alpha_label,
         stroke = 4,
         hjust = "left"
@@ -1042,7 +1049,7 @@ show_ast <-  function(
     scale_y_continuous(expand =c(-1.2,1.2)) +
     theme_void() +
     theme(
-      aspect.ratio = 1.3  ,
+      aspect.ratio = aspect  ,
       legend.position = "top" 
     ) +
     guides(
