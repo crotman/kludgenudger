@@ -68,7 +68,8 @@ test_that("decorate_code_alerts_mapped works", {
       alerts_new_param = caso_1$alerts_new_param,
       map_param = caso_1$map_param,
       region_only = caso_1$region_only,
-      region_size = caso_1$region_size
+      region_size = caso_1$region_size,
+      use_mnemonic = TRUE
       
     )
   )
@@ -88,18 +89,18 @@ test_that("extract_piece_of_code works", {
   )
 })
 
-test_that("read_raw_ast_nodes works", {
-  caso_1 <- read_rds("data/info_read_raw_ast_nodes.rds")
-  expect_equal(
-    caso_1$function_output, 
-    read_raw_ast_nodes(
-      code_location = "data/caso1_read_raw_ast_nodes/code.java",
-      output_location = "data/caso1_read_raw_ast_nodes/code.xml",
-      pmd_location = "C:/doutorado/AnaliseTwitter4j/pmd/bin",
-      blockrules_location = "data/blockrules/blockrules.xml"
-    )
-  )
-})
+# test_that("read_raw_ast_nodes works", {
+#   caso_1 <- read_rds("data/info_read_raw_ast_nodes.rds")
+#   expect_equal(
+#     caso_1$function_output, 
+#     read_raw_ast_nodes(
+#       code_location = "data/caso1_read_raw_ast_nodes/code.java",
+#       output_location = "data/caso1_read_raw_ast_nodes/code.xml",
+#       pmd_location = "C:/doutorado/AnaliseTwitter4j/pmd/bin",
+#       blockrules_location = "data/blockrules/blockrules.xml"
+#     )
+#   )
+# })
 
 
 test_that("generate_ast_tree_from_raw_nodes works", {
@@ -384,143 +385,354 @@ test_that("calculate_features_from_versions works with no method", {
 #     log = "log-26-27"
 #   )
 #   tictoc::toc()
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_14",
-    dir_new <-  "C:/doutorado/ArgoUML/0_15",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-14-15"
-  )
-  tictoc::toc()
-  
-  
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_19",
-    dir_new <-  "C:/doutorado/ArgoUML/0_20",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-19-20"
-  )
-  tictoc::toc()
-  
-
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_18",
-    dir_new <-  "C:/doutorado/ArgoUML/0_19",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-18-19"
-  )
-  tictoc::toc()
-
-  
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_17",
-    dir_new <-  "C:/doutorado/ArgoUML/0_18",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-17-18"
-  )
-  tictoc::toc()
-  
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_16",
-    dir_new <-  "C:/doutorado/ArgoUML/0_17",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-16-17"
-  )
-  tictoc::toc()
-  
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_15",
-    dir_new <-  "C:/doutorado/ArgoUML/0_16",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-15-16"
-  )
-  tictoc::toc()
-  
-
-  
-  tictoc::tic("compare_versions")
-  output_function <- compare_versions(
-    dir_old <- "C:/doutorado/ArgoUML/0_14",
-    dir_new <-  "C:/doutorado/ArgoUML/0_15",
-    parallel = TRUE,
-    resume = TRUE,
-    log = "log-14-15"
-  )
-  tictoc::toc()
-  
-  
-  
-  
-#   #   # 
-# #   # output <- read_rds("data/output_compare_versions.rds")
-# #   # 
-# # #   expect_equal(
-# # #     output,
-# # #     output_function
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_14",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_15",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-14-15"
+#   )
+#   tictoc::toc()
+#   
+#   
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_19",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_20",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-19-20"
+#   )
+#   tictoc::toc()
+#   
+# 
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_18",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_19",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-18-19"
+#   )
+#   tictoc::toc()
+# 
+#   
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_17",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_18",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-17-18"
+#   )
+#   tictoc::toc()
+#   
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_16",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_17",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-16-17"
+#   )
+#   tictoc::toc()
+#   
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_15",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_16",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-15-16"
+#   )
+#   tictoc::toc()
+#   
+# 
+#   
+#   tictoc::tic("compare_versions")
+#   output_function <- compare_versions(
+#     dir_old <- "C:/doutorado/ArgoUML/0_14",
+#     dir_new <-  "C:/doutorado/ArgoUML/0_15",
+#     parallel = TRUE,
+#     resume = TRUE,
+#     log = "log-14-15"
+#   )
+#   tictoc::toc()
+#   
+#   
+#   
+#   
+# #   #   # 
+# # #   # output <- read_rds("data/output_compare_versions.rds")
+# # #   # 
+# # # #   expect_equal(
+# # # #     output,
+# # # #     output_function
+# # # #   )
+# # # #   
+# # # #   
+# # # # })
+# # # 
+# # # # 
+# # # # # 
+# # # teste <- calculate_features_from_versions(
+# # #   code_file_new = "data\eclipse_novo",
+# # #   code_file_old = "data\eclipse_velho",
+# # #   pmd_path = "pmd/bin/pmd.bat"
+# # # )
+# # # # # 
+# # # # # 
+# #       # # # # 
+# # # # # # teste <- calculate_features_from_versions(
+# # # # # #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
+# # # # # #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
+# # # # # #   pmd_path = "pmd/bin/pmd.bat"
+# # # # # # )
+# # # # # # 
+# # # # # # 
+# # # # # # 
+# # # # # # 
+# # # # # # c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
+# # # # # # c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
+# # # 
+# # # 
+# # # 
+# # # 
+# # # 
+# # # 
+# # # 
+# # # arquivos <- read_rds("data/log/df.rds") %>% 
+# # #   mutate(
+# # #     teste = map(.x = str_glue("data/log/{id}.rds"), read_rds)
 # # #   )
-# # #   
-# # #   
-# # # })
+# # # 
+# # # 
+# # # 
+# # # 
+# # # teste <-  read_rds("antes_erro.rds")
+# # # 
+# # # teste %>% 
+# # # select(
+# # #   .data$beginline,
+# # #   .data$endline,
+# # #   .data$rule,
+# # #   .data$id_group,
+# # #   .data$method,
+# # #   .data$rule_alert,
+# # #   .data$code
+# # # ) 
+# # # 
+# # # 
+# # # 
+# # # 
+# # # 
+# #   
 # # 
 # # # 
 # # # # 
-# # teste <- calculate_features_from_versions(
-# #   code_file_new = "data\eclipse_novo",
-# #   code_file_old = "data\eclipse_velho",
-# #   pmd_path = "pmd/bin/pmd.bat"
+# # # 
+# # # 
+# # # 
+# # # alert <- read_rds("graphs_from_alerts_new.rds")
+# # # 
+# # # 
+# # # 
+# # 
+# # 
+# # 
+# # # 
+# # # list <-  read_rds("data/log/df.rds") %>% 
+# # #   filter(id %in% c(1877, 1421))
+# #   
+# #   
+# #   
+# #   
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_24",
+# #   dest_file = "comments_24.rds"
 # # )
-# # # # 
-# # # # 
-#       # # # # 
-# # # # # teste <- calculate_features_from_versions(
-# # # # #   code_file_new = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
-# # # # #   code_file_old = "c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java",
-# # # # #   pmd_path = "pmd/bin/pmd.bat"
-# # # # # )
-# # # # # 
-# # # # # 
-# # # # # 
-# # # # # 
-# # # # # c:/doutorado/eclipse/eclipse-R4_3/eclipse-R4_3/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
-# # # # # c:/doutorado/eclipse/eclipse-R4_4/eclipse-R4_4/platform-core/plugins/org.eclipse.core.filesystem.ftp/src/org/eclipse/core/internal/filesystem/ftp/FTPUtil.java
+# #   
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_25",
+# #   dest_file = "comments_25.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_26",
+# #   dest_file = "comments_26.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_27",
+# #   dest_file = "comments_27.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_28",
+# #   dest_file = "comments_28.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_29",
+# #   dest_file = "comments_29.rds"
+# # )
+# # 
+# # 
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_30",
+# #   dest_file = "comments_30.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_31",
+# #   dest_file = "comments_31.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_32",
+# #   dest_file = "comments_32.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_33",
+# #   dest_file = "comments_33.rds"
+# # )
+# # 
+# # extract_comments_from_directory(
+# #   dir = "C:/doutorado/ArgoUML/0_34",
+# #   dest_file = "comments_34.rds"
+# # )
 # # 
 # # 
 # # 
 # # 
+# # library(tidyverse)
+# # library(tidygraph)
+# # library(furrr)
+# # 
+# # dir <- "C:/doutorado/resultados/log-33-34"
 # # 
 # # 
-# # 
-# # arquivos <- read_rds("data/log/df.rds") %>% 
-# #   mutate(
-# #     teste = map(.x = str_glue("data/log/{id}.rds"), read_rds)
+# # categorised_alerts <- list.files(
+# #   str_glue("{dir}/categorised_alerts"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(categorised_alerts = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(
+# #     id,
+# #     categorised_alerts
 # #   )
 # # 
 # # 
+# # executions <- list.files(
+# #   str_glue("{dir}/execution"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(executions = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(
+# #     executions
+# #   )
 # # 
 # # 
-# # teste <-  read_rds("antes_erro.rds")
+# # features <- list.files(
+# #   str_glue("{dir}/features"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(features = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(features)
 # # 
-# # teste %>% 
-# # select(
-# #   .data$beginline,
-# #   .data$endline,
-# #   .data$rule,
-# #   .data$id_group,
-# #   .data$method,
-# #   .data$rule_alert,
-# #   .data$code
-# # ) 
+# # 
+# # graph_old_with_alert <- list.files(
+# #   str_glue("{dir}/graph_old_with_alert"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(graph_old_with_alert = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(
+# #     graph_old_with_alert 
+# #   )
+# # 
+# # 
+# # graph_new_with_alert <- list.files(
+# #   str_glue("{dir}/graph_new_with_alert"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(graph_new_with_alert = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(graph_new_with_alert)
+# # 
+# # versions_crossed <- list.files(
+# #   str_glue("{dir}/versions_crossed"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(versions_crossed = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(versions_crossed)
+# # 
+# # versions_executed <- list.files(
+# #   str_glue("{dir}/versions_crossed"), 
+# #   full.names = TRUE
+# # ) %>% 
+# #   enframe(name = "id", value = "file") %>% 
+# #   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
+# #   mutate(versions_executed = future_map(
+# #     .x = file,
+# #     .f = read_rds,
+# #     .progress = TRUE
+# #   )) %>% 
+# #   select(versions_executed)
+# # 
+# # 
+# # output <- bind_cols(
+# #   categorised_alerts,
+# #   executions,
+# #   features,
+# #   graph_new_with_alert,
+# #   graph_old_with_alert,
+# #   versions_crossed,
+# #   versions_executed
+# #   
+# #   
+# # )
+# # 
+# # 
+# # 
+# # 
 # # 
 # # 
 # # 
@@ -528,320 +740,269 @@ test_that("calculate_features_from_versions works with no method", {
 # # 
 #   
 # 
-# # 
-# # # 
-# # 
-# # 
-# # 
-# # alert <- read_rds("graphs_from_alerts_new.rds")
-# # 
-# # 
-# # 
+# teste <- read_results(  dir = "C:/doutorado/resultados/log-15-16",
+#                version_old = 15,
+#                version_new = 16
+# )  
+#   
 # 
+# all_results <- tibble(
+#   version_old = c("9_1", "9_2", "9_3", "9_4", "9_6", "9_7", "9_8", "9_9", "10", "11_1", "11_2", "11_3","11_4",  "12", "13_1", "13_2","13_3", "13_4", "13_5", "13_6",14:33),
+#   version_new = c("9_2", "9_3", "9_4", "9_6", "9_7", "9_8", "9_9", "10", "11_1", "11_2", "11_3","11_4",  "12", "13_1", "13_2", "13_3", "13_4", "13_5", "13_6", 14:34)
+# ) %>%
+#   mutate(
+#     dir = str_glue("C:/doutorado/resultados/log-{version_old}-{version_new}")
+#   ) %>%
+#   mutate(data = pmap(.l = list(dir = dir, version_old = version_old, version_new = version_new), .f = read_results ))
 # 
+# write_rds(all_results, "all_results.rds")
 # 
-# # 
-# # list <-  read_rds("data/log/df.rds") %>% 
-# #   filter(id %in% c(1877, 1421))
+
+
 #   
 #   
 #   
 #   
-# extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_24",
-#   dest_file = "comments_24.rds"
-# )
 #   
-# extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_25",
-#   dest_file = "comments_25.rds"
-# )
+# completo <- list.files("C:/doutorado/resultados/log-13_6-14/graph_new_with_alert") %>% enframe()
 # 
-# extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_26",
-#   dest_file = "comments_26.rds"
-# )
+# faltando <- list.files("C:/doutorado/resultados/log-13_6-14/execution") %>% enframe()
 # 
-# extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_27",
-#   dest_file = "comments_27.rds"
-# )
-# 
-# extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_28",
-#   dest_file = "comments_28.rds"
-# )
-# 
-# extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_29",
-#   dest_file = "comments_29.rds"
-# )
-# 
+# teste <- completo %>% anti_join(faltando, by =c("value"))
 # 
 # 
 # extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_30",
-#   dest_file = "comments_30.rds"
+#   dir = "C:/doutorado/ArgoUML/0_15",
+#   dest_file = "comments_15.rds"
 # )
 # 
 # extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_31",
-#   dest_file = "comments_31.rds"
+#   dir = "C:/doutorado/ArgoUML/0_16",
+#   dest_file = "comments_16.rds"
 # )
 # 
 # extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_32",
-#   dest_file = "comments_32.rds"
+#   dir = "C:/doutorado/ArgoUML/0_17",
+#   dest_file = "comments_17.rds"
 # )
 # 
 # extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_33",
-#   dest_file = "comments_33.rds"
+#   dir = "C:/doutorado/ArgoUML/0_18",
+#   dest_file = "comments_18.rds"
 # )
 # 
 # extract_comments_from_directory(
-#   dir = "C:/doutorado/ArgoUML/0_34",
-#   dest_file = "comments_34.rds"
+#   dir = "C:/doutorado/ArgoUML/0_19",
+#   dest_file = "comments_19.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_20",
+#   dest_file = "comments_20.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_21",
+#   dest_file = "comments_21.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_22",
+#   dest_file = "comments_22.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_23",
+#   dest_file = "comments_23.rds"
+# )
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_14",
+#   dest_file = "comments_14.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_14",
+#   dest_file = "comments_14.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_13_6",
+#   dest_file = "comments_13_6.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_13_5",
+#   dest_file = "comments_13_5.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_13_4",
+#   dest_file = "comments_13_4.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_13_3",
+#   dest_file = "comments_13_3.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_13_2",
+#   dest_file = "comments_13_2.rds"
+# )
+
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_13_1",
+#   dest_file = "comments_13_1.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_12",
+#   dest_file = "comments_12.rds"
+# )
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_4",
+#   dest_file = "comments_11_4.rds"
+# )
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_3",
+#   dest_file = "comments_11_3.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_2",
+#   dest_file = "comments_11_2.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_1",
+#   dest_file = "comments_11_1.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_12",
+#   dest_file = "comments_12.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_4",
+#   dest_file = "comments_11_4.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_3",
+#   dest_file = "comments_11_3.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_2",
+#   dest_file = "comments_11_2.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_11_1",
+#   dest_file = "comments_11_1.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_10",
+#   dest_file = "comments_10.rds"
+# )
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_9",
+#   dest_file = "comments_9_9.rds"
+# )
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_8",
+#   dest_file = "comments_9_8.rds"
+# )
+# 
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_7",
+#   dest_file = "comments_9_7.rds"
+# )
+# 
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_6",
+#   dest_file = "comments_9_6.rds"
+# )
+# 
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_4",
+#   dest_file = "comments_9_4.rds"
+# )
+# 
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_3",
+#   dest_file = "comments_9_3.rds"
+# )
+# 
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_2",
+#   dest_file = "comments_9_2.rds"
+# )
+# 
+# 
+# 
+# extract_comments_from_directory(
+#   dir = "C:/doutorado/ArgoUML/0_9_1",
+#   dest_file = "comments_9_1.rds"
 # )
 # 
 # 
 # 
 # 
-# library(tidyverse)
-# library(tidygraph)
-# library(furrr)
-# 
-# dir <- "C:/doutorado/resultados/log-33-34"
 # 
 # 
-# categorised_alerts <- list.files(
-#   str_glue("{dir}/categorised_alerts"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(categorised_alerts = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(
-#     id,
-#     categorised_alerts
-#   )
-# 
-# 
-# executions <- list.files(
-#   str_glue("{dir}/execution"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(executions = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(
-#     executions
-#   )
-# 
-# 
-# features <- list.files(
-#   str_glue("{dir}/features"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(features = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(features)
-# 
-# 
-# graph_old_with_alert <- list.files(
-#   str_glue("{dir}/graph_old_with_alert"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(graph_old_with_alert = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(
-#     graph_old_with_alert 
-#   )
-# 
-# 
-# graph_new_with_alert <- list.files(
-#   str_glue("{dir}/graph_new_with_alert"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(graph_new_with_alert = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(graph_new_with_alert)
-# 
-# versions_crossed <- list.files(
-#   str_glue("{dir}/versions_crossed"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(versions_crossed = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(versions_crossed)
-# 
-# versions_executed <- list.files(
-#   str_glue("{dir}/versions_crossed"), 
-#   full.names = TRUE
-# ) %>% 
-#   enframe(name = "id", value = "file") %>% 
-#   mutate(number = str_match(file, pattern = "[0-9]*.rds") %>% str_remove(".rds")) %>% 
-#   mutate(versions_executed = future_map(
-#     .x = file,
-#     .f = read_rds,
-#     .progress = TRUE
-#   )) %>% 
-#   select(versions_executed)
-# 
-# 
-# output <- bind_cols(
-#   categorised_alerts,
-#   executions,
-#   features,
-#   graph_new_with_alert,
-#   graph_old_with_alert,
-#   versions_crossed,
-#   versions_executed
-#   
-#   
-# )
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-  
-
-teste <- read_results(  dir = "C:/doutorado/resultados/log-15-16",
-               version_old = 15,
-               version_new = 16
-)  
-  
-
-all_results <- tibble(
-  version_old = c("13_2","13_3", "13_4", "13_5", "13_6",14:33),
-  version_new = c("13_3", "13_4", "13_5", "13_6", 14:34)
-) %>% 
-  mutate(
-    dir = str_glue("C:/doutorado/resultados/log-{version_old}-{version_new}")
-  ) %>% 
-  mutate(data = pmap(.l = list(dir = dir, version_old = version_old, version_new = version_new), .f = read_results ))
-  
-  
-  
-  
-  
-completo <- list.files("C:/doutorado/resultados/log-13_6-14/graph_new_with_alert") %>% enframe()
-
-faltando <- list.files("C:/doutorado/resultados/log-13_6-14/execution") %>% enframe()
-
-teste <- completo %>% anti_join(faltando, by =c("value"))
 
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_15",
-  dest_file = "comments_15.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_16",
-  dest_file = "comments_16.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_17",
-  dest_file = "comments_17.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_18",
-  dest_file = "comments_18.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_19",
-  dest_file = "comments_19.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_20",
-  dest_file = "comments_20.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_21",
-  dest_file = "comments_21.rds"
-)
-
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_22",
-  dest_file = "comments_22.rds"
-)
-
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_23",
-  dest_file = "comments_23.rds"
+teste <- decorate_code_and_alerts(
+  strings = caso_1$strings,
+  alerts = caso_1$alerts,
+  region_only = caso_1$region_only,
+  region_size = caso_1$region_size,
+  use_mnemonic = TRUE
 )
 
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_14",
-  dest_file = "comments_14.rds"
+teste <- read_and_decorate_code_and_alerts_mapped(
+  "little-tree/code.java", 
+  saida_alg2$versions_executed$pmd_output[[1]], 
+  "little-tree-new/code.java", 
+  saida_alg2$versions_executed$pmd_output[[2]],
+  saida_alg2$versions_crossed$lines_map[[1]], 
+  TRUE, 
+  20, 
+  TRUE
 )
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_14",
-  dest_file = "comments_14.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_13_6",
-  dest_file = "comments_13_6.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_13_5",
-  dest_file = "comments_13_5.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_13_4",
-  dest_file = "comments_13_4.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_13_3",
-  dest_file = "comments_13_3.rds"
-)
 
-extract_comments_from_directory(
-  dir = "C:/doutorado/ArgoUML/0_13_2",
-  dest_file = "comments_13_2.rds"
-)

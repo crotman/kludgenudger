@@ -355,17 +355,31 @@ map_lines <- function(file, lines_prev_param, lines_post_param){
 
 
 aggregate_alerts_by_line <-
-  function(alerts, trunc_rule_length_param = NA_real_) {
-    trunc_rule_length <-
-      if_else(is.na(trunc_rule_length_param),
-              10,
-              trunc_rule_length_param)
+  function(
+    alerts, 
+    trunc_rule_length_param = NA_real_,
+    use_mnemonic = FALSE
+    ) {
     
-    alerts %>%
+
+    if(use_mnemonic){
+      trunc_rule_length <- 10000
+    }
+    else{
+      trunc_rule_length <-
+        if_else(is.na(trunc_rule_length_param),
+                10,
+                trunc_rule_length_param)
+    }
+    
+    output <- alerts %>%
       mutate(beginline = as.integer(.data$beginline)) %>%
       group_by(.data$beginline,
                .data$rule) %>%
       summarise(n = n()) %>%
+      mutate(
+        rule_mnemonic = extract_mnemonic(.data$rule)        
+      ) %>% 
       mutate(rule = if_else(
         is.na(trunc_rule_length_param),
         .data$rule,
@@ -376,7 +390,10 @@ aggregate_alerts_by_line <-
           ellipsis = ""
         ) %>% as.character()
       )) %>%
-      mutate(rule = if_else(n == 1, .data$rule, str_glue("{.data$rule}({n})") %>% as.character()))
+      mutate(
+        rule = if_else(n == 1, .data$rule, str_glue("{.data$rule}({n})") %>% as.character()),
+        rule_mnemonic = if_else(n == 1, .data$rule_mnemonic, str_glue("{.data$rule_mnemonic}({n})") %>% as.character())
+      )
     
   }
 
@@ -404,28 +421,38 @@ decorate_code_and_alerts <-
            region_only = FALSE,
            region_size = 3,
            size_line_of_code = 160,
-           length_alert_name = 35) {
+           length_alert_name = 35,
+           use_mnemonic = FALSE
+                 
+    ) {
     
-    # for debug
-    # strings <- read_lines("old/code.java")
-    # alerts <- examples_executed$pmd_output[[1]]
-    # region_only = TRUE
-    # region_size = 3
-    
+
     alert <- alerts %>%
       as_tibble() %>%
       select(.data$beginline, .data$rule) %>%
-      aggregate_alerts_by_line()
+      aggregate_alerts_by_line() 
+
+    if(use_mnemonic){
+      length_alert_name_with_mnemonic <- alert$rule_mnemonic %>% str_length() %>% max(na.rm = TRUE)
+    }
     
-    
-    
+
     max_rule <- alert %>%
-      pull(.data$rule) %>%
+      mutate(
+        field_to_be_considered = 
+          if_else(
+            use_mnemonic,
+            .data$rule_mnemonic,
+            .data$rule
+          )
+      ) %>% 
+      pull(.data$field_to_be_considered) %>%
       str_length() %>%
       max(na.rm = TRUE)
     
     
-    strings %>%
+    
+    output <- strings %>%
       enframe(name = "line", value = "code") %>%
       left_join(alert,
                 by = c("line" = "beginline")) %>%
@@ -462,14 +489,42 @@ decorate_code_and_alerts <-
         .data$min_dist <= region_size + 1
       ) %>% 
       ungroup() %>% 
-      replace_na(list(rule = "")) %>%
+      replace_na(
+        list(
+          rule = "",
+          rule_mnemonic = ""
+        )
+      ) %>%
       mutate(
         line = as.character(.data$line) %>%  str_pad(width = 3, side = "left"),
-        code = .data$code %>%  str_trunc(width = size_line_of_code - length_alert_name, ellipsis = "..."),
-        rule = .data$rule %>% str_pad(width = length_alert_name, side = "right"),
-        final_code = str_glue("/*{.data$line}-{.data$rule}*/{code}")
+        code = .data$code %>%  str_trunc(width = size_line_of_code - length_alert_name_with_mnemonic, ellipsis = "..."),
+        final_rule =
+          if_else(
+            replicate(n = .data$rule_mnemonic %>% length(),use_mnemonic),
+            .data$rule_mnemonic %>% str_pad(width = length_alert_name_with_mnemonic, side = "right"),
+            .data$rule %>% str_pad(width = length_alert_name_with_mnemonic, side = "right")
+          )
+        ,
+        final_code = str_glue("/*{.data$line}-{.data$final_rule}*/{code}")
       ) %>%
-      pull(.data$final_code)
+      pull(.data$final_code) %>%
+      identity()
+
+    if(use_mnemonic){
+
+      complement <- alert %>% 
+        mutate(
+          legend = str_glue("{rule_mnemonic}: {rule}")
+        ) %>% 
+        pull(legend) %>% 
+        unique() %>% 
+        str_flatten(collapse = "\n")
+
+      output <- c(output,"\n", complement)
+    }
+    
+    output
+    
   }
 
 #'  Make two versions of lines of code look nice, side by side, in markdown, with their alerts
@@ -499,7 +554,8 @@ decorate_code_alerts_mapped <-
            region_only = FALSE,
            region_size = 3,
            length_alert_name_side_by_side = 14,
-           size_line_of_code_side_by_side = 77           
+           size_line_of_code_side_by_side = 77,           
+           use_mnemonic = FALSE
            ) {
     # for debug
     # strings_old_param <-  read_lines("old/code.java")
@@ -510,7 +566,7 @@ decorate_code_alerts_mapped <-
     # region_only = FALSE
     # region_size = 3      
     
-    
+
     map <- map_param %>%
       select(line_old = .data$map_remove,
              line_new = .data$map_add)
@@ -519,15 +575,31 @@ decorate_code_alerts_mapped <-
       strings_old_param %>% enframe(name = "line_old", value = "code_old") %>% replace_na(list(code_old = ""))
     
     alerts_old <- alerts_old_param %>%
-      aggregate_alerts_by_line(trunc_rule_length_param = length_alert_name_side_by_side) %>%
-      select(line_old = .data$beginline, rule_old = .data$rule)
+      aggregate_alerts_by_line(trunc_rule_length_param = length_alert_name_side_by_side, use_mnemonic = TRUE) %>%
+      select(
+        line_old = .data$beginline, 
+        rule_old = .data$rule,
+        rule_mnemonic_old = .data$rule_mnemonic,
+      )
     
     strings_new <-
       strings_new_param %>% enframe(name = "line_new", value = "code_new") %>% replace_na(list(code_new = ""))
     
     alerts_new <- alerts_new_param %>%
-      aggregate_alerts_by_line(trunc_rule_length_param = length_alert_name_side_by_side) %>%
-      select(line_new = .data$beginline, rule_new = .data$rule)
+      aggregate_alerts_by_line(trunc_rule_length_param = length_alert_name_side_by_side, use_mnemonic = TRUE) %>%
+      select(
+        line_new = .data$beginline, 
+        rule_new = .data$rule,
+        rule_mnemonic_new = .data$rule_mnemonic,
+      )
+    
+    max_mnemonic_length <- c(alerts_new$rule_mnemonic_new, alerts_old$rule_mnemonic_old) %>% 
+      str_length() %>% 
+      max(na.rm = TRUE)
+
+    if(use_mnemonic){
+      length_alert_name_side_by_side <- max_mnemonic_length
+    }
     
     
     saida <- map %>%
@@ -589,7 +661,10 @@ decorate_code_alerts_mapped <-
           code_old = "",
           code_new = "",
           rule_old = "",
-          rule_new = ""
+          rule_new = "",
+          rule_mnemonic_old = "",
+          rule_mnemonic_new = ""
+          
         )
       ) %>%
       mutate(
@@ -618,15 +693,60 @@ decorate_code_alerts_mapped <-
         rule_old = .data$rule_old %>% str_pad(width = length_alert_name_side_by_side + 3, side = "right"),
         rule_new = .data$rule_new %>% str_pad(width = length_alert_name_side_by_side + 3, side = "right"),
         
+        rule_old_final = 
+          if_else(
+            replicate(n = .data$rule_mnemonic_old %>% length() , expr = use_mnemonic),
+            rule_mnemonic_old,
+            rule_old
+          ),
         
+        rule_new_final = 
+          if_else(
+            replicate(n = .data$rule_mnemonic_new %>% length() , expr = use_mnemonic),
+            rule_mnemonic_new,
+            rule_new
+          ),
         
+
         final_code = str_glue(
-          "/*{.data$line_old}-{.data$rule_old}*/{.data$code_old}/*{.data$line_new}-{.data$rule_new}*/{.data$code_new}"
+          "/*{.data$line_old}-{.data$rule_old_final}*/{.data$code_old}/*{.data$line_new}-{.data$rule_new_final}*/{.data$code_new}"
         )
       ) %>%
       pull(.data$final_code) 
     
     
+    if(use_mnemonic){
+      
+      complement_new <- alerts_new %>% 
+        rename_with(
+          .fn = ~str_remove(string = .x, pattern = "_new")
+        ) %>% 
+        mutate(
+          legend = str_glue("{rule_mnemonic}: {rule}")
+        )  
+        
+      complement_old <- alerts_old %>% 
+        rename_with(
+          .fn = ~str_remove(string = .x, pattern = "_old")
+        ) %>% 
+        mutate(
+          legend = str_glue("{rule_mnemonic}: {rule}")
+        )  
+      
+        
+      complement <- complement_new %>% 
+        bind_rows(
+          complement_old
+        ) %>% 
+        pull(legend) %>% 
+        unique() %>% 
+        str_flatten(collapse = "\n")
+      
+      saida <- c(saida,"\n", complement)
+    }
+    
+
+    saida
     
   }
 
@@ -660,14 +780,20 @@ read_and_decorate_code <-  function(file) {
 #' @export
 #'
 #' @examples
-read_and_decorate_code_and_alerts <-  function(file, alerts,  region_only = FALSE,
-                                               region_size = 3) {
+read_and_decorate_code_and_alerts <-  function(
+  file, 
+  alerts,  
+  region_only = FALSE,
+  region_size = 3,
+  use_mnemonic = FALSE
+  
+) {
   #for debug
   # file <-  "old/code.java"
   # alerts <- examples_executed$pmd_output[[1]]
   
   readr::read_lines(file) %>%
-    decorate_code_and_alerts(alerts = alerts, region_only = region_only, region_size = region_size) %>%
+    decorate_code_and_alerts(alerts = alerts, region_only = region_only, region_size = region_size, use_mnemonic = use_mnemonic) %>%
     as.character()
 }
 
@@ -697,7 +823,9 @@ read_and_decorate_code_and_alerts_mapped <-
            alerts_new,
            map,             
            region_only = FALSE,
-           region_size = 3) {
+           region_size = 3,
+           use_mnemonic = FALSE
+    ) {
     # For debug
     # file_old <- "old/code.java"
     # alerts_old <- examples_executed$pmd_output[[1]]
@@ -715,7 +843,8 @@ read_and_decorate_code_and_alerts_mapped <-
       alerts_new_param = alerts_new,
       map_param = map,
       region_only = region_only,
-      region_size = region_size            
+      region_size = region_size,
+      use_mnemonic = use_mnemonic
     ) %>%
       as.character()
     
@@ -3053,6 +3182,18 @@ read_results <-  function(dir, version_old, version_new){
   output
 
 }
+
+
+extract_mnemonic <- function(big_name){
+
+  output <- str_match_all(big_name, pattern = "[A-Z]") %>% 
+    map(.f = str_flatten) %>% 
+    unlist()
+  
+  output
+  
+}
+
 
 
 
