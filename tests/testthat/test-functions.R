@@ -45,7 +45,7 @@ test_that("decorate_code_and_alerts works", {
   caso_1 <- read_rds("data/info_decorate_code_and_alerts.rds")
   expect_equal(
     caso_1$function_output, 
-    decorate_code_and_alerts(
+    output <- decorate_code_and_alerts(
       strings = caso_1$strings,
       alerts = caso_1$alerts,
       region_only = caso_1$region_only,
@@ -68,9 +68,8 @@ test_that("decorate_code_alerts_mapped works", {
       alerts_new_param = caso_1$alerts_new_param,
       map_param = caso_1$map_param,
       region_only = caso_1$region_only,
-      region_size = caso_1$region_size,
-      use_mnemonic = TRUE
-      
+      region_size = caso_1$region_size
+
     )
   )
 })
@@ -981,28 +980,102 @@ test_that("calculate_features_from_versions works with no method", {
 
 
 
-teste <- decorate_code_and_alerts(
-  strings = caso_1$strings,
-  alerts = caso_1$alerts,
-  region_only = caso_1$region_only,
-  region_size = caso_1$region_size,
-  use_mnemonic = TRUE
+# teste <- decorate_code_and_alerts(
+#   strings = caso_1$strings,
+#   alerts = caso_1$alerts,
+#   region_only = caso_1$region_only,
+#   region_size = caso_1$region_size,
+#   use_mnemonic = TRUE
+# )
+# 
+# 
+# teste <- read_and_decorate_code_and_alerts_mapped(
+#   "little-tree/code.java", 
+#   saida_alg2$versions_executed$pmd_output[[1]], 
+#   "little-tree-new/code.java", 
+#   saida_alg2$versions_executed$pmd_output[[2]],
+#   saida_alg2$versions_crossed$lines_map[[1]], 
+#   TRUE, 
+#   20, 
+#   TRUE,
+#   size_line_of_code_side_by_side = 60
+# )
+# 
+# 
+# teste
+# 
+
+
+# caso <- list(
+#   strings_old_param = caso_1$strings_old_param,
+#   alerts_old_param = caso_1$alerts_old_param,
+#   strings_new_param = caso_1$strings_new_param,
+#   alerts_new_param = caso_1$alerts_new_param,
+#   map_param = caso_1$map_param,
+#   region_only = caso_1$region_only,
+#   region_size = caso_1$region_size,
+#   function_output = function_output
+# )
+# 
+# write_rds(caso, "data/info_decorate_code_alerts_mapped.rds" )
+# 
+
+# 
+# saida_alg2 <- kludgenudger::calculate_features_from_versions(
+#   code_file_old = "little-tree/code.java",
+#   code_file_new = "little-tree-new/code.java",
+#   pmd_path = pmd_path,
+#   glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
+#   mostra_new = c(3, 4, 5, 17),
+#   mostra_old =  c(3, 4, 6, 15, 13, 15),
+#   blockrules_location = "data/blockrules/blockrules_simple.xml"
+# )  
+# 
+# 
+# chart_graph_new <- kludgenudger::show_ast(
+#   saida_alg2$graph_new_with_alert,
+#   size_label = 3,
+#   show_label = TRUE,
+#   alpha_label = "mostra",
+#   name_field = "glue",
+#   aspect = 0.5
+#   
+# )
+# 
+# chart_graph_old <- kludgenudger::show_ast(
+#   saida_alg2$graph_old_with_alert,
+#   size_label = 3,
+#   show_label = "TRUE",
+#   alpha_label = "mostra",
+#   name_field = "glue",
+#   aspect = 0.5
+#   
+# )
+# 
+# 
+# 
+# chart_graph_old / chart_graph_new
+# 
+
+
+kludgenudger::show_ast(
+  saida_alg2$graphs_from_alerts_old %>%  rename( id_alert = id_alert_old, graph = graph_old) %$% graph[[1]] , 
+  size_label = 3,
+  aspect = 2,
+  nudge_x = 0.2
 )
 
 
-teste <- read_and_decorate_code_and_alerts_mapped(
-  "little-tree/code.java", 
-  saida_alg2$versions_executed$pmd_output[[1]], 
-  "little-tree-new/code.java", 
-  saida_alg2$versions_executed$pmd_output[[2]],
-  saida_alg2$versions_crossed$lines_map[[1]], 
-  TRUE, 
-  20, 
-  TRUE
-)
+
+saida_alg2 <- calculate_features_from_versions(
+  code_file_old = "little-tree/code.java",
+  code_file_new = "little-tree-new/code.java",
+  pmd_path = pmd_path,
+  glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
+  mostra_new = c(3, 4, 5, 17),
+  mostra_old =  c(3, 4, 6, 15, 13, 15),
+  blockrules_location = "data/blockrules/blockrules_simple.xml"
+)  
 
 
-
-
-
-
+  

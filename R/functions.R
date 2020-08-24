@@ -8,7 +8,6 @@ debuga <- function(x, esse){
 #' 
 #' 
 #' 
-#'
 #' @param pmd_path path to PMD
 #' @param code_path path to code file
 #' @param rule_path path to rule
@@ -434,6 +433,8 @@ decorate_code_and_alerts <-
 
     if(use_mnemonic){
       length_alert_name_with_mnemonic <- alert$rule_mnemonic %>% str_length() %>% max(na.rm = TRUE)
+    }else{
+      length_alert_name_with_mnemonic = length_alert_name
     }
     
 
@@ -662,8 +663,8 @@ decorate_code_alerts_mapped <-
           code_new = "",
           rule_old = "",
           rule_new = "",
-          rule_mnemonic_old = "",
-          rule_mnemonic_new = ""
+          rule_mnemonic_old = str_dup(' ', times = length_alert_name_side_by_side),
+          rule_mnemonic_new = str_dup(' ', times = length_alert_name_side_by_side)
           
         )
       ) %>%
@@ -824,7 +825,8 @@ read_and_decorate_code_and_alerts_mapped <-
            map,             
            region_only = FALSE,
            region_size = 3,
-           use_mnemonic = FALSE
+           use_mnemonic = FALSE,
+           size_line_of_code_side_by_side = 77
     ) {
     # For debug
     # file_old <- "old/code.java"
@@ -844,7 +846,8 @@ read_and_decorate_code_and_alerts_mapped <-
       map_param = map,
       region_only = region_only,
       region_size = region_size,
-      use_mnemonic = use_mnemonic
+      use_mnemonic = use_mnemonic,
+      size_line_of_code_side_by_side = size_line_of_code_side_by_side
     ) %>%
       as.character()
     
@@ -1104,7 +1107,9 @@ show_ast <-  function(
   name_field = "name", 
   show_label = TRUE,
   title = "",
-  aspect = 1.3
+  aspect = 1.3,
+  nudge_x = 0,
+  nudge_y = 0
 ){
   
   #graph_dfs_tree <- grafo
@@ -1136,7 +1141,9 @@ show_ast <-  function(
         label.padding =  0.4,
         alpha = alpha_label,
         stroke = 4,
-        hjust = "left"
+        hjust = "left",
+        nudge_x = nudge_x,
+        nudge_y = nudge_y
       )
     }
     else{
@@ -1149,7 +1156,9 @@ show_ast <-  function(
         repel = TRUE,
         size = size_label,
         label.padding = 0.3,
-        stroke = 4
+        stroke = 4,
+        nudge_x = nudge_x,
+        nudge_y = nudge_y
       )
     }
     
@@ -1158,8 +1167,7 @@ show_ast <-  function(
     layer <- NULL
   }
   
-  
-  
+
   ggraph(graph_dfs_tree, layout = "tree" ) +
     geom_edge_link(arrow = arrow(length = unit(2, 'mm')), 
                    end_cap = circle(3, 'mm'), start_cap = circle(3, 'mm')) +    
@@ -1171,11 +1179,8 @@ show_ast <-  function(
     ) +
     geom_node_text(
       aes(label = .data[[node_text_field]]),
-      size = 5
+      size = 4
     ) +
-    coord_flip() +
-    scale_x_reverse(expand =c(-1.2,1.2)) +
-    scale_y_continuous(expand =c(-1.2,1.2)) +
     theme_void() +
     theme(
       aspect.ratio = aspect  ,
@@ -1254,6 +1259,7 @@ cross_versions <- function(
     ))
   
 
+
   saida
    
 }
@@ -1277,6 +1283,8 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   
   # graph_new <- graphs_from_alerts_new$graph_new[[2]]
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
+  
+  
 
     alert_old <- graph_old %>% 
       activate("nodes")  %>% 
@@ -1662,6 +1670,7 @@ calculate_features_from_versions <- function(
   # rule_path = "rulesets/java/quickstart.xml"
   # blockrules_location = "data/blockrules/blockrules.xml"
   # 
+
 
   if(code_new != ""){
     
@@ -2132,6 +2141,7 @@ calculate_features_from_versions <- function(
           graph_old_no_match
         )
       
+
       if(nrow(match_alerts_rest) > 0){
         
         match_alerts_rest <- match_alerts_rest %>% 
