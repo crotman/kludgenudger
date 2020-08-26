@@ -2436,7 +2436,7 @@ extract_comments_from_code <- function(file_path){
     bind_cols(positions_simple_comments)
   
   positions_multi_comments <- str_locate_all(code, "(?s)\\/\\*.+?\\*\\/") %>% 
-    extract2(1) %>%  as_tibble() %>% 
+    extract2(1   ) %>%  as_tibble() %>% 
     rowwise() %>% 
     mutate(
       position = map2(.x = .data$start, .y = .data$end, .f = calculate_position_using_line_breaks  )
