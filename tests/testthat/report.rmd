@@ -212,8 +212,8 @@ saida_alg2 <- kludgenudger::calculate_features_from_versions(
   code_file_new = "little-tree-new/code.java",
   pmd_path = pmd_path,
   glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
-  mostra_new = c(3, 4, 5, 17),
-  mostra_old =  c(3, 4, 6, 15, 13, 15),
+  mostra_new = c(2, 3, 4, 16),
+  mostra_old =  c(2, 3, 5, 14, 12),
   blockrules_location = "data/blockrules/blockrules_simple.xml"
 )  
 
@@ -382,9 +382,97 @@ the line 11 of the old version was fixed.
 ![Source code used in the description of the algorithm](figures/fake.png)
 
 
-\subsection{Using information from git diff, create a relation between the lines}\label{map}
+\subsection{Get alerts for each version}
 
-For each difference stated in the output (the sections of the diff file
+For the new and the old versions, we run PMD alerts using the default rule set as described Section \ref{history}. Table \ref{old_alerts} is created for the old version and Table \ref{new_alerts}, for the new version.
+
+
+```{r}
+
+saida_alg2$versions_executed$pmd_output[[1]] %>% 
+  select(
+    `Kind of node` = rule,
+    `Begin line` = beginline,
+    `Begin column` = begincolumn,
+    `End line` = endline,
+    `End column` = endcolumn
+  ) %>% 
+  kable(
+    caption = "Old version's alerts\\label{old_alerts}"
+  ) %>% 
+  kable_styling(
+    latex_options = c("striped", "HOLD_position")
+  ) 
+
+
+
+```
+
+```{r}
+
+saida_alg2$versions_executed$pmd_output[[2]] %>% 
+  select(
+    `Kind of node` = rule,
+    `Begin line` = beginline,
+    `Begin column` = begincolumn,
+    `End line` = endline,
+    `End column` = endcolumn
+  ) %>% 
+  kable(
+    caption = "New version's alerts\\label{new_alerts}"
+  ) %>% 
+  kable_styling(
+    latex_options = c("striped", "HOLD_position")
+  ) 
+
+
+
+```
+
+\subsection{Create AST for each version}
+
+For each version the algorithm creates a simplified AST as described in Section \ref{ast}. 
+
+In Figure \ref{AST_compare_id_alerts} we can see the ASTs for the old
+and the new versions. We can see the kind of nodes and the PMD alert if
+there is one. In this figures, the numbers in the nodes are meaningless
+and are presented only for reference.
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=12, fig.height=12, fig.cap="Abstract Syntax Trees. New and old versions, with alerts \\label{AST_compare_id_alerts}", fig.pos="H"}
+
+chart_graph_new <- kludgenudger::show_ast(
+  saida_alg2$graph_new_with_alert,
+  size_label = 3,
+  show_label = TRUE,
+  alpha_label = "mostra",
+  name_field = "glue",
+  aspect = 0.5
+  
+)
+
+chart_graph_old <- kludgenudger::show_ast(
+  saida_alg2$graph_old_with_alert,
+  size_label = 3,
+  show_label = "TRUE",
+  alpha_label = "mostra",
+  name_field = "glue",
+  aspect = 0.5
+  
+)
+
+
+
+chart_graph_old / chart_graph_new
+
+
+
+```
+
+
+\subsection{Map new lines to old lines}\label{map}
+
+For each difference stated in the output of git diff (the sections of the diff file
 starting with ``@@''), there is an indication of the number of lines
 removed from the old version and the number of lines added to the new
 one. The line in which the lines are removed from the old version and
@@ -458,8 +546,20 @@ saida_alg2$versions_crossed$lines_map[[1]] %>%
   ) %>% 
   kable_styling(
     font_size = ,
-    latex_options = c("scale_down")
+    latex_options = c("scale_down", "HOLD_position")
   )
+```
+
+
+\subsection{For each pair of new and old alert create features}
+
+
+In the case of the source code we are using as an example, we calculate features for $2 \cdot 1 = 2$ combinations of new and old alerts, since we have 2 old alerts and one new alert.
+
+
+```{r}
+
+
 ```
 
 
@@ -467,41 +567,6 @@ saida_alg2$versions_crossed$lines_map[[1]] %>%
 
 \subsection{Feature engineering} \label{feature_creation}
 
-In Figure \ref{AST_compare_id_alerts} we can see the ASTs for the old
-and the new versions. We can see the kind of nodes and the PMD alert if
-there is one. In this figures, the numbers in the nodes are meaningless
-and are presented only for reference.
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=12, fig.height=12, fig.cap="Abstract Syntax Trees. New and old versions, with alerts \\label{AST_compare_id_alerts}", fig.pos="H"}
-
-chart_graph_new <- kludgenudger::show_ast(
-  saida_alg2$graph_new_with_alert,
-  size_label = 3,
-  show_label = TRUE,
-  alpha_label = "mostra",
-  name_field = "glue",
-  aspect = 0.5
-  
-)
-
-chart_graph_old <- kludgenudger::show_ast(
-  saida_alg2$graph_old_with_alert,
-  size_label = 3,
-  show_label = "TRUE",
-  alpha_label = "mostra",
-  name_field = "glue",
-  aspect = 0.5
-  
-)
-
-
-
-chart_graph_old / chart_graph_new
-
-
-
-```
 
 \begin{itemize}
 \item

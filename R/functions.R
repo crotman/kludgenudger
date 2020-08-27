@@ -1619,6 +1619,7 @@ graph_path_from_alert <- function(graph, id_node){
 #' @param glue_string template of a string that will be passed to str_glue and will be available in the returned info
 #' @param rule_path path to the rules used for the PMD alerts
 #' @param blockrules_location path to the rules for the Abstract Syntax Tree
+#' @param optimize_feature_calculation if true, the features are not calculated for all the combinations of new and old alerts if there is a perfect match
 #' 
 #' @import readr
 #'
@@ -1653,7 +1654,8 @@ calculate_features_from_versions <- function(
   blockrules_location = "data/blockrules/blockrules.xml",
   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
   mostra_old = c(10, 42, 41, 15, 16, 43),
-  glue_string = ""
+  glue_string = "",
+  optimize_feature_calculation = TRUE
   
 ){
   
@@ -2037,6 +2039,7 @@ calculate_features_from_versions <- function(
     if(sum(coordinates$equal) > 0){
       
 
+      
       match_alerts_alg2 <- graphs_from_alerts_new %>%
         inner_join(
           graphs_from_alerts_old,
@@ -2072,12 +2075,19 @@ calculate_features_from_versions <- function(
     }else{
       
 
-      match_alerts_alg2 <- graphs_from_alerts_new %>%
+      if(optimize_feature_calculation){
+        match_alerts_alg2 <- graphs_from_alerts_new %>%
         inner_join(
           graphs_from_alerts_old,
           by = c("rule_alert_new" = "rule_alert_old", "id_group_new" = "id_group_old")
-        ) 
+        )
+      }
+      else{
       
+        match_alerts_alg2 <- tibble(id_alert_new = integer())
+        
+      }
+    
 
       if(nrow(match_alerts_alg2) > 0){
         
