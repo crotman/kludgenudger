@@ -876,135 +876,6 @@ combinations_ld  %>%
 
 ```
 
-\subsubsection {Normalized line distance (block size)}
-
-Normalized line distance (block size): this is the Line Distance of Section \ref{line_distance} normalized by the size of the last common node. The last common node is found following the path o ths AST from the root to the node related to the alert. Figure \ref{path_root_to_node} shows the two ASTs of the first combination of new and old alerts.
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%", fig.width=10, fig.height=10, fig.cap="Abstract Syntax Tree. Nodes with the same number are equivalent \\label{path_root_to_node}", fig.pos="H" , cache=TRUE}
-
-graph_old <- saida_alg2$graphs_from_alerts_old %>%  
-    rename( id_alert = id_alert_old, graph = graph_old) %$% 
-    graph[[1]] %>% 
-    activate("edges") %>% 
-    reroute(from = .data$to, to = .data$from)
-
-nodes_graph_old <- graph_old %>% 
-  activate(nodes) %>% 
-  as_tibble() %>% 
-  select(
-    beginline,
-    endline
-  ) 
-
-graph_new <- saida_alg2$graphs_from_alerts_new %>%  
-    rename( id_alert = id_alert_new, graph = graph_new) %$% 
-    graph[[1]] %>% 
-    activate("edges") %>% 
-    reroute(from = .data$to, to = .data$from)
-
-nodes_graph_new <- graph_new %>% 
-  activate(nodes) %>% 
-  as_tibble() %>% 
-  select(
-    beginline,
-    endline
-  ) 
-
-
-chart_old <- kludgenudger::show_ast(
-  graph_old
- , 
-  size_label = 3,
-  aspect = 3,
-  nudge_x = 0.5
-)
-
-
-chart_new <- kludgenudger::show_ast(
-  graph_new
- , 
-  size_label = 3,
-  aspect = 3,
-  nudge_x = 0.5
-)
-
-
-chart_old + plot_spacer() + chart_new
-
-
-```
-
-
-```{r}
-
-nodes_graph_old_join <- nodes_graph_old %>% 
-  mutate(
-    id_node = row_number()
-  ) %>% 
-  select(
-    id_node_old = id_node,
-    beginline_old = beginline,
-    endline_old = endline
-  )
-
-
-nodes_graph_new_join <- nodes_graph_new %>% 
-  mutate(
-    id_node = row_number()
-  ) %>% 
-  select(
-    id_node_new = id_node,
-    beginline_new = beginline,
-    endline_new = endline
-  )
-
-map_old_begin <- map_lines %>% rename(corresponding_begin_line =  map_line_new)
-map_old_end <- map_lines %>% rename(corresponding_end_line =  map_line_new)
-
-both_nodes <- nodes_graph_old_join %>% 
-  full_join(
-    nodes_graph_new_join,
-    by =c(
-      "id_node_old" = "id_node_new"
-    )
-  ) %>% 
-  left_join(
-    map_old_begin,
-    by = c("beginline_old"="map_line_old")
-  ) %>% 
-  left_join(
-    map_old_end,
-    by = c("endline_old"="map_line_old")
-  ) %>% 
-  mutate(
-    node_id = row_number()
-  ) %>% 
-  select(
-    node_id,
-    beginline_old,
-    endline_old,
-    corresponding_begin_line,
-    corresponding_end_line,
-    beginline_new,
-    endline_new
-  ) %>% 
-  view()
-
-
-```
-
-
-
-  Normalized line distance (method size): this is the line distance but
-  normalized by the size of the last common method (if there is no
-  common method, it´s normalized by the side of the compilation unit).
-
-
-
-
-  Normalized line distance (compilation unit size): this is the line
-  distance but normalized by the size of the compilation unit.
 
 
 Table \ref{table_features} shows the combinations \((n,o)\) in the
@@ -1017,255 +888,25 @@ alerts in the old version and one alert in the new one.
 MUDOU <-  TRUE
 
 kludgenudger::report_features(saida_alg2, "Resulting features\\label{table_features} ")
+
+
+
+  # types_to_show = c(
+  #   "same_rule",
+  #   "same_id_group",
+  #   "same_method_group",
+  #   "same_method_name",
+  #   "same_block",
+  #   "same_code",
+  #   "same_method_code",
+  #   "dist_line",
+  #   "dist_line_normalized_block",
+  #   "dist_line_normalized_method",
+  #   "dist_line_normalized_unit"
+  # )
+
   
 ```
-
-
-
-```{r, cache=TRUE}
-
-features_rename <- kludgenudger::calculate_features_from_versions(
-  code_file_new = "data/rename_method/new/code.java" ,
-  code_file_old = "data/rename_method/old/code.java",
-  pmd_path = pmd_path
-)
-
-```
-
-\newpage
-
-\blandscape
-
-\subsection{Example: Renaming method} \label{example_rename_method}
-
-In this example, the new and old versions have only one alert. The method in which the alert happens is renamed from MethodX to methodZ.
-
-```{java showing codes, code=kludgenudger::read_and_decorate_code_and_alerts_mapped("data/rename_method/old/code.java", features_rename$versions_executed$pmd_output[[1]], "data/rename_method/new/code.java", features_rename$versions_executed$pmd_output[[2]],features_rename$versions_crossed$lines_map[[1]], TRUE, 20, TRUE, 60), echo=TRUE, size="scriptsize"  }
-```
-
-![Comparison between old and new version \label{comparison_rename}](figures/fake.png)
-
-\elandscape    
-
-\newpage 
-
-
-In the Table \ref{features_rename} we can see that the features "Same Method Name" and "Same Method Group ID" are now FALSE.
-
-```{r, cache=TRUE}
-
-kludgenudger::report_features(features_rename, "Resulting features: rename method example \\label{features_rename} ")
-
-
-```
-
-
-\newpage
-
-\blandscape
-
-
-\subsection{Example: including a statement before} \label{example_including_statement}
-
-
-```{r, cache=TRUE}
-
-include_statement_before <- kludgenudger::calculate_features_from_versions(
-  code_file_new = "data/include_statement_before/new/code.java" ,
-  code_file_old = "data/include_statement_before/old/code.java",
-  pmd_path = pmd_path
-)
-
-```
-
-
-In this example, a new statement is included before the alert.
-
-```{r, cache=TRUE}
-
-code <- kludgenudger::read_and_decorate_code_and_alerts_mapped("data/include_statement_before/old/code.java", include_statement_before$versions_executed$pmd_output[[1]], "data/include_statement_before/new/code.java", include_statement_before$versions_executed$pmd_output[[2]],include_statement_before$versions_crossed$lines_map[[1]], TRUE, 20, TRUE, 60)
-
-```
-
-
-```{java showing codes, code=code, echo=TRUE, size="scriptsize"  }
-```
-
-![Comparison between old and new version \label{comparison_include_statement_before}](figures/fake.png)
-
-\elandscape    
-
-\newpage 
-
-
-In the Table \ref{include_statement_before} we can see that the features are not affected by this new statement.
-
-```{r, cache=TRUE}
-
-kludgenudger::report_features(include_statement_before, "Resulting features: statement included before \\label{include_statement_before} ")
-
-
-```
-
-\newpage
-
-\blandscape
-
-
-\subsection{Example: nesting the alert in an if statement} \label{example_nested_in_other_if}
-
-```{r, cache=TRUE}
-
-nested_in_other_if <- kludgenudger::calculate_features_from_versions(
-  code_file_new = "data/nested_in_other_if/new/code.java" ,
-  code_file_old = "data/nested_in_other_if/old/code.java",
-  pmd_path = pmd_path
-)
-
-```
-
-
-
-```{java showing codes, code=kludgenudger::read_and_decorate_code_and_alerts_mapped("data/nested_in_other_if/old/code.java", nested_in_other_if$versions_executed$pmd_output[[1]], "data/nested_in_other_if/new/code.java", nested_in_other_if$versions_executed$pmd_output[[2]],nested_in_other_if$versions_crossed$lines_map[[1]], TRUE, 20, TRUE, 60), echo=TRUE, size="scriptsize"  }
-```
-
-![Comparison between old and new version \label{comparison_nested_in_other_if}](figures/fake.png)
-
-\elandscape    
-
-\newpage 
-
-
-In the Table \ref{nested_in_other_if} we can see that the algorithm does not recognize the two nodes as equivalent, but other features can lead us to the conclusion that the alert is still open.
-
-```{r, cache=TRUE}
-
-kludgenudger::report_features(nested_in_other_if, "Resulting features: statement included before \\label{nested_in_other_if} ")
-
-
-```
-
-
-\newpage
-
-\blandscape
-
-
-\subsection{Example: editing the line that generates the alert} \label{example_editing_line}
-
-```{r, cache=TRUE}
-
-editing_line <- kludgenudger::calculate_features_from_versions(
-  code_file_new = "data/editing_line/new/code.java" ,
-  code_file_old = "data/editing_line/old/code.java",
-  pmd_path = pmd_path
-)
-
-```
-
-
-
-
-```{java showing codes, code=kludgenudger::read_and_decorate_code_and_alerts_mapped("data/editing_line/old/code.java", editing_line$versions_executed$pmd_output[[1]], "data/editing_line/new/code.java", editing_line$versions_executed$pmd_output[[2]],editing_line$versions_crossed$lines_map[[1]], TRUE, 20, TRUE, 60), echo=TRUE, size="scriptsize"  }
-```
-
-
-![Comparison between old and new version \label{comparison_editing_line}](figures/fake.png)
-
-\elandscape    
-
-\newpage
-
-
-In the Table \ref{editing_line} the nodes are not recognized as equivalent, but other features can lead us to the conclusion that the alert is still open.
-
-```{r, cache=TRUE}
-
-kludgenudger::report_features(editing_line, "Resulting features: alert line edited \\label{editing_line} ")
-
-
-```
-
-\newpage
-
-\blandscape
-
-
-\subsection{Example: changing the order of the methods} \label{example_editing_line}
-
-
-We changed the order of the methods in two ways
-
-
-```{r, cache=TRUE}
-
-changing_method_order <- kludgenudger::calculate_features_from_versions(
-  code_file_new = "data/changing_method_order/new/code.java" ,
-  code_file_old = "data/changing_method_order/old/code.java",
-  pmd_path = pmd_path
-)
-
-```
-
-
-```{java showing codes, code=kludgenudger::read_and_decorate_code_and_alerts_mapped("data/changing_method_order/old/code.java", changing_method_order$versions_executed$pmd_output[[1]], "data/changing_method_order/new/code.java", changing_method_order$versions_executed$pmd_output[[2]],changing_method_order$versions_crossed$lines_map[[1]], TRUE, 20, TRUE, 60), echo=TRUE, size="scriptsize"  }
-```
-
-
-![Comparison between old and new version \label{comparison_changing_method_order}](figures/fake.png)
-
-\elandscape    
-
-\newpage
-
-In the Table \ref{changing_method_order} the nodes are not recognized as equivalent, but other features can lead us to the conclusion that the alert is still open.
-
-```{r, cache=TRUE}
-
-kludgenudger::report_features(changing_method_order, "Resulting features: changed methods order \\label{changing_method_order} ")
-
-
-```
-
-\newpage
-
-\blandscape
-
-
-
-
-```{r, cache=TRUE}
-
-changing_method_order_2 <- kludgenudger::calculate_features_from_versions(
-  code_file_new = "data/changing_method_order_2/new/code.java" ,
-  code_file_old = "data/changing_method_order_2/old/code.java",
-  pmd_path = pmd_path
-)
-
-```
-
-
-```{java showing codes, code=kludgenudger::read_and_decorate_code_and_alerts_mapped("data/changing_method_order_2/old/code.java", changing_method_order_2$versions_executed$pmd_output[[1]], "data/changing_method_order_2/new/code.java", changing_method_order_2$versions_executed$pmd_output[[2]],changing_method_order_2$versions_crossed$lines_map[[1]], TRUE, 20, TRUE, 60), echo=TRUE, size="scriptsize"  }
-```
-
-
-![Comparison between old and new version \label{comparison_changing_method_order_2}](figures/fake.png)
-
-\elandscape    
-
-\newpage
-
-
-
-
-In the Table \ref{changing_method_order_2} the nodes are not recognized as equivalent, but other features can lead us to the conclusion that the alert is still open.
-
-```{r, cache=TRUE}
-
-kludgenudger::report_features(changing_method_order_2, "Resulting features: changed methods order 2 \\label{changing_method_order_2} ")
-
-
-```   
 
 
 \subsection{Heuristic to decide based on the features}\label{heuristic}
@@ -1278,6 +919,32 @@ The heuristic chosen in this work follow these rules when :
 \item If **Same Method Code** is TRUE, then we consider it's the same method, even if the name or the group is not the same. But if the method code is the same, then the alert code and the kind of the alert must be the same. So if the features **Same Rule**, **Same Method Code** and 
 **Same Code** are TRUE, then the new and old alerts are declared the same and open;
 \end{itemize}
+
+
+ 
+<!-- 924 -->
+<!-- \begin{itemize} -->
+
+<!-- 925 -->
+<!-- \item If all the boolean features are TRUE and **Line Distance** is true, then the new and old alerts are declared the same and open; -->
+
+<!-- 926 -->
+<!-- \item If **Same Method Code** is TRUE, then we consider it's the same method, even if the name or the group is not the same. But if the method code is the same, then the alert code and the kind of the alert must be the same. So if the features **Same Rule**, **Same Method Code** and  -->
+
+<!-- 927 -->
+<!-- **Same Code** are TRUE, then the new and old alerts are declared the same and open; -->
+
+<!-- 928 -->
+<!-- \item If it is the same id_group, then they are mapped to the same lines.  -->
+
+<!-- 929 -->
+<!-- If this happens, the kind of alert is the same and one of the features about the method is the same, then the new and old alerts are declared the same and open.  -->
+
+<!-- 930 -->
+<!-- The features about the method are all; -->
+
+<!-- 931 -->
+<!-- \end{itemize} -->
 
 
 
