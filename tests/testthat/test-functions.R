@@ -1058,12 +1058,12 @@ test_that("calculate_features_from_versions works with no method", {
 # 
 
 
-kludgenudger::show_ast(
-  saida_alg2$graphs_from_alerts_old %>%  rename( id_alert = id_alert_old, graph = graph_old) %$% graph[[1]] , 
-  size_label = 3,
-  aspect = 2,
-  nudge_x = 0.2
-)
+# kludgenudger::show_ast(
+#   saida_alg2$graphs_from_alerts_old %>%  rename( id_alert = id_alert_old, graph = graph_old) %$% graph[[1]] , 
+#   size_label = 3,
+#   aspect = 2,
+#   nudge_x = 0.2
+# )
 
 
 
@@ -1074,8 +1074,9 @@ saida_alg2 <- calculate_features_from_versions(
   glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
   mostra_new = c(3, 4, 5, 17),
   mostra_old =  c(3, 4, 6, 15, 13, 15),
-  blockrules_location = "data/blockrules/blockrules_simple.xml"
-)  
-
-
-  
+  blockrules_location = "data/blockrules/blockrules_simple.xml",
+  optimize_feature_calculation = FALSE
+)
+# 
+# 
+#   
