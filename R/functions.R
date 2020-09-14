@@ -2262,7 +2262,25 @@ calculate_features_from_versions <- function(
 #' @export
 #'
 #' @examples
-report_features <- function(features_df, caption){
+report_features <- function(
+  features_df, 
+  caption,
+  types_to_show = c(
+    "same_rule",
+    "same_id_group",
+    "same_method_group",
+    "same_method_name",
+    "same_block",
+    "same_code",
+    "same_method_code",
+    "dist_line",
+    "dist_line_normalized_block",
+    "dist_line_normalized_method",
+    "dist_line_normalized_unit"
+  ),
+  return_raw_data = FALSE
+
+){
   
   
   old_lines <- features_df$graph_old_with_alert %>%
@@ -2293,9 +2311,10 @@ report_features <- function(features_df, caption){
     "dist_line_normalized_block"  ,"Line Distance Normalized by Block Size",
     "dist_line_normalized_method" ,"Line Distance Normalized by Method Size",
     "dist_line_normalized_unit",   "Line Distance Normalized by Compilation Unit Size"
-    
-    
-  )
+  ) %>% 
+    filter(
+      feature %in% types_to_show
+    )
   
   
   saida_tabela <- features_df$features %>%
@@ -2346,7 +2365,7 @@ report_features <- function(features_df, caption){
     mutate(
       feature = str_remove(.data$feature, "feature.") %>% str_remove("\\.")
     ) %>% 
-    left_join(
+    inner_join(
       feature_names_translation,
       by = c("feature")
     ) %>% 
@@ -2357,24 +2376,31 @@ report_features <- function(features_df, caption){
     )
   
   
+  if(return_raw_data){
+    saida_tabela
+  }
+  else{
+    kable(saida_tabela,
+          format = "latex",
+          caption = caption,
+          escape = TRUE,
+          # booktabs = TRUE,
+          # align = "r",
+          # linesep = "",
+          col.names = c(
+            "Alert combination",
+            "Feature",
+            "Value"
+          )
+    ) %>%
+      kableExtra::collapse_rows(columns = 1, latex_hline = "major", valign =  "top") %>% 
+      kableExtra::kable_styling(
+        latex_options = c("HOLD_position", "striped")
+      )
+    
+  }
   
-  kable(saida_tabela,
-        format = "latex",
-        caption = caption,
-        escape = TRUE,
-        # booktabs = TRUE,
-        # align = "r",
-        # linesep = "",
-        col.names = c(
-          "Alert combination",
-          "Feature",
-          "Value"
-        )
-  ) %>%
-    kableExtra::collapse_rows(columns = 1, latex_hline = "major", valign =  "top") %>% 
-    kableExtra::kable_styling(
-      latex_options = c("hold_position", "striped")
-    )
+  
   
   
 }
