@@ -5,7 +5,8 @@ library(stringr)
 test_that("map_lines works", {
   caso_1 <- read_rds("data/info_map_lines_info_teste_1.rds")
   expect_equal(
-    caso_1$function_output %>% mutate(equal = FALSE), 
+    #caso_1$function_output %>% mutate(equal = FALSE), 
+    1,
     map_lines(
       file = str_glue("data/caso1_map_lines/{caso_1$file}"),
       lines_prev_param = caso_1$lines_prev_param,
@@ -1065,18 +1066,51 @@ test_that("calculate_features_from_versions works with no method", {
 #   nudge_x = 0.2
 # )
 
-
-
-saida_alg2 <- calculate_features_from_versions(
-  code_file_old = "little-tree/code.java",
-  code_file_new = "little-tree-new/code.java",
-  pmd_path = pmd_path,
-  glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
-  mostra_new = c(3, 4, 5, 17),
-  mostra_old =  c(3, 4, 6, 15, 13, 15),
-  blockrules_location = "data/blockrules/blockrules_simple.xml",
-  optimize_feature_calculation = FALSE
-)
 # 
 # 
+# saida_alg2 <- calculate_features_from_versions(
+#   code_file_old = "little-tree/code.java",
+#   code_file_new = "little-tree-new/code.java",
+#   pmd_path = pmd_path,
+#   glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
+#   mostra_new = c(3, 4, 5, 17),
+#   mostra_old =  c(3, 4, 6, 15, 13, 15),
+#   blockrules_location = "data/blockrules/blockrules_simple.xml",
+#   optimize_feature_calculation = FALSE
+# )
+# # 
+# # 
+# # 
+# 
+# 
+
+
+
+
+
+
+# 
+# 
+# 
+# report_features(
+#   saida_alg2, 
+#   "Resulting features\\label{table_features} ",
+#   types_to_show = c(
+#     "same_rule",
+#     "same_id_group",
+#     "same_method_group",
+#     "same_method_name",
+#     "same_block",
+#     "same_code",
+#     "same_method_code",
+#     "dist_line"
+#   )
 #   
+# ) 
+# 
+# 
+# 
+# 
+
+
+
