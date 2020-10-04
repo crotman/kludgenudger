@@ -309,6 +309,35 @@ test_that("calculate_features_from_versions works with no method", {
     output_function
   )
 })
+
+test_that("calculate_features_from_versions works with alerts in only one file", {
+  output <- read_rds("data/caso_xor_1/output.rds")
+  output_function <- calculate_features_from_versions(
+    code_file_new = "data/caso_xor_1/novo/FigInspectorPanel.java",
+    code_file_old = "data/caso_xor_1/velho/FigInspectorPanel.java",
+    pmd_path = "pmd/bin/pmd.bat"
+  )$categorised_alerts
+  expect_equal(
+    output, 
+    output_function
+  )
+})
+
+
+test_that("calculate_features_from_versions works with alerts in only one file", {
+  output <- read_rds("data/caso_xor_1/output2.rds")
+  output_function <- calculate_features_from_versions(
+    code_file_old = "data/caso_xor_1/novo/FigInspectorPanel.java",
+    code_file_new = "data/caso_xor_1/velho/FigInspectorPanel.java",
+    pmd_path = "pmd/bin/pmd.bat"
+  )$categorised_alerts
+  expect_equal(
+    output, 
+    output_function
+  )
+})
+
+
 # 
 # 
 # # 
@@ -349,13 +378,13 @@ test_that("calculate_features_from_versions works with no method", {
 #   )
 #   tictoc::toc()
 #   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_29",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_30",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-29-30"
-#   )
+  # output_function <- compare_versions(
+  #   dir_old <- "C:/doutorado/ArgoUML/0_25",
+  #   dir_new <-  "C:/doutorado/ArgoUML/0_26",
+  #   parallel = FALSE,
+  #   resume = TRUE,
+  #   log = "log-25-26"
+  # )
 #   tictoc::toc()
 #   tictoc::tic("compare_versions")
 #   output_function <- compare_versions(
@@ -1065,18 +1094,59 @@ test_that("calculate_features_from_versions works with no method", {
 #   nudge_x = 0.2
 # )
 
-
-
-saida_alg2 <- calculate_features_from_versions(
-  code_file_old = "little-tree/code.java",
-  code_file_new = "little-tree-new/code.java",
-  pmd_path = pmd_path,
-  glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
-  mostra_new = c(3, 4, 5, 17),
-  mostra_old =  c(3, 4, 6, 15, 13, 15),
-  blockrules_location = "data/blockrules/blockrules_simple.xml",
-  optimize_feature_calculation = FALSE
-)
 # 
 # 
+# saida_alg2 <- calculate_features_from_versions(
+#   code_file_old = "little-tree/code.java",
+#   code_file_new = "little-tree-new/code.java",
+#   pmd_path = pmd_path,
+#   glue_string = "{.data$id_alert}:line:{.data$beginline},\n{.data$small_rule}.{if_else(is.na(.data$rule_alert),'',paste0('\n',.data$rule_alert))}",
+#   mostra_new = c(3, 4, 5, 17),
+#   mostra_old =  c(3, 4, 6, 15, 13, 15),
+#   blockrules_location = "data/blockrules/blockrules_simple.xml",
+#   optimize_feature_calculation = FALSE
+# )
+# # 
+# # 
+# # 
+# 
+# 
+
+
+
+
+
+
+# 
+# 
+# 
+# report_features(
+#   saida_alg2, 
+#   "Resulting features\\label{table_features} ",
+#   types_to_show = c(
+#     "same_rule",
+#     "same_id_group",
+#     "same_method_group",
+#     "same_method_name",
+#     "same_block",
+#     "same_code",
+#     "same_method_code",
+#     "dist_line"
+#   )
 #   
+# ) 
+# 
+# 
+# 
+# 
+
+saida <- extract_diff_pairs_from_diff_file("teste.diff")
+
+tictoc::tic()
+system(str_glue("pmd/bin/pmd.bat -d C:/doutorado/ArgoUML/0_26 -f xml -R data/blockrules/blockrules.xml -reportfile teste.xml"), show.output.on.console =  FALSE, invisible = TRUE)
+tictoc::toc()
+
+alertas <- read_pmd_xml_all_files("teste.xml")
+
+
+
