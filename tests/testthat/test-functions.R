@@ -181,7 +181,7 @@ test_that("extract_comments_from_code works", {
   
   expect_equal(
     function_output, 
-    extract_comments_from_code(
+    teste <- extract_comments_from_code(
       file_path = "data/caso1_extract_comments_from_code/code.java"
     )
   )
@@ -1140,13 +1140,15 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # 
 # 
 
-saida <- extract_diff_pairs_from_diff_file("teste.diff")
 
-tictoc::tic()
-system(str_glue("pmd/bin/pmd.bat -d C:/doutorado/ArgoUML/0_26 -f xml -R data/blockrules/blockrules.xml -reportfile teste.xml"), show.output.on.console =  FALSE, invisible = TRUE)
-tictoc::toc()
 
-alertas <- read_pmd_xml_all_files("teste.xml")
-
+# saida <- extract_diff_pairs_from_diff_file("teste.diff")
+# 
+# tictoc::tic()
+# system(str_glue("pmd/bin/pmd.bat -d C:/doutorado/ArgoUML/0_26 -f xml -R data/blockrules/blockrules.xml -reportfile teste.xml"), show.output.on.console =  FALSE, invisible = TRUE)
+# tictoc::toc()
+# 
+# alertas <- read_pmd_xml_all_files("teste.xml")
+# 
 
 

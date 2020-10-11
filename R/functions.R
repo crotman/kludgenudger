@@ -167,7 +167,13 @@ read_number_of_lines <- function(file){
 #' @importFrom rlang .data
 #'
 #' @examples
-map_lines <- function(file, lines_prev_param, lines_post_param){
+map_lines <- function(
+  file = NA, 
+  lines_prev_param, 
+  lines_post_param,
+  diff_content = NA
+){
+
   
   
   # file <- "C:\\doutorado\\AnaliseTwitter4j\\match_algorithm_description\\old_original_new_1.diff"
@@ -176,11 +182,25 @@ map_lines <- function(file, lines_prev_param, lines_post_param){
   
   lines_post_param <- as.integer(lines_post_param)
   
-  file_size <- file.size(file)
-  
+  if(!is.na(file)){
+    file_size <- file.size(file)
+  } else {
+    file_size <- 1
+  }
+
   if(file_size != 0){
-  
-    diff_marks <- read_table(file, col_names = FALSE ) %>% 
+    
+    if(is.na(diff_content)){
+      
+      diff_content_prepared <- diff_marks <- read_table(file, col_names = FALSE ) 
+      
+    } else {
+      diff_content_prepared <- enframe(diff_content, value = "X1") %>% 
+        select(X1)
+    }
+    
+
+    diff_marks <- diff_content_prepared %>% 
       rename(text = 1) %>% 
       mutate(
         marca_inicio_diff = str_detect(.data$text, "diff --git"),
@@ -349,7 +369,7 @@ map_lines <- function(file, lines_prev_param, lines_post_param){
   
   final_map
   
-
+ 
 }
 
 
@@ -913,17 +933,55 @@ read_raw_ast_nodes <-  function(
   code_location, 
   output_location,
   pmd_location,
-  blockrules_location
+  blockrules_location,
+  alerts = NA
 ){
   
   # code_location <- code_file_old
   # output_location <- output_old
   
-  system(str_glue("{pmd_location}/pmd.bat -d {code_location} -f xml -R {blockrules_location} -reportfile {output_location}"), show.output.on.console =  FALSE, invisible = TRUE)
+  if(is.na(alerts)){
+    system(str_glue("{pmd_location}/pmd.bat -d {code_location} -f xml -R {blockrules_location} -reportfile {output_location}"), show.output.on.console =  FALSE, invisible = TRUE)
+    alerts <- read_pmd_xml(output_location)
+    delete_file <- TRUE
+  } else {
+    
+    empty <- tibble(
+      linha  = numeric(),
+      beginline = integer(),
+      endline   = integer(),
+      begincolumn = integer(),
+      endcolumn = integer(),
+      rule = character(),
+      ruleset = character(),
+      package = character(),
+      class = character(),
+      priority= integer(),
+      variable = character(),
+      method= character(),
+      id_alert  = integer()
+    )
+    
+    alerts <- alerts %>% 
+      mutate(
+        id_alert = row_number(),
+        linha = row_number() %>% as.numeric()
+      ) %>% 
+      mutate_at(
+        vars(one_of(c("beginline", "endline", "begincolumn", "endcolumn", "priority"))),
+        as.integer
+      ) %>% 
+      bind_rows(empty)
+    
+
+    delete_file <- FALSE
+  }
   
+  
+
   code_all_lines <- read_lines(code_location)
   
-  returned_value <- read_pmd_xml(output_location) %>% 
+  returned_value <- alerts %>% 
     replace_na(
       list(
         method = "No method"
@@ -946,7 +1004,9 @@ read_raw_ast_nodes <-  function(
       )
     )
   
-  file.remove(output_location)
+  if(delete_file){
+    file.remove(output_location)
+  }
   
   returned_value
 }
@@ -964,7 +1024,7 @@ read_raw_ast_nodes <-  function(
 generate_ast_tree_from_raw_nodes <-  function(nodes){
   
   #nodes <- read_rds(    
-  max_column <- max(nodes$endcolumn)
+  max_column <- max(c(nodes$endcolumn,nodes$begincolumn))
   
   nodes_from <- nodes %>%  rename_all(.funs = ~str_glue("{.x}_from")) %>% 
     mutate(
@@ -1202,7 +1262,9 @@ show_ast <-  function(
 #'
 #' @examples
 cross_versions <- function(
-  examples_executed
+  examples_executed,
+  diff_content = NA
+  
   
 ){
   
@@ -1226,38 +1288,61 @@ cross_versions <- function(
     )
   
 
-  saida <- examples_executed_selected_fields_left %>%
-    crossing(examples_executed_selected_fields_right) %>% 
-    filter(.data$id_left < .data$id_right) %>% 
-    mutate(diff_command =
-             map2(
-               .x = .data$path_left,
-               .y = .data$path_right,
-               ~assemble_diff_command(
-                 code_path_left = .x,
-                 code_path_right = .y,
-                 output_left = .data$output_left,
-                 output_right = .data$output_right
-               )
-             )) %>% 
-    mutate(lines_left = read_number_of_lines(.data$path_left),
-           lines_right = read_number_of_lines(.data$path_right)) %>%
-    mutate(
-      output_diff_command = map(
-        .x = .data$diff_command,
-        .f = ~ system(command =  .x, show.output.on.console = FALSE)
-      ),
-      file_diff = str_glue("{output_left}_{output_right}.diff")
-    ) %>%
-    mutate(lines_map = pmap(
-      .l = list(
-        file = .data$file_diff  ,
-        lines_prev_param = .data$lines_left,
-        lines_post_param = .data$lines_right
-      ),
-      .f = map_lines
-    ))
+  if(is.na(diff_content)){
   
+    saida <- examples_executed_selected_fields_left %>%
+      crossing(examples_executed_selected_fields_right) %>% 
+      filter(.data$id_left < .data$id_right) %>% 
+      mutate(diff_command =
+               map2(
+                 .x = .data$path_left,
+                 .y = .data$path_right,
+                 ~assemble_diff_command(
+                   code_path_left = .x,
+                   code_path_right = .y,
+                   output_left = .data$output_left,
+                   output_right = .data$output_right
+                 )
+               )) %>% 
+      mutate(lines_left = read_number_of_lines(.data$path_left),
+             lines_right = read_number_of_lines(.data$path_right)) %>%
+      mutate(
+        output_diff_command = map(
+          .x = .data$diff_command,
+          .f = ~ system(command =  .x, show.output.on.console = FALSE)
+        ),
+        file_diff = str_glue("{output_left}_{output_right}.diff")
+      ) %>%
+      mutate(lines_map = pmap(
+        .l = list(
+          file = .data$file_diff  ,
+          lines_prev_param = .data$lines_left,
+          lines_post_param = .data$lines_right
+        ),
+        .f = map_lines
+      ))
+    
+  } else{
+    
+    diff_content_flat <- diff_content %>% str_flatten(collapse = "\n")
+
+
+    saida <- examples_executed_selected_fields_left %>%
+      crossing(examples_executed_selected_fields_right) %>% 
+      filter(.data$id_left < .data$id_right) %>% 
+      mutate(lines_left = read_number_of_lines(.data$path_left),
+             lines_right = read_number_of_lines(.data$path_right)) %>%
+      mutate(lines_map = pmap(
+        .l = list(
+          lines_prev_param = .data$lines_left,
+          lines_post_param = .data$lines_right,
+          diff_content = diff_content
+        ),
+        .f = map_lines
+      ))
+    
+    
+  }
 
 
   saida
@@ -1655,24 +1740,17 @@ calculate_features_from_versions <- function(
   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
   mostra_old = c(10, 42, 41, 15, 16, 43),
   glue_string = "",
-  optimize_feature_calculation = TRUE
+  optimize_feature_calculation = TRUE,
+  alerts_new = NA,
+  alerts_old = NA,
+  ast_new = NA,
+  ast_old = NA,
+  diff = NA,
+  only_categorised = FALSE
   
 ){
-  
-# 
-  # code_new = ""
-  # code_old = ""
-  # mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44)
-  # mostra_old = c(10, 42, 41, 15, 16, 43)
-  # glue_string = ""
-  # 
-  # code_file_new = "C:/doutorado/ArgoUML/0_33_1/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java"
-  # code_file_old = "C:/doutorado/ArgoUML/0_34/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java"
-  # pmd_path = "pmd/bin/pmd.bat"
-  # rule_path = "rulesets/java/quickstart.xml"
-  # blockrules_location = "data/blockrules/blockrules.xml"
-  # 
 
+  
 
   if(code_new != ""){
     
@@ -1699,40 +1777,61 @@ calculate_features_from_versions <- function(
     ~name,                  ~path,      ~output,          
     "Simple old",  code_file_old ,  output_code_file_old %>% as.character(),
     "Simple new",  code_file_new ,  output_code_file_new %>%  as.character(),
-    
   ) %>% 
     mutate(id = row_number()) 
   
-  browser()
-  
-  examples_sec2_executed <- examples_sec2 %>%
-    mutate(pmd_command =
-             map2(
-               .x = .data$path,
-               .y = .data$output,
-               ~assemble_pmd_command(
-                 pmd_path = pmd_path,
-                 code_path = .x ,
-                 rule_path = rule_path,
-                 output = .y
-               )
-             )) %>%
-    mutate(pmd_command_output = map(
-      .x = .data$pmd_command,
-      .f =  ~ system(command =  .x, show.output.on.console = FALSE)
-    )) %>% 
-    mutate(pmd_output = map(.x = str_glue("{.data$output}.xml"), .f = read_pmd_xml))
-  
-  examples_sec2_crossed <- cross_versions(examples_sec2_executed) 
 
+  if(is.na(alerts_new)){  
+
+    examples_sec2_executed <- examples_sec2 %>%
+      mutate(pmd_command =
+               map2(
+                 .x = .data$path,
+                 .y = .data$output,
+                 ~assemble_pmd_command(
+                   pmd_path = pmd_path,
+                   code_path = .x ,
+                   rule_path = rule_path,
+                   output = .y
+                 )
+               )) %>%
+      mutate(pmd_command_output = map(
+        .x = .data$pmd_command,
+        .f =  ~ system(command =  .x, show.output.on.console = FALSE)
+      )) %>% 
+      mutate(pmd_output = map(.x = str_glue("{.data$output}.xml"), .f = read_pmd_xml))
+  } else{
+    
+    
+    tib_pmd_output <- tribble(
+      ~name,             ~pmd_output,
+      "Simple old",     alerts_old,
+      "Simple new",     alerts_new,
+      
+    )
+    
+    examples_sec2_executed <- examples_sec2 %>% 
+      left_join(
+        tib_pmd_output, 
+        by = c("name")
+      )
+
+  }
+  
+
+
+  examples_sec2_crossed <- cross_versions(examples_sec2_executed, diff_content = diff) 
+
+  
   map <- examples_sec2_crossed$lines_map[[1]] %>% 
     select(   
       old = .data$map_remove,
       new = .data$map_add,
       equal
     )
+
   
-  
+
   output_old <-  code_file_old %>% 
     str_replace(".java", ".xml") 
   
@@ -1744,10 +1843,11 @@ calculate_features_from_versions <- function(
     code_location = code_file_old,
     output_location =  output_old,
     pmd_location = str_remove(pmd_path, "/pmd.bat"),
-    blockrules_location = blockrules_location
+    blockrules_location = blockrules_location,
+    alerts = ast_old 
   )
   
-  
+
 
   graph_old <- generate_ast_tree_from_raw_nodes(nodes_old)
   
@@ -1755,9 +1855,11 @@ calculate_features_from_versions <- function(
     code_location = code_file_new,
     output_location <-  output_new,
     pmd_location = str_remove(pmd_path, "/pmd.bat"),
-    blockrules_location = blockrules_location
+    blockrules_location = blockrules_location,
+    alerts = ast_new
   )
   
+
   graph_new <- generate_ast_tree_from_raw_nodes(nodes_new)
   
   nodes_new <- graph_new %>% 
@@ -1909,9 +2011,6 @@ calculate_features_from_versions <- function(
       one = 1
     )
     
-  
-  
-  
 
   graph_old_with_alert <- graph_old_with_group %>% 
     activate("nodes") %>% 
@@ -2277,20 +2376,28 @@ calculate_features_from_versions <- function(
     }
     
   }
-  
-  saida <- list(
-    versions_executed = examples_sec2_executed,
-    versions_crossed = examples_sec2_crossed,
-    graph_old_with_alert =  graph_old_with_alert,
-    graph_new_with_alert = graph_new_with_alert,
-    graph_old_with_group = graph_old_with_group,
-    graph_new_with_group = graph_new_with_group,
-    graphs_from_alerts_old = graphs_from_alerts_old,
-    graphs_from_alerts_new = graphs_from_alerts_new,
-    features = saida$features,
-    categorised_alerts = categorised_alerts
-  )
-  
+
+  if(!only_categorised){
+    
+    saida <- list(
+      versions_executed = examples_sec2_executed,
+      versions_crossed = examples_sec2_crossed,
+      graph_old_with_alert =  graph_old_with_alert,
+      graph_new_with_alert = graph_new_with_alert,
+      graph_old_with_group = graph_old_with_group,
+      graph_new_with_group = graph_new_with_group,
+      graphs_from_alerts_old = graphs_from_alerts_old,
+      graphs_from_alerts_new = graphs_from_alerts_new,
+      features = saida$features,
+      categorised_alerts = categorised_alerts
+    )
+  }
+  else{
+    
+    saida <- categorised_alerts
+    
+  }
+
   saida
   
 }
@@ -2467,8 +2574,7 @@ report_features <- function(
 #' @examples
 extract_comments_from_code <- function(file_path){
 
-  browser()
-    
+
   #for debug: file_path = "data/caso1_extract_comments_from_code/code.java"
   code <- read_lines(file_path) %>% 
     str_flatten("\n")
@@ -2478,13 +2584,14 @@ extract_comments_from_code <- function(file_path){
   
   calculate_position_using_line_breaks <- function(begin_param, end_param){
 
+
     beginline <- line_breaks %>% 
       filter(.data$start <= begin_param) %>% 
       mutate(
         beginline = row_number(),
         begincolumn = begin_param - .data$start
       ) %>% 
-      slice_tail(1) 
+      slice_tail() 
       
     endline <- line_breaks %>% 
       filter(.data$end <= end_param-1) %>% 
@@ -2492,7 +2599,7 @@ extract_comments_from_code <- function(file_path){
         endline = row_number(),
         endcolumn = end_param - .data$start
       ) %>% 
-      slice_tail(1) 
+      slice_tail() 
     
     bind_cols(beginline, endline) %>% 
       select(
@@ -2812,6 +2919,183 @@ compare_versions <- function(
 
 
 
+
+
+
+
+
+#' Compare two versions of a source-code in terms of kludges
+#' 
+#' Lists all the java files, gets the PMD alerts and categorise the alerts in "open", "fixed" and "new"
+#'
+#' @param dir_old old version
+#' @param dir_new new version
+#' @param pmd_path path to pmd 
+#' @param limit_executions must the files be limitef
+#' @param n_limit if the files must be limited, how many?
+#'
+#' 
+#'
+#' @return alerts categorised in "new", "fixed" and "open"
+#' @export
+#'
+#' @examples
+compare_versions_read_outside <- function(
+  dir_old, 
+  dir_new, 
+  pmd_path, 
+  limit_executions = FALSE, 
+  n_limit = 20,
+  parallel = FALSE,
+  resume = FALSE,
+  log = "log"
+){
+  
+  pmd_path = "pmd/bin/pmd.bat"
+  
+  dir_old <- "C:/doutorado/ArgoUML/0_25"
+
+  dir_new <- "C:/doutorado/ArgoUML/0_26"
+
+  system(str_glue("{pmd_path} -d {dir_old} -f xml -R data/blockrules/blockrules_simple.xml -reportfile old_ast.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+
+  system(str_glue("{pmd_path} -d {dir_new} -f xml -R data/blockrules/blockrules_simple.xml -reportfile new_ast.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+
+  system(str_glue("{pmd_path} -d {dir_old} -f xml -R rulesets/java/quickstart.xml -reportfile old_alerts.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+  
+  system(str_glue("{pmd_path} -d {dir_new} -f xml -R rulesets/java/quickstart.xml -reportfile new_alerts.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+  
+  system(str_glue("git diff -U0 --patience --numstat --summary --output=old_new.diff --no-index {dir_old} {dir_new}"), show.output.on.console =  FALSE, invisible = TRUE)  
+
+
+  diff_pairs <- extract_diff_pairs_from_diff_file(file = "old_new.diff" ) %>% 
+    filter(
+      str_detect(file_old, ".java$"),
+      str_detect(file_new, ".java$"),
+    )
+  
+  ast_from_pmd_old <- read_pmd_xml_all_files(file = "old_ast.xml") %>% 
+    mutate(
+      file = str_replace_all(
+      file,
+      "\\\\",
+      "/"
+    )
+  )
+  
+  ast_from_pmd_new <- read_pmd_xml_all_files(file = "new_ast.xml") %>% 
+    mutate(
+      file = str_replace_all(
+        file,
+        "\\\\",
+        "/"
+      )
+    )
+  
+  alerts_from_pmd_old <- read_pmd_xml_all_files(file = "old_alerts.xml") %>% 
+    mutate(
+      file = str_replace_all(
+        file,
+        "\\\\",
+        "/"
+      )
+    )
+  
+  alerts_from_pmd_new <- read_pmd_xml_all_files(file = "new_alerts.xml") %>% 
+    mutate(
+      file = str_replace_all(
+        file,
+        "\\\\",
+        "/"
+      )
+    )
+  
+  diff_pairs_info <- diff_pairs %>% 
+    left_join(
+      ast_from_pmd_old %>% rename_with(~str_glue("{.x}_ast_old")),
+      by = c("file_old" = "file_ast_old") 
+    ) %>% 
+    left_join(
+      ast_from_pmd_new %>% rename_with(~str_glue("{.x}_ast_new")),
+      by = c("file_new" = "file_ast_new") 
+    ) %>% 
+    left_join(
+      alerts_from_pmd_old %>% rename_with(~str_glue("{.x}_alert_old")),
+      by = c("file_old" = "file_alert_old") 
+    ) %>% 
+    left_join(
+      alerts_from_pmd_new %>% rename_with(~str_glue("{.x}_alert_new")),
+      by = c("file_new" = "file_alert_new") 
+    ) 
+  
+  future::plan(future::multiprocess)
+    
+  diff_pairs_changed <- diff_pairs_info %>% 
+    filter(
+      mode == "changed",
+      similarity_index != 100 | is.na(similarity_index),
+    ) %>% 
+    rowwise() %>% 
+    filter(
+      !is.null(data_alert_old),
+      !is.null(data_alert_new)
+    ) %>% 
+    ungroup() %>% 
+    mutate(
+      resultado = furrr::future_pmap(
+        .l = list(
+          
+          code_file_new = file_new, 
+          code_file_old = file_old, 
+          pmd_path = pmd_path,
+          alerts_new = data_alert_new,
+          alerts_old = data_alert_old,
+          ast_new = data_ast_new,
+          ast_old = data_ast_old,
+          diff = data,
+          only_categorised = TRUE
+        ),
+        
+      .f = calculate_features_from_versions,
+    
+      .progress = TRUE  
+    
+      )
+    ) 
+    
+  
+  
+  
+  calculate_features_from_versions(
+    code_file_new = "", 
+    code_file_old = "", 
+    code_new = "", 
+    code_old = "",
+    pmd_path,
+    rule_path = "rulesets/java/quickstart.xml",
+    blockrules_location = "data/blockrules/blockrules.xml",
+    mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
+    mostra_old = c(10, 42, 41, 15, 16, 43),
+    glue_string = "",
+    optimize_feature_calculation = TRUE,
+    alerts_new = NA,
+    alerts_old = NA,
+    ast_new = NA,
+    ast_old = NA,
+    diff = NA,
+    only_categorised = FALSE
+  )
+     
+  
+  
+    
+}
+
+
+
+
+
+
 #' Join a graph containing the ast and the alerts
 #' 
 #' In this join, the function must consider if there is more than one alert for each node of the ast.
@@ -2836,10 +3120,11 @@ join_ast_alerts <- function(ast, alerts){
   # ast <- read_rds("data/info_join_ast_alerts_ast.rds")
   # alerts <- read_rds("data/info_join_ast_alerts_alerts.rds")
   
+
   nodes <- ast %>% activate("nodes") %>% as_tibble()
    
-  max_column_nodes <- max(nodes$endcolumn)
-  max_column_alerts <- max(alerts$endcolumn_alert)
+  max_column_nodes <- max(c(nodes$endcolumn, nodes$begincolumn ))
+  max_column_alerts <- max(c(alerts$endcolumn_alert, alerts$begincolumn_alert))
   
   max_column <- max(c(max_column_nodes, max_column_alerts)) + 1
   
@@ -2913,7 +3198,7 @@ join_ast_alerts <- function(ast, alerts){
     ungroup()
   
   if(nrow(alerts_multi > 0)){
-  
+
     n_nodes <- ast %>% activate("nodes") %>% as_tibble() %>% nrow() 
   
     nodes_must_be_included <- ast %>% 
@@ -2954,7 +3239,8 @@ join_ast_alerts <- function(ast, alerts){
        select(
          to = .data$temporario_new_id,
          .data$from
-       ) 
+       ) %>% 
+       filter(!is.na(from))
      
      nodes_to_be_included <- nodes_must_be_included_multi %>% 
        select(
@@ -3392,8 +3678,11 @@ extract_diff_pairs_from_diff_file <- function(file){
       diff_just_content,
       by = c("item")
     )
-    
-  output
+
+  output %>% 
+    mutate(
+      similarity_index = as.integer(similarity_index)
+    )
   
 }
 
@@ -3417,7 +3706,7 @@ read_pmd_xml_all_files <- function(file){
     ) %>% 
     mutate(
       across(
-        c(beginline, endline),
+        c(beginline, endline, begincolumn, endcolumn),
         as.numeric
       )
     )
@@ -3450,9 +3739,36 @@ read_pmd_xml_all_files <- function(file){
       type = "any"    
     ) %>% 
     mutate(
-      file = str_match(value, '^<file name=\\"(.*)\\">')[,2]
+      file = str_match(value, '^<file name=\\"(.*)\\">')[,2],
+      id_alert = row_number()
     )
+
+  variable = NA
   
+  alerts_guides %>% 
+    mutate(
+      variable = variable
+    ) %>% 
+    select(
+      file,
+      beginline,
+      endline,
+      begincolumn,
+      endcolumn,
+      rule,
+      ruleset,
+      package,
+      class,
+      priority,
+      method,
+      variable,
+      id_alert
+    ) %>% 
+    group_by(
+      file
+    ) %>% 
+    nest()
+    
 }
 
 
