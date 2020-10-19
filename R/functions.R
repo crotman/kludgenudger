@@ -1369,12 +1369,10 @@ calculate_features <-  function(graph_old, graph_new, coordinates){
   # graph_new <- graphs_from_alerts_new$graph_new[[2]]
   # graph_old <- graphs_from_alerts_old$graph_old[[2]]
   
-  
 
     alert_old <- graph_old %>% 
       activate("nodes")  %>% 
-      as_tibble() %T>% 
-      write_rds("antes_erro.rds") %>% 
+      as_tibble() %>% 
       select(
         .data$beginline,
         .data$endline,
@@ -1749,9 +1747,26 @@ calculate_features_from_versions <- function(
   only_categorised = FALSE
   
 ){
-
   
 
+
+  browser()
+  
+  
+  start <- Sys.time()
+
+  uid <- uuid::UUIDgenerate()
+
+  feather::write_feather(
+    tibble(
+      file_new = code_file_new,
+      file_old = code_file_old,
+      time = start
+    ),
+    
+    str_glue("logexec/{uid}.feather")
+  )
+  
   if(code_new != ""){
     
     write_lines(code_new, "code_files_new/new.java")
@@ -2079,6 +2094,7 @@ calculate_features_from_versions <- function(
       .data$rule_alert
     ) 
   
+
   graphs_from_alerts_old <- nodes_alerts_old %>% 
     mutate(graph = map(.x = .data$id_alert, .f = ~graph_path_from_alert(graph = graph_old_reverted, id_node = .x )   )) 
   
@@ -2181,12 +2197,10 @@ calculate_features_from_versions <- function(
     }else{
     
 
-        write_rds(graphs_from_alerts_new, "graphs_from_alerts_new.rds")
-        write_rds(graphs_from_alerts_old, "graphs_from_alerts_old.rds")
-        
+
         if(sum(coordinates$equal) > 0){
           
-    
+          
           
           match_alerts_alg2 <- graphs_from_alerts_new %>%
             inner_join(
@@ -2239,11 +2253,15 @@ calculate_features_from_versions <- function(
     
           if(nrow(match_alerts_alg2) > 0){
             
-    
+
             match_alerts_alg2 <-  match_alerts_alg2 %>% 
-              rowwise() %>%
+              # rowwise() %>%
               mutate(
-                features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
+                features = map2(
+                  .x = .data$graph_old, 
+                  .y = .data$graph_new,
+                  .f = ~calculate_features(graph_old = .x, graph_new = .y, coordinates = coordinates ) 
+                )
               ) 
             
             saida <- list(
@@ -2294,20 +2312,30 @@ calculate_features_from_versions <- function(
               by = c("id_alert_old")
             )
           
+
           match_alerts_rest <- graph_new_no_match %>%
             crossing(
               graph_old_no_match
+            ) %>% 
+            filter(
+              rule_alert_new == rule_alert_old
             )
           
     
           if(nrow(match_alerts_rest) > 0){
             
+
             match_alerts_rest <- match_alerts_rest %>% 
-              rowwise() %>%
+              # rowwise() %>%
               mutate(
-                features = calculate_features(graph_old = .data$graph_old, graph_new = .data$graph_new, coordinates = coordinates) %>% list()
+                features = map2(
+                  .x = .data$graph_old, 
+                  .y = .data$graph_new,
+                  .f = ~calculate_features(graph_old = .x, graph_new = .y, coordinates = coordinates ) ,
+                  .progress = TRUE
+                )
               ) 
-            
+              
             saida <- list(
               versions_executed = examples_sec2_executed,
               versions_crossed = examples_sec2_crossed,
@@ -2344,7 +2372,7 @@ calculate_features_from_versions <- function(
           select(.data$id_alert_new, .data$same_alert ) %>%
           distinct()
       
-        alerts_old <- saida$graph_old_with_alert %>%
+        alerts_old <- graph_old_with_alert %>%
           activate("nodes") %>%
           as_tibble() %>%
           filter(!is.na(.data$id_alert_alert)) %>%
@@ -2358,7 +2386,7 @@ calculate_features_from_versions <- function(
             category = if_else(.data$same_alert, "open", "fixed")
           )
         
-        alerts_new <- saida$graph_new_with_alert %>%
+        alerts_new <- graph_new_with_alert %>%
           activate("nodes") %>%
           as_tibble() %>%
           filter(!is.na(.data$id_alert_alert)) %>%
@@ -2390,14 +2418,23 @@ calculate_features_from_versions <- function(
       graphs_from_alerts_new = graphs_from_alerts_new,
       features = saida$features,
       categorised_alerts = categorised_alerts
-    )
+    ) 
   }
   else{
     
-    saida <- categorised_alerts
+    saida <- categorised_alerts %>% 
+      mutate(
+        file_new = code_file_new,
+        file_old = code_file_old,
+        time = Sys.time() - start  
+      )      
     
   }
+  
 
+  write_rds(saida, str_glue("log/{uid}.rds"))
+
+    
   saida
   
 }
@@ -2892,8 +2929,7 @@ compare_versions <- function(
     filter( row_number() < n_limit | !limit_executions) %>% 
     mutate(
       id = row_number()
-    ) %T>% 
-    write_rds("data/{log}/df.rds" %>% str_glue()) %>% 
+    ) %>% 
     anti_join(
       anti,
       by = c("id")
@@ -2943,38 +2979,36 @@ compare_versions <- function(
 compare_versions_read_outside <- function(
   dir_old, 
   dir_new, 
-  pmd_path, 
-  limit_executions = FALSE, 
-  n_limit = 20,
-  parallel = FALSE,
-  resume = FALSE,
+  pmd_path = "pmd/bin/pmd.bat", 
   log = "log"
 ){
   
   pmd_path = "pmd/bin/pmd.bat"
   
-  dir_old <- "C:/doutorado/ArgoUML/0_25"
-
-  dir_new <- "C:/doutorado/ArgoUML/0_26"
-
-  system(str_glue("{pmd_path} -d {dir_old} -f xml -R data/blockrules/blockrules_simple.xml -reportfile old_ast.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
-
-  system(str_glue("{pmd_path} -d {dir_new} -f xml -R data/blockrules/blockrules_simple.xml -reportfile new_ast.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
-
-  system(str_glue("{pmd_path} -d {dir_old} -f xml -R rulesets/java/quickstart.xml -reportfile old_alerts.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+  # dir_old <- "C:/doutorado/ArgoUML/0_10"
+  # 
+  # dir_new <- "C:/doutorado/ArgoUML/0_11_1"
   
-  system(str_glue("{pmd_path} -d {dir_new} -f xml -R rulesets/java/quickstart.xml -reportfile new_alerts.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+  uid <- uuid::UUIDgenerate()
+
+  system(str_glue("{pmd_path} -d {dir_old} -f xml -R data/blockrules/blockrules_simple.xml -reportfile old_ast{uid}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+
+  system(str_glue("{pmd_path} -d {dir_new} -f xml -R data/blockrules/blockrules_simple.xml -reportfile new_ast{uid}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+
+  system(str_glue("{pmd_path} -d {dir_old} -f xml -R rulesets/java/quickstart.xml -reportfile old_alerts{uid}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+   
+  system(str_glue("{pmd_path} -d {dir_new} -f xml -R rulesets/java/quickstart.xml -reportfile new_alerts{uid}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
   
-  system(str_glue("git diff -U0 --patience --numstat --summary --output=old_new.diff --no-index {dir_old} {dir_new}"), show.output.on.console =  FALSE, invisible = TRUE)  
+  system(str_glue("git diff -U0 --patience --numstat --summary --output=old_new{uid}.diff --no-index {dir_old} {dir_new}"), show.output.on.console =  FALSE, invisible = TRUE)  
 
 
-  diff_pairs <- extract_diff_pairs_from_diff_file(file = "old_new.diff" ) %>% 
+  diff_pairs <- extract_diff_pairs_from_diff_file(file = "old_new{uid}.diff" %>% str_glue() ) %>% 
     filter(
       str_detect(file_old, ".java$"),
       str_detect(file_new, ".java$"),
     )
   
-  ast_from_pmd_old <- read_pmd_xml_all_files(file = "old_ast.xml") %>% 
+  ast_from_pmd_old <- read_pmd_xml_all_files(file = "old_ast{uid}.xml" %>% str_glue()) %>% 
     mutate(
       file = str_replace_all(
       file,
@@ -2983,7 +3017,7 @@ compare_versions_read_outside <- function(
     )
   )
   
-  ast_from_pmd_new <- read_pmd_xml_all_files(file = "new_ast.xml") %>% 
+  ast_from_pmd_new <- read_pmd_xml_all_files(file = "new_ast{uid}.xml" %>% str_glue()) %>% 
     mutate(
       file = str_replace_all(
         file,
@@ -2992,7 +3026,7 @@ compare_versions_read_outside <- function(
       )
     )
   
-  alerts_from_pmd_old <- read_pmd_xml_all_files(file = "old_alerts.xml") %>% 
+  alerts_from_pmd_old <- read_pmd_xml_all_files(file = "old_alerts{uid}.xml" %>%  str_glue()) %>% 
     mutate(
       file = str_replace_all(
         file,
@@ -3001,7 +3035,7 @@ compare_versions_read_outside <- function(
       )
     )
   
-  alerts_from_pmd_new <- read_pmd_xml_all_files(file = "new_alerts.xml") %>% 
+  alerts_from_pmd_new <- read_pmd_xml_all_files(file = "new_alerts{uid}.xml" %>%  str_glue()) %>% 
     mutate(
       file = str_replace_all(
         file,
@@ -3028,8 +3062,9 @@ compare_versions_read_outside <- function(
       by = c("file_new" = "file_alert_new") 
     ) 
   
+  
   future::plan(future::multiprocess)
-    
+  
   diff_pairs_changed <- diff_pairs_info %>% 
     filter(
       mode == "changed",
@@ -3041,10 +3076,18 @@ compare_versions_read_outside <- function(
       !is.null(data_alert_new)
     ) %>% 
     ungroup() %>% 
+    # semi_join(
+    #   faltando,
+    #   by = "file_new"
+    # ) %>% 
+    # filter(
+    #   str_detect(file_new, "C:/doutorado/ArgoUML/0_17/src_new/org/argouml/uml/generator/ParserDisplay.java")
+    # ) %>%
+    sample_n(nrow(.), replace = FALSE) %>% 
+    # rowwise() %>% 
     mutate(
       resultado = furrr::future_pmap(
         .l = list(
-          
           code_file_new = file_new, 
           code_file_old = file_old, 
           pmd_path = pmd_path,
@@ -3054,43 +3097,196 @@ compare_versions_read_outside <- function(
           ast_old = data_ast_old,
           diff = data,
           only_categorised = TRUE
+          
         ),
         
-      .f = calculate_features_from_versions,
-    
-      .progress = TRUE  
-    
+        .f = calculate_features_from_versions,
+        
+        .progress = TRUE
+        
       )
-    ) 
+        
+        
+  ) 
     
   
   
-  
-  calculate_features_from_versions(
-    code_file_new = "", 
-    code_file_old = "", 
-    code_new = "", 
-    code_old = "",
-    pmd_path,
-    rule_path = "rulesets/java/quickstart.xml",
-    blockrules_location = "data/blockrules/blockrules.xml",
-    mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
-    mostra_old = c(10, 42, 41, 15, 16, 43),
-    glue_string = "",
-    optimize_feature_calculation = TRUE,
-    alerts_new = NA,
-    alerts_old = NA,
-    ast_new = NA,
-    ast_old = NA,
-    diff = NA,
-    only_categorised = FALSE
-  )
-     
+  diff_pairs_changed_similarity_100 <- diff_pairs_info %>% 
+    filter(
+      mode == "changed",
+      similarity_index == 100,
+    )
   
   
-    
-}
+  diff_pairs_changed_new <- diff_pairs_info %>% 
+    filter(
+      mode == "new",
+    )
+  
+  diff_pairs_changed_deleted <- diff_pairs_info %>% 
+    filter(
+      mode == "deleted",
+    )
+  
+  
+  diff_pairs_changed_only_old <- diff_pairs_info %>% 
+    filter(
+      mode == "changed",
+      similarity_index != 100 | is.na(similarity_index),
+    ) %>% 
+    rowwise() %>% 
+    filter(
+      !is.null(data_alert_old) & is.null(data_alert_new)
+    )  
+  
+  diff_pairs_changed_only_new <- diff_pairs_info %>% 
+    filter(
+      mode == "changed",
+      similarity_index != 100 | is.na(similarity_index),
+    ) %>% 
+    rowwise() %>% 
+    filter(
+      is.null(data_alert_old) & !is.null(data_alert_new)
+    )  
+  
+  diff_pairs_changed_no_alerts <- diff_pairs_info %>% 
+    filter(
+      mode == "changed",
+      similarity_index != 100 | is.na(similarity_index),
+    ) %>% 
+    rowwise() %>% 
+    filter(
+      is.null(data_alert_old) & is.null(data_alert_new)
+    )  
+  
+  total <- 
+    nrow(diff_pairs_changed) + 
+    nrow(diff_pairs_changed_similarity_100) + 
+    nrow(diff_pairs_changed_new) + 
+    nrow(diff_pairs_changed_deleted) +
+    nrow(diff_pairs_changed_only_old) +
+    nrow(diff_pairs_changed_only_new) +
+    nrow(diff_pairs_changed_no_alerts)
+  
+  
 
+  categorized_alerts_changed <- diff_pairs_changed %>% 
+    select(resultado) %>%    
+    unnest(resultado) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+  categorized_alerts_changed_similarity_100_new <- diff_pairs_changed_similarity_100 %>% 
+    select(data_alert_new) %>%    
+    unnest(data_alert_new) %>% 
+    mutate(
+      version = "new",
+      category = "open"
+    ) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+  
+  categorized_alerts_changed_similarity_100_old <- diff_pairs_changed_similarity_100 %>% 
+    select(data_alert_old) %>%    
+    unnest(data_alert_old) %>% 
+    mutate(
+      version = "old",
+      category = "open"
+    ) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+    
+  categorized_alerts_changed_new <-  diff_pairs_changed_new %>% 
+    select(data_alert_new) %>%    
+    unnest(data_alert_new) %>% 
+    mutate(
+      version = "new",
+      category = "new"
+    ) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+   
+  categorized_alerts_changed_old <-  diff_pairs_changed_deleted %>% 
+    select(data_alert_old) %>%    
+    unnest(data_alert_old) %>% 
+    mutate(
+      version = "old",
+      category = "fixed"
+    ) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+  
+  categorized_alerts_changed_only_old <- diff_pairs_changed_only_old %>% 
+    select(data_alert_old) %>%    
+    unnest(data_alert_old) %>% 
+    mutate(
+      version = "old",
+      category = "fixed"
+    ) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+  
+  categorized_alerts_changed_only_new <- diff_pairs_changed_only_new %>% 
+    select(data_alert_new) %>%    
+    unnest(data_alert_new) %>% 
+    mutate(
+      version = "new",
+      category = "new"
+    ) %>% 
+    mutate(
+      across(
+        .cols = any_of(c("priority")),
+        .fns = as.integer
+      )
+    )
+  
+  
+
+  resultado <- bind_rows(
+    categorized_alerts_changed, 
+    categorized_alerts_changed_similarity_100_new,
+    categorized_alerts_changed_similarity_100_old,
+    categorized_alerts_changed_new,
+    categorized_alerts_changed_old,
+    categorized_alerts_changed_only_old,
+    categorized_alerts_changed_only_new
+  )
+  
+
+  write_rds(x = resultado, path = str_glue("{log}.rds"))
+  
+  resultado
+  
+}
 
 
 
@@ -3769,6 +3965,191 @@ read_pmd_xml_all_files <- function(file){
     ) %>% 
     nest()
     
+}
+
+
+
+read_results_from_outside_read <- function(dir = here::here("tests/testthat")){
+  
+  future::plan(future::multiprocess)
+  
+  results <- list.files(dir, pattern = "^log-[0-9_]*-[0-9_]*\\.rds$") %>% 
+    enframe(value = "file") %>% 
+    mutate(
+      major_version_old = str_match_all(file, "log-([0-9]*)[\\._-]" ),
+      minor_version_old = str_match_all(file, "log-[0-9]*_([0-9]*)" ),
+      major_version_new = str_match_all(file, "[0-9]-([0-9]*)[\\._-]" ),
+      minor_version_new = str_match_all(file, "[0-9]-[0-9]*_([0-9]*)" )
+    ) %>% 
+    rowwise() %>% 
+    mutate(
+      major_version_old = major_version_old[2],
+      minor_version_old = minor_version_old[2],
+      major_version_new = major_version_new[2],
+      minor_version_new = minor_version_new[2]
+    ) %>% 
+    ungroup() %>% 
+    mutate(
+      across(
+        .cols = matches("(major|minor)_version_(old|new)"),
+        .fns = as.integer
+      )
+    ) %>% 
+    mutate(
+      across(
+        .cols = matches("(major|minor)_version_(old|new)"),
+        .fns = ~if_else(is.na(.x),0L,.x)
+      )
+    ) %>% 
+    mutate(
+      file_complete = str_glue("{dir}/{file}")
+    ) %>% 
+    mutate(
+      categorised = furrr::future_map(.x = file_complete, .f = read_rds, .progress = TRUE)
+    ) %>% 
+    mutate(
+      versions = str_match_all(file, pattern = "^log-([0-9_]*)-([0-9_]*)\\.rds$" )
+    ) %>% 
+    unnest_wider(
+      versions,
+      names_sep = "_"
+    ) %>% 
+    select(
+      categorised,
+      version_old = versions_2,
+      version_new = versions_3,
+      matches("(major|minor)_version_(old|new)")
+    ) %>% 
+    unnest(categorised) %>% 
+    filter(
+      str_starts(package, "org\\.")
+    )
+  
+    
+  results
+
+}
+  
+
+save_alerts <-  function(
+  dir = here::here("ArgoUML"),
+  pmd_path = "pmd/bin/pmd.bat"
+){
+
+  dirs <- list.files(dir, pattern = "^0_[0-9]*") %>% 
+    enframe(
+      value = "file"
+    ) %>% 
+    mutate(
+      file_complete = str_glue("{dir}/{file}")
+    ) %>% 
+    mutate(
+      saida = map2(
+        .x = file ,
+        .y = file_complete,
+        .f = ~system(command = str_glue("{pmd_path} -d {.y} -f xml -R rulesets/java/quickstart.xml -reportfile alerts/{.x}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+      )
+    )
+    
+}
+
+
+
+read_all_alerts <- function(dir = here::here("tests/testthat/alerts")){
+  
+  
+  future::plan(future::multiprocess)
+  
+  alerts <- list.files(dir) %>% 
+    enframe(
+      value = "file"
+    ) %>%
+    mutate(
+      major_version = str_match_all(file, "^0_([0-9]*)[\\._]" ),
+      minor_version = str_match_all(file, "^0_[0-9]*_([0-9]*)" )
+    ) %>% 
+    rowwise() %>% 
+    mutate(
+      major_version = major_version[2],
+      minor_version = minor_version[2]
+    ) %>% 
+    ungroup() %>% 
+    mutate(
+      across(
+        .cols = c(major_version, minor_version),
+        .fns = as.integer
+      )
+    ) %>% 
+    replace_na(
+      list(minor_version = 0)
+    ) %>% 
+    mutate(
+      file_complete = str_glue("{dir}/{file}")
+    ) %>% 
+    mutate(
+      alerts = furrr::future_map(
+        .x = file_complete, 
+        .f = read_pmd_xml_all_files, 
+        .progress = TRUE
+      )
+    ) %>% 
+    unnest(
+      alerts,
+      names_repair = "universal"
+    ) %>% 
+    unnest(
+      data
+    ) %>% 
+    filter(
+      str_starts(package, "org\\.")
+    )
+    
+
+  alerts_info <- alerts %>%
+    arrange(
+      major_version,
+      minor_version
+    ) %>% 
+    group_by(
+      major_version,
+      minor_version
+    ) %>% 
+    summarise(
+      files = n_distinct(file...6),
+      package = n_distinct(package),
+      class = n_distinct(class),
+      alerts = n()
+    ) 
+  
+  alerts
+  
+    
+}
+
+
+analyse_alerts_and_categories <- function(){
+  
+  results <- read_results_from_outside_read()
+  
+  alerts <- read_all_alerts()
+  
+  results_summarised <- results %>% 
+    group_by(
+      across(
+        matches("(major|minor)_version_(old|new)") | category
+      )
+    ) %>% 
+    summarise(
+      n = n()
+    ) %>% 
+    pivot_wider(
+      names_from = category,
+      values_from = n
+    )
+  
+  alerts
+  
+  
 }
 
 

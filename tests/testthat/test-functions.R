@@ -368,126 +368,313 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # # # 
 # # # test_that("compare_versions works",{
 # # # # 
+
+# 
+# 
+# tictoc::tic("compare_versions")
+# output_function <- compare_versions_read_outside(
+#   dir_old <- "C:/doutorado/ArgoUML/0_33",
+#   dir_new <-  "C:/doutorado/ArgoUML/0_34",
+#   log = "log-33-34"
+# )
+# tictoc::toc()
+# 
+# 
+# tictoc::tic("compare_versions")
+# output_function <- compare_versions_read_outside(
+#   dir_old <- "C:/doutorado/ArgoUML/0_32",
+#   dir_new <-  "C:/doutorado/ArgoUML/0_33",
+#   log = "log-32-33"
+# )
+# tictoc::toc()
+# 
+# 
+# tictoc::tic("compare_versions")
+# output_function <- compare_versions_read_outside(
+#   dir_old <- "C:/doutorado/ArgoUML/0_31",
+#   dir_new <-  "C:/doutorado/ArgoUML/0_32",
+#   log = "log-31-32"
+# )
+# tictoc::toc()
+# 
+# 
 #   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
+#   output_function <- compare_versions_read_outside(
 #     dir_old <- "C:/doutorado/ArgoUML/0_30",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_31_1",
-#     parallel = TRUE,
-#     resume = TRUE,
+#     dir_new <-  "C:/doutorado/ArgoUML/0_31",
 #     log = "log-30-31"
 #   )
 #   tictoc::toc()
 #   tictoc::tic("compare_versions")
-  # output_function <- compare_versions(
-  #   dir_old <- "C:/doutorado/ArgoUML/0_25",
-  #   dir_new <-  "C:/doutorado/ArgoUML/0_26",
-  #   parallel = FALSE,
-  #   resume = TRUE,
-  #   log = "log-25-26"
-  # )
+# output_function <- compare_versions_read_outside(
+#   dir_old <- "C:/doutorado/ArgoUML/0_25",
+#   dir_new <-  "C:/doutorado/ArgoUML/0_26",
+#   log = "log-25-26"
+# )
 #   tictoc::toc()
 #   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
+#   output_function <- compare_versions_read_outside(
 #     dir_old <- "C:/doutorado/ArgoUML/0_28",
 #     dir_new <-  "C:/doutorado/ArgoUML/0_29",
-#     parallel = TRUE,
-#     resume = TRUE,
 #     log = "log-28-29"
 #   )
 #   tictoc::toc()
 #   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
+#   output_function <- compare_versions_read_outside(
 #     dir_old <- "C:/doutorado/ArgoUML/0_27",
 #     dir_new <-  "C:/doutorado/ArgoUML/0_28",
-#     parallel = TRUE,
-#     resume = TRUE,
 #     log = "log-27-28"
 #   )
 #   tictoc::toc()
 #   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
+#   output_function <- compare_versions_read_outside(
 #     dir_old <- "C:/doutorado/ArgoUML/0_26",
 #     dir_new <-  "C:/doutorado/ArgoUML/0_27",
-#     parallel = TRUE,
-#     resume = TRUE,
 #     log = "log-26-27"
 #   )
 #   tictoc::toc()
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_14",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_15",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-14-15"
-#   )
-#   tictoc::toc()
-#   
-#   
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_19",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_20",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-19-20"
-#   )
-#   tictoc::toc()
-#   
+  # tictoc::tic("compare_versions")
+  # output_function <- compare_versions_read_outside(
+  #   dir_old <- "C:/doutorado/ArgoUML/0_14",
+  #   dir_new <-  "C:/doutorado/ArgoUML/0_15",
+  #   log = "log-14-15"
+  # )
+  # tictoc::toc()
+  # 
+  # 
+  # tictoc::tic("compare_versions")
+  # output_function <- compare_versions_read_outside(
+  #   dir_old <- "C:/doutorado/ArgoUML/0_19",
+  #   dir_new <-  "C:/doutorado/ArgoUML/0_20",
+  #   log = "log-19-20"
+  # )
+  # tictoc::toc()
+  # 
+  # 
+  # tictoc::tic("compare_versions")
+  # output_function <- compare_versions_read_outside(
+  #   dir_old <- "C:/doutorado/ArgoUML/0_18",
+  #   dir_new <-  "C:/doutorado/ArgoUML/0_19",
+  #   log = "log-18-19"
+  # )
+  # tictoc::toc()
+  # 
 # 
 #   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_18",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_19",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-18-19"
-#   )
-#   tictoc::toc()
-# 
-#   
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
+#   output_function <- compare_versions_read_outside(
 #     dir_old <- "C:/doutorado/ArgoUML/0_17",
 #     dir_new <-  "C:/doutorado/ArgoUML/0_18",
-#     parallel = TRUE,
-#     resume = TRUE,
 #     log = "log-17-18"
 #   )
 #   tictoc::toc()
-#   
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_16",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_17",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-16-17"
-#   )
-#   tictoc::toc()
-#   
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_15",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_16",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-15-16"
-#   )
-#   tictoc::toc()
-#   
-# 
-#   
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions(
-#     dir_old <- "C:/doutorado/ArgoUML/0_14",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_15",
-#     parallel = TRUE,
-#     resume = TRUE,
-#     log = "log-14-15"
-#   )
-#   tictoc::toc()
-#   
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(  
+    dir_old <- "C:/doutorado/ArgoUML/0_16",
+    dir_new <-  "C:/doutorado/ArgoUML/0_17",
+    log = "log-16-17"
+  )
+  tictoc::toc()
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_12",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_1",  
+    log = "log-12-13_1"
+  )
+  tictoc::toc()
+
+
+   
+    
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_13_6",
+    dir_new <-  "C:/doutorado/ArgoUML/0_14",
+    log = "log-13_6-14"
+  )
+  tictoc::toc()
+  
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_13_5",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_6",
+    log = "log-13_5-13_6"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_13_4",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_5",
+    log = "log-13_4-13_5"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_13_3",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_4",
+    log = "log-13_3-13_4"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_13_2",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_3",
+    log = "log-13_2-13_3"
+  ) 
+  tictoc::toc()
+
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_13_1",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_2",
+    log = "log-13_1-13_2"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_12",
+    dir_new <-  "C:/doutorado/ArgoUML/0_13_1",
+    log = "log-12-13_1"
+  )
+  tictoc::toc()
+
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_11_4",
+    dir_new <-  "C:/doutorado/ArgoUML/0_12",
+    log = "log-11_4-12"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_11_3",
+    dir_new <-  "C:/doutorado/ArgoUML/0_11_4",
+    log = "log-11_3-11_4"
+  )
+  tictoc::toc()
+  
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_11_2",
+    dir_new <-  "C:/doutorado/ArgoUML/0_11_3",
+    log = "log-11_2-11_3"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_11_1",
+    dir_new <-  "C:/doutorado/ArgoUML/0_11_2",
+    log = "log-11_1-11_2"
+  )
+  tictoc::toc()
+  
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_10",
+    dir_new <-  "C:/doutorado/ArgoUML/0_11_1",
+    log = "log-10-11_1"
+  )
+  tictoc::toc()
+  
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_9",
+    dir_new <-  "C:/doutorado/ArgoUML/0_10",
+    log = "log-9_9-10"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_8",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_9",
+    log = "log-9_8-9_9"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_7",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_8",
+    log = "log-9_7-9_8"
+  )
+  tictoc::toc()
+  
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_6",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_7",
+    log = "log-9_6-9_7"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_4",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_6",
+    log = "log-9_4-9_6"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_3",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_4",
+    log = "log-9_3-9_4"
+  )
+  tictoc::toc()
+
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_2",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_3",
+    log = "log-9_2-9_3"
+  )
+  tictoc::toc()
+  
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_1",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_2",
+    log = "log-9_1-9_2"
+  )
+  tictoc::toc()
+  
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_9_0",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_1",
+    log = "log-9_0-9_1"
+  )
+  tictoc::toc()
+  
+
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_8_1",
+    dir_new <-  "C:/doutorado/ArgoUML/0_9_0",
+    log = "log-8_1-9_0"
+  )
+  tictoc::toc()
+  
+  
+      
 #   
 #   
 #   
