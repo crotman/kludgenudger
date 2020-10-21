@@ -3061,8 +3061,8 @@ compare_versions_read_outside <- function(
       alerts_from_pmd_new %>% rename_with(~str_glue("{.x}_alert_new")),
       by = c("file_new" = "file_alert_new") 
     ) 
-  
-  
+
+
   future::plan(future::multiprocess)
   
   diff_pairs_changed <- diff_pairs_info %>% 
@@ -3109,8 +3109,7 @@ compare_versions_read_outside <- function(
         
   ) 
     
-  
-  
+
   diff_pairs_changed_similarity_100 <- diff_pairs_info %>% 
     filter(
       mode == "changed",
@@ -4147,8 +4146,47 @@ analyse_alerts_and_categories <- function(){
       values_from = n
     )
   
-  alerts
-  
+  alerts_summarised <- alerts %>% 
+    group_by(
+      across(
+        matches("(major|minor)_version") 
+      )
+    ) %>% 
+    summarise(
+      n = n()
+    ) %>% 
+    arrange(
+      major_version,
+      minor_version
+    ) %>% 
+    left_join(
+      results_summarised,
+      by = c("major_version" = "major_version_new", "minor_version" = "minor_version_new" ),
+      keep = TRUE
+    ) %>% 
+    ungroup() %>% 
+    replace_na(
+      list(
+        fixed = 0,
+        new = 0,
+        open = 0
+      )
+    ) %>% 
+    mutate(
+      theo_increase = new - fixed,
+      real_increase = n - lag(n),
+      diff = real_increase - theo_increase
+    ) %>% 
+    filter(
+      !is.na(minor_version_new)
+    ) %>% 
+    mutate(
+      new_adjusted = if_else(diff > 0, new + diff, new),
+      fixed_adjusted = if_else(diff < 0, fixed - diff, fixed),
+      adjusted_increase = new_adjusted - fixed_adjusted
+    ) 
+    
+  alerts_summarised
   
 }
 

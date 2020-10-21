@@ -398,13 +398,13 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # tictoc::toc()
 # 
 # 
-#   tictoc::tic("compare_versions")
-#   output_function <- compare_versions_read_outside(
-#     dir_old <- "C:/doutorado/ArgoUML/0_30",
-#     dir_new <-  "C:/doutorado/ArgoUML/0_31",
-#     log = "log-30-31"
-#   )
-#   tictoc::toc()
+  tictoc::tic("compare_versions")
+  output_function <- compare_versions_read_outside(
+    dir_old <- "C:/doutorado/ArgoUML/0_29",
+    dir_new <-  "C:/doutorado/ArgoUML/0_30",
+    log = "log-29-30"
+  )
+  tictoc::toc()
 #   tictoc::tic("compare_versions")
 # output_function <- compare_versions_read_outside(
 #   dir_old <- "C:/doutorado/ArgoUML/0_25",
