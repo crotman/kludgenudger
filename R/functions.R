@@ -3967,7 +3967,6 @@ read_pmd_xml_all_files <- function(file){
 }
 
 
-
 read_results_from_outside_read <- function(dir = here::here("tests/testthat")){
   
   future::plan(future::multiprocess)
@@ -4145,7 +4144,7 @@ analyse_alerts_and_categories <- function(){
       names_from = category,
       values_from = n
     )
-  
+
   alerts_summarised <- alerts %>% 
     group_by(
       across(
@@ -4175,20 +4174,796 @@ analyse_alerts_and_categories <- function(){
     mutate(
       theo_increase = new - fixed,
       real_increase = n - lag(n),
-      diff = real_increase - theo_increase
+      diff = theo_increase - real_increase,
+      inc_new = diff * new / (fixed - new),
+      inc_fixed = diff + inc_new,
+      fixed_adjusted = (fixed + inc_fixed) %>% round(),
+      new_adjusted = (new + inc_new) %>% round()
     ) %>% 
     filter(
       !is.na(minor_version_new)
     ) %>% 
     mutate(
-      new_adjusted = if_else(diff > 0, new + diff, new),
-      fixed_adjusted = if_else(diff < 0, fixed - diff, fixed),
-      adjusted_increase = new_adjusted - fixed_adjusted
+      new_adjusted =
+        if_else(new_adjusted < 0 | fixed_adjusted < 0,
+                if_else(diff > 0,
+                        new - diff,
+                        new
+                ),
+                new_adjusted
+                )
+      ,
+      fixed_adjusted =
+        if_else(fixed_adjusted < 0 | new_adjusted < 0,
+                if_else(diff < 0,
+                        fixed + diff,
+                        fixed
+                ),
+                fixed_adjusted
+        )
+      ,
+      
+      ratio_before = new / (fixed + new), 
+      ratio_after = new_adjusted / (fixed_adjusted + new_adjusted),
+      increase_after = new_adjusted - fixed_adjusted
+
+    ) %>% 
+    select(
+      matches("_version"), n, fixed = fixed_adjusted, new = new_adjusted, open 
     ) 
-    
+
+
   alerts_summarised
   
 }
+
+
+extract_root_dir_from_log <-  function(log = "C:/doutorado/kludgenudger/tests/testthat/log-14-15.rds"){
+  
+
+  file <- read_rds(log)
+    
+  root_new <- str_match(string = file$file_new, pattern = "^(.*/ArgoUML/.+?)/") %>% 
+    first()
+   
+  root_old <- str_match(string = file$file_old, pattern = "^(.*/ArgoUML/.+?)/") %>% 
+    first()
+   
+  tibble(
+    root_new = root_new,
+    root_old = root_old
+  )
+   
+ 
+ 
+ 
+}
+
+
+generate_diffs_from_versions <- function(dir = here::here("tests/testthat")){
+  
+  complement <- tribble(
+    ~file,                ~root_new,                         ~root_old,
+    "log-14-15.rds",      "C:/doutorado/ArgoUML/0_15/",      "C:/doutorado/ArgoUML/0_14/",
+    "log-17-18.rds",      "C:/doutorado/ArgoUML/0_18/",      "C:/doutorado/ArgoUML/0_17/",
+    "log-18-19.rds",      "C:/doutorado/ArgoUML/0_19/",      "C:/doutorado/ArgoUML/0_18/",
+    "log-19-20.rds",      "C:/doutorado/ArgoUML/0_20/",      "C:/doutorado/ArgoUML/0_19/",
+    "log-25-26.rds",      "C:/doutorado/ArgoUML/0_26/",      "C:/doutorado/ArgoUML/0_25/",
+    "log-26-27.rds",      "C:/doutorado/ArgoUML/0_27/",      "C:/doutorado/ArgoUML/0_26/",
+    "log-27-28.rds",      "C:/doutorado/ArgoUML/0_28/",      "C:/doutorado/ArgoUML/0_27/",
+    "log-28-29.rds",      "C:/doutorado/ArgoUML/0_29/",      "C:/doutorado/ArgoUML/0_28/",
+    "log-30-31.rds",      "C:/doutorado/ArgoUML/0_31/",      "C:/doutorado/ArgoUML/0_30/",
+    "log-31-32.rds",      "C:/doutorado/ArgoUML/0_32/",      "C:/doutorado/ArgoUML/0_31/",
+    "log-32-33.rds",      "C:/doutorado/ArgoUML/0_33/",      "C:/doutorado/ArgoUML/0_32/",
+    "log-33-34.rds",      "C:/doutorado/ArgoUML/0_34/",      "C:/doutorado/ArgoUML/0_33/"
+    
+  )
+
+  
+  execute_system <- function(file, root_old, root_new ){
+
+    system(str_glue("git diff -U0 --patience --numstat --summary --output={file}.diff --no-index {root_old} {root_new}"), show.output.on.console =  FALSE, invisible = TRUE)      
+  }
+    
+  results <- list.files(dir, pattern = "^log-[0-9_]*-[0-9_]*\\.rds$") %>% 
+    enframe(value = "file") %>% 
+    mutate(
+      major_version_old = str_match_all(file, "log-([0-9]*)[\\._-]" ),
+      minor_version_old = str_match_all(file, "log-[0-9]*_([0-9]*)" ),
+      major_version_new = str_match_all(file, "[0-9]-([0-9]*)[\\._-]" ),
+      minor_version_new = str_match_all(file, "[0-9]-[0-9]*_([0-9]*)" )
+    ) %>% 
+    select(file) %>% 
+    mutate(
+      roots = map(
+        .x = file, .f = extract_root_dir_from_log
+      )
+    ) %>% 
+    unnest(
+      roots
+    ) %>% 
+    mutate(
+      across(
+        starts_with("root_"),
+        ~str_sub(string = .x, end = -2)
+      )
+    ) %>% 
+    filter(
+      !is.na(root_new)
+    ) %>% 
+    bind_rows(
+      complement    
+    ) %>% 
+    mutate(
+      saida = pmap(
+        .l = list(
+          root_new = root_new,
+          root_old = root_old,
+          file = file
+        ), 
+        
+        .f = execute_system
+      )
+    )
+
+}
+
+
+generate_ast_only_classes <- function(dir = "C:/doutorado/ArgoUML/0_9_7", pmd_path = "pmd/bin/pmd.bat" ){
+
+  executions <- list.files(
+    "C:/doutorado/ArgoUML",
+    pattern = "^0"
+  ) %>% 
+    enframe(
+      name = "id",
+      value = "dir_incomplete"
+    ) %>% 
+    mutate(
+      dir_complete = str_glue("C:/doutorado/ArgoUML/{dir_incomplete}")
+    ) %>% 
+    mutate(
+      saida = map2(
+        .x = dir_incomplete, .y = dir_complete, .f =  ~system(str_glue("{pmd_path} -d {.y} -f xml -R data/blockrules/onlyclass.xml -reportfile only_classes/{.x}"), show.output.on.console =  FALSE, invisible = TRUE)  
+      ) 
+      
+    )
+
+}
+
+
+read_pmd_only_classes <- function(dir = "only_classes" ){
+  
+  future::plan(future::multiprocess)
+  
+  saida <- list.files(dir) %>% 
+    enframe(
+      name = "id",
+      value = "dir_incomplete"
+    ) %>% 
+    mutate(
+      dir_complete = str_glue("{dir}/{dir_incomplete}")
+    ) %>% 
+    mutate(
+      content = furrr::future_map(
+        .x = dir_complete,
+        .f = read_pmd_xml_all_files,
+          .progress = TRUE
+      )
+    ) %>% 
+    unnest(
+      content
+    ) %>% 
+    unnest(data) %>% 
+    select(
+      dir_incomplete,
+      file,
+      package,
+    ) %>% 
+    distinct() %>% 
+    filter(
+      str_detect(package, pattern = "org\\.")
+    ) %>% 
+    separate(
+      col = dir_incomplete,
+      into = c("nada", "major_version", "minor_version"),
+      sep = "_"
+    ) %>% 
+    mutate(
+      across(
+        .cols = ends_with(
+          "version"
+        ),
+        .fns = as.integer
+      )
+    ) %>% 
+    replace_na(
+      list(
+        minor_version = 0
+      )
+    ) 
+
+}
+  
+  
+
+
+
+compare_comments <- function(comments, dir_diffs){
+  
+  diff_pairs <- extract_diff_pairs_from_diff_file(file = "log-9_7-9_8.rds.diff" %>% str_glue() ) %>% 
+    filter(
+      str_detect(file_old, ".java$"),
+      str_detect(file_new, ".java$"),
+    )
+
+  
+}
+
+acha_kludge <- function(x = "something really gone wrong"){
+  
+  expressions <- c(
+    "hack",
+    "retarded",
+    "at a loss",
+    "stupid",
+    "remove this code",
+    "ugly",
+    "something ?[[:alnum:][:space:]]* gone wrong",
+    "nuke",
+    "is problematic",
+    "problematic",
+    "may cause problem",
+    "hacky",
+    "unknown why we ever experience this",
+    "treat .*as a soft error",
+    "silly",
+    "workaround for bug",
+    "workaround",
+    "kludge",
+    "fixme",
+    "this isn't quite right",
+    "trial and error",
+    "this is wrong",
+    "hang our heads in shame",
+    "temporary solution",
+    "temporary fix",
+    "causes issue",
+    "something bad is going on",
+    "cause for issue",
+    "this doesn't look right",
+    "this does not look right",
+    "is this next line safe",
+    "temporary crutch",
+    "this can be a mess",
+    "this isn't very solid",
+    "this is temporary and will go away",
+    "is this line really safe",
+    "there is a problem",
+    "some fatal error",
+    "something serious is wrong",
+    "don't use this",
+    "do not use this",
+    "get rid of this",
+    "doubt that this would work",
+    "this is bs",
+    "give up and go away",
+    "risk of this blowing up",
+    "just abandon it",
+    "prolly a bug",
+    "buggy",
+    "probably a bug",
+    "hope everything will work",
+    "toss it",
+    "barf",
+    "something bad happened",
+    "fix this crap",
+    "yuck",
+    "certainly buggy",
+    "remove me before production",
+    "remove this before production",
+    "you can be unhappy now",
+    "this is uncool",
+    "bail out",
+    "it doesn't work yet",
+    "it does not work yet",
+    "crap",
+    "inconsistency",
+    "abandon all hope",
+    "kaboom",
+    "is this .*needed",
+    "shame",
+    "nasty",
+    "horrible",
+    "purists would",
+    "that's for a next refactoring",
+    "(?:todo:|needs-more-work:)[ ]*find a way to",
+    # "(?:todo:|needs-more-work:) ",
+    "would be better here",
+    "necessary\\?",
+    "this should use ?[[:alnum:][:space:]]* instead of",
+    "not sure whether this belongs here",
+    "needs to be updated",
+    "this ?[[:alnum:][:space:]]* (?:is|seems) ?[[:alnum:][:space:]]* redundant",
+    "needs to be updated",
+    "(?:todo:|needs-more-work:)[ ]*what\\?",
+    "a better implementation would be",
+    "why isn't this done",
+    "what is this trying to do\\?",
+    "this will fail",
+    "crappy",
+    "we need a better",
+    "should not be using ?[[:alnum:][:space:]]* here",
+    "hardwired",
+    "untested",
+    "just a guess",
+    "what do we want to use .*\\?",
+    "check that this is correct",
+    "why aren't we ?[[:alnum:][:space:]]* \\?",
+    "(?:this|it) ?.* does not work",
+    "this (?:is|seems) a temporary method",
+    "should there really be ?[[:alnum:][:space:]]* \\?",
+    "not exact, but close",
+    "this (?:is|seems) ?[[:alnum:][:space:]]* expensive way to",
+    "unused?",
+    "is this a good way ?[[:alnum:][:space:]]*\\?",
+    "this indicates a ?[[:alnum:][:space:]]* problem",
+    "potential ?[[:alnum:][:space:]]* issue",
+    "a ?[[:alnum:][:space:]]* better way of doing this would",
+    "really should be",
+    "not sure this is ?[[:alnum:][:space:]]* right",
+    "fix this",
+    "(?:todo:|needs-more-work:)[ ]*review",
+    "(:?it|this) (?:is|seems) ?[[:alnum:][:space:]]* a part implementation",
+    "(:?it|this) should ?[[:alnum:][:space:]]* be using",
+    "(:?it|this) should ?[[:alnum:][:space:]]* be extended",
+    "(:?it|this) (?:is|seems) ambiguous",
+    "(:?it|this) is never executed ",
+    "(:?it|this) ?[[:alnum:][:space:]]* shouldn't",
+    "(:?it|this) ?[[:alnum:][:space:]]* should not",
+    "(:?it|this) ?[[:alnum:][:space:]]* should be",
+    "we ?[[:alnum:][:space:]]* don't want",
+    "we ?[[:alnum:][:space:]]* do not want",
+    "needs to be tidied up",
+    "is (:?it|this) possible",
+    "does this help",
+    "brute force",
+    "this error needs to be",
+    "needs to be ?[[:alnum:][:space:]]* after stable release",
+    "fragile",
+    "(?:todo:|needs-more-work:)[ ]*check",
+    "until code is reviewed",
+    "test this",
+    "magic numbers?",
+    "needs to be fixed",
+    "not the right location",
+    "how come this happens",
+    "enhance so that",
+    "we shouldn't need this",
+    "we should not need this",
+    "(?:todo:|needs-more-work:)[ ]*document",
+    "not strictly correct",
+    "(:?it|this) should ?[[:alnum:][:space:]]* be ?[[:alnum:][:space:]]* the other way round",
+    "we can remove",
+    "this is already defined",
+    "for a next refactoring",
+    "hardcoded",
+    "this creates a dependency",
+    "the ?[[:alnum:][:space:]]* (?:is|seems) redundant",
+    "it is planned to refactor",
+    "(:?it|this) is planned to refactor",
+    "why ?[[:alnum:][:space:]]* continue here as if nothing has gone wrong\\?",
+    "bad smell",
+    "(?:todo:|needs-more-work:)[ ]*constraints",
+    "need to replace this",
+    "do we ?[[:alnum:][:space:]]* need ?[[:alnum:][:space:]]* this",
+    "once we go ?[[:alnum:][:space:]]* we won't need this",
+    "does not work",
+    "why (?:is|are) ?[[:alnum:][:space:]]* being ignored",
+    "is done twice",
+    "never get executed",
+    "how to avoid",
+    "(?:the|it|this) ?[[:alnum:][:space:]]* only works",
+    "\\:\\-\\(",
+    "double counted",
+    "is (?:this|it) ?[[:alnum:][:space:]]* correct",
+    "not sure ?[[:alnum:][:space:]]* (?:this|it) belongs here",
+    "less elegant ?[[:alnum:][:space:]]* that works",
+    "(?:this|it)?[[:alnum:][:space:]]* is in the wrong place",
+    "what (?:shall|should) we do here",
+    "please explain this",
+    "this needs work",
+    "prove that this works",
+    "does not handle",
+    "is ?[[:alnum:][:space:]]* the right thing here",
+    "(?:todo:|needs-more-work:)[ ]*verify",
+    "explain that this ?[[:alnum:][:space:]]* works also",
+    "why there is not test",
+    "(:?this|the|it) ?[[:alnum:][:space:]]* contains a ?[[:alnum:][:space:]]* error",
+    "we ?[[:alnum:][:space:]]* (?:don't|do not) need (?:it|this) any more",
+    "is (?:it|this|the) ?[[:alnum:][:space:]]* still useful",
+    "is not so beautiful",
+    "shouldn't we ?[[:alnum:][:space:]]* do something ?[[:alnum:][:space:]]* here",
+    "(:?don't|do not) understand",
+    "ouch",
+    "(?:todo:|needs-more-work:)[ ]*complete this",
+    "(:?doesn't|does not) take into account",
+    "why is this code commented",
+    "turn off after built",
+    "in the future",
+    "causes? ?[[:alnum:][:space:]]* errors?",
+    "always check for",
+    "make (?:it|this) configurable",
+    "(?:todo|needs-more-work):[ ]*provide",
+    "(?:todo|needs-more-work):[ ]*constructors",
+    "shall not be",
+    "necessary\\?",
+    "dummy implementation",
+    "at the moment",
+    "wasteful",
+    "pending",
+    "awkward",
+    "really should be",
+    "how can this possibly be",
+    "(?:todo|needs-more-work):[ ]*add",
+    "(?:todo|needs-more-work):[ ]*handle",
+    "(?:todo|needs-more-work):[ ]*should",
+    "(?:todo|needs-more-work):[ ]*this ?[[:alnum:][:space:]]* should",
+    "(?:todo|needs-more-work):[ ]*assumes",
+    "(?:todo|needs-more-work):[ ]*remove",
+    "(?:todo|needs-more-work):[ ]*make",
+    "(?:todo|needs-more-work):[ ]*move",
+    "(?:todo|needs-more-work):[ ]*fix",
+    "(?:todo|needs-more-work):[ ]*not implemented",
+    "(?:todo|needs-more-work):[ ]*define",
+    "(?:todo|needs-more-work):[ ]*disable",
+    "(?:todo|needs-more-work):[ ]*treat",
+    "(?:todo|needs-more-work):[ ]*use",
+    "(?:todo|needs-more-work):[ ]*what\\?",
+    "(?:todo|needs-more-work):[ ]*why",
+    "(?:todo|needs-more-work):[ ]*split",
+    "(?:todo|needs-more-work):[ ]*replace",
+    "(?:todo|needs-more-work):[ ]*improve",
+    "(?:todo|needs-more-work):[ ]*this ?[[:alnum:][:space:]]* needs",
+    "(?:todo|needs-more-work):[ ]*we ?[[:alnum:][:space:]]* need",
+    "(?:todo|needs-more-work): ?[[:alnum:][:space:]]* algorithm",
+    "(?:todo|needs-more-work): ?[[:alnum:][:space:]]* incomplete",
+    "(?:todo|needs-more-work): ?[[:alnum:][:space:]]* unfinished",
+    "(?:todo|needs-more-work): ?[[:alnum:][:space:]]* in some cases",
+    "(?:todo|needs-more-work): ?[[:alnum:][:space:]]* not ?[[:alnum:][:space:]]* completely",
+    "(?:todo|needs-more-work): ?[[:alnum:][:space:]]* this does",
+    "what if we need to .*\\?",
+    "don't think so",
+    "no point in doing this",
+    "it would be ?[[:alnum:][:space:]]* more efficient to",
+    "i don't know",
+    "i'd suggest that",
+    "need to be reviewed",
+    "need to be changed",
+    "there ?[[:alnum:][:space:]]* ought to be a check",
+    "there ?[[:alnum:][:space:]]* must be a check",
+    "it works,? but",
+    "it would be better to",
+    "should match ?[[:alnum:][:space:]]* uml",
+    "too primitive",
+    "replace by ?[[:alnum:][:space:]]* elegant",
+    "is it a bug",
+    "it is unclear to me",
+    "strange construction",
+    "good enough",
+    "this will ?[[:alnum:][:space:]]* not be perfect",
+    "hopefully",
+    "i [do not|don't] see ?[[:alnum:][:space:]]* reason for",
+    "i [do not|don't] know",
+    "can we remove",
+    "we presume",
+    "remove one of them",
+    "this does exactly the same",
+    "[do not|don't] ?[[:alnum:][:space:]]* understand the code"
+    
+  ) %>% 
+    sort()
+
+
+  expressions <- str_glue("\\b{expressions}\\b")
+  
+  bateu <- str_detect(string = x, pattern = expressions)
+  
+  sum(bateu) %>% as.integer()
+  
+  
+}
+
+
+extract_selected_comments <- function(path_to_comments = "comments"){
+
+  future::plan(future::multiprocess)
+  
+  comments_raw <- list.files(path = path_to_comments ) %>% 
+    enframe(
+      value = "file_to_read"
+    ) %>% 
+    mutate(
+      comments = furrr::future_map(.x = str_glue("{path_to_comments}/{file_to_read}"), .f = read_rds)
+    ) %>% 
+    unnest(
+      comments
+    ) %>%
+    mutate(
+      comment = stringi::stri_enc_toutf8(comment)
+    ) %>% 
+    mutate(
+      comment = str_to_lower(comment)
+    ) %>% 
+    mutate(
+      bateu = furrr::future_map_int(.x = comment, .f = acha_kludge, .progress = TRUE )
+    ) 
+
+  selected_comments <- comments_raw %>% 
+    filter(bateu > 0) 
+  
+  selected_comments %>% 
+    count(comment) %>% 
+    filter(n < 100) %>% 
+    write_csv("comentarios_sample.csv")
+  
+}
+
+
+extract_only_files_from_diff_pairs <- function(file = "log-9_7-9_8.rds.diff" ){
+  
+  diff_pairs <- extract_diff_pairs_from_diff_file(file) %>% 
+    filter(
+      str_detect(file_old, ".java$"),
+      str_detect(file_new, ".java$"),
+    ) %>% 
+    select(
+      file_old,
+      file_new,
+      mode,
+      similarity_index
+    )
+  
+}
+
+
+create_version_comparisons_comment <-  function(){
+
+  future::plan(future::multiprocess)
+  
+  selected_comments <- read_rds("selected_comments_2.rds") %>% 
+    ungroup() %>% 
+    mutate(
+      comment = str_trim(comment) %>% str_to_lower() 
+    ) %>% 
+    mutate(
+      comment = str_replace_all(string = comment, pattern = "needs\\-more\\-work", replacement = "todo"  )
+    )
+  
+
+  diff_pairs <- list.files(pattern = "log-.*\\.diff") %>% 
+    enframe(   
+      value = "file" 
+    ) %>% 
+    separate(
+      col = file,
+      into = c("nada", "version_old", "version_new"),
+      sep = "-",
+      remove = FALSE
+    ) %>% 
+    mutate(
+      version_new = str_remove_all(version_new, pattern = "\\.rds\\.diff")
+    ) %>% 
+    separate(
+      version_new,
+      into = c("major_version_new", "minor_version_new"),
+      sep = "_"
+    ) %>% 
+    separate(
+      version_old,
+      into = c("major_version_old", "minor_version_old"),
+      sep = "_"
+    ) %>% 
+    mutate(
+      across(
+        .cols = matches("\\_version\\_"),
+        .fns = as.integer
+      )
+    ) %>% 
+    replace_na(
+      list(
+        minor_version_new = 0,
+        minor_version_old = 0
+      )
+    ) %>% 
+    mutate(
+        content = furrr::future_map(.x = file, .f = extract_only_files_from_diff_pairs)
+      ) %>% 
+    unnest(content)
+  
+  
+  pmd_only_classes <- read_pmd_only_classes() %>% 
+    mutate(
+      file = str_replace_all(file, pattern =  "\\\\", replacement = "/"  )
+    )
+    
+  count_comments_per_version <-  selected_comments %>% 
+    left_join(
+      pmd_only_classes,
+      by = c("file")
+    ) %>% 
+    filter(
+      str_detect(package, pattern = "org\\.")
+    ) %>% 
+    group_by(
+      major_version,
+      minor_version
+    ) %>% 
+    summarise(
+      n = n()
+    ) 
+  
+  
+  diff_pairs_with_package <- diff_pairs %>% 
+    left_join(
+      pmd_only_classes %>% select(file_old = file, package_old = package),
+      by = c("file_old")
+    ) %>% 
+    left_join(
+      pmd_only_classes %>% select(file_new = file, package_new = package),
+      by = c("file_new")
+    ) %>% 
+    filter(
+      str_detect(package_old, pattern = "org\\.") | str_detect(package_new, pattern = "org\\.")
+    )
+  
+  
+  
+  diff_pairs_new <- diff_pairs_with_package %>% 
+    filter(
+      mode == "new"
+    ) %>% 
+    inner_join(
+      selected_comments,
+      by = c("file_new" = "file")
+    ) %>% 
+    group_by(
+      across(
+        .cols = matches("\\_version\\_")
+      )
+    ) %>% 
+    summarise(
+      new = n(),
+      fixed = 0
+    )
+
+  
+  diff_pairs_deleted <- diff_pairs_with_package %>% 
+    filter(
+      mode == "deleted"
+    ) %>% 
+    inner_join(
+      selected_comments,
+      by = c("file_old" = "file")
+    ) %>% 
+    group_by(
+      across(
+        .cols = matches("\\_version\\_")
+      )
+    ) %>% 
+    summarise(
+      fixed = n(),
+      new = 0
+    )
+  
+
+  join_comments_each_version <- function(
+    major_version_old, 
+    minor_version_old,
+    major_version_new, 
+    minor_version_new,
+    file_old,
+    file_new
+  ){
+    
+    
+    comments_old <- selected_comments %>% ungroup() %>% 
+      filter(
+        file == file_old
+      ) %>%
+      select(
+        comment_old = comment
+      )
+    
+    comments_new <- selected_comments %>% ungroup() %>% 
+      filter(
+        file == file_new
+      ) %>% 
+      select(
+        comment_new = comment
+      )
+    
+    comments <- comments_old %>% 
+      full_join(
+        comments_new,
+        by = c("comment_old" = "comment_new"),
+        keep = TRUE
+      )
+    
+    
+    comments    
+    
+    
+  }
+  
+  diff_pairs_changed <- diff_pairs_with_package %>% 
+    filter(
+      mode == "changed"
+    ) %>% 
+    select(
+      matches("\\_version\\_") | matches("file\\_")
+    ) %>% 
+    mutate(
+      comments = furrr::future_pmap(
+        .l = list(
+          major_version_old = major_version_old, 
+          minor_version_old = minor_version_old,
+          major_version_new = major_version_new, 
+          minor_version_new = minor_version_new,
+          file_old = file_old,
+          file_new = file_new
+        ) , 
+        .f = join_comments_each_version,
+        .progress = TRUE
+      )
+    ) %>% 
+    unnest(comments)
+  
+  count_new_fixed_comments <-  diff_pairs_changed %>% 
+    group_by(
+      across(
+        .cols = matches("\\_version\\_")
+      ) 
+    ) %>% 
+    summarise(
+      new = sum(is.na(comment_old)),
+      fixed = sum(is.na(comment_new))
+    ) %>% 
+    bind_rows(
+      diff_pairs_new
+    ) %>% 
+    bind_rows(
+      diff_pairs_deleted
+    ) %>%
+    ungroup() %>% 
+    group_by(
+      across(
+        .cols = matches("\\_version\\_")
+      ) 
+    ) %>% 
+    summarise(
+      new = sum(new),
+      fixed = sum(fixed)
+    ) %>% 
+    left_join(
+      count_comments_per_version,
+      by = c("major_version_new" = "major_version", "minor_version_new" = "minor_version"   )
+    )
+
+  count_new_fixed_comments
+  
+  
+}
+
+
+
+
+
+
+
+
+
+  
 
 
 

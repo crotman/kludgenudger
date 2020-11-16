@@ -763,11 +763,7 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # #   
 # #   
 # #   
-# # extract_comments_from_directory(
-# #   dir = "C:/doutorado/ArgoUML/0_24",
-# #   dest_file = "comments_24.rds"
-# # )
-# #   
+ # #   
 # # extract_comments_from_directory(
 # #   dir = "C:/doutorado/ArgoUML/0_25",
 # #   dest_file = "comments_25.rds"
@@ -1339,3 +1335,22 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # 
 
 
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ArgoUML/0_9_8",
+  dest_file = "comments_9_8.rds"
+)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
