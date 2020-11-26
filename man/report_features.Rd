@@ -4,7 +4,15 @@
 \alias{report_features}
 \title{Reports the features in a latex table}
 \usage{
-report_features(features_df, caption)
+report_features(
+  features_df,
+  caption,
+  types_to_show = c("same_rule", "same_id_group", "same_method_group",
+    "same_method_name", "same_block", "same_code", "same_method_code", "dist_line",
+    "dist_line_normalized_block", "dist_line_normalized_method",
+    "dist_line_normalized_unit"),
+  return_raw_data = FALSE
+)
 }
 \arguments{
 \item{features_df}{features info from calculate_features_from_versions}

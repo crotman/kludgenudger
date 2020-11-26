@@ -10,7 +10,8 @@ decorate_code_and_alerts(
   region_only = FALSE,
   region_size = 3,
   size_line_of_code = 160,
-  length_alert_name = 35
+  length_alert_name = 35,
+  use_mnemonic = FALSE
 )
 }
 \arguments{

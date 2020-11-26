@@ -981,6 +981,8 @@ read_raw_ast_nodes <-  function(
 
   code_all_lines <- read_lines(code_location)
   
+  
+  browser()
   returned_value <- alerts %>% 
     replace_na(
       list(
@@ -2611,6 +2613,8 @@ report_features <- function(
 #' @examples
 extract_comments_from_code <- function(file_path){
 
+  
+
 
   #for debug: file_path = "data/caso1_extract_comments_from_code/code.java"
   code <- read_lines(file_path) %>% 
@@ -2983,6 +2987,7 @@ compare_versions_read_outside <- function(
   log = "log"
 ){
   
+
   pmd_path = "pmd/bin/pmd.bat"
   
   # dir_old <- "C:/doutorado/ArgoUML/0_10"
@@ -3572,14 +3577,26 @@ extract_comments_from_directory <- function(dir, dest_file){
   )
   
   
-  comments <- list.files(path = dir, pattern = "\\.java$", recursive = TRUE, full.names = TRUE) %>% 
+  # comments <- list.files(path = dir, pattern = "\\.java$", recursive = TRUE, full.names = TRUE) %>% 
+  #   enframe(
+  #     name = "id",
+  #     value = "file"
+  #   ) %>% 
+  #   mutate(
+  #     comments = purrr::map(.x = file, .f = extract_comments_from_code )
+  #   ) %>% 
+  #   unnest(comments)
+  # 
+  
+
+  comments <- list.files(path = dir, pattern = "\\.java$", recursive = TRUE, full.names = TRUE) %>%
     enframe(
       name = "id",
       value = "file"
-    ) %>% 
+    ) %>%
     mutate(
       comments = furrr::future_map(.x = file, .f = extract_possibly,.progress = TRUE )
-    ) %>% 
+    ) %>%
     unnest(comments)
   
   write_rds(comments, dest_file)
@@ -3967,17 +3984,25 @@ read_pmd_xml_all_files <- function(file){
 }
 
 
-read_results_from_outside_read <- function(dir = here::here("tests/testthat")){
+read_results_from_outside_read <- function(
+  dir = NULL,
+  prefix = NULL,
+  package_start = "org\\."
+){
+  
+  dir <- if_else(is.null(dir), here::here("tests/testthat"), dir)
+  prefix <- if_else(is.null(prefix), here::here("tests/testthat"), prefix)
+      
   
   future::plan(future::multiprocess)
   
-  results <- list.files(dir, pattern = "^log-[0-9_]*-[0-9_]*\\.rds$") %>% 
+  results <- list.files(dir, pattern = "^{prefix}-[0-9_]*-[0-9_]*\\.rds$" %>% str_glue()   ) %>% 
     enframe(value = "file") %>% 
     mutate(
-      major_version_old = str_match_all(file, "log-([0-9]*)[\\._-]" ),
-      minor_version_old = str_match_all(file, "log-[0-9]*_([0-9]*)" ),
-      major_version_new = str_match_all(file, "[0-9]-([0-9]*)[\\._-]" ),
-      minor_version_new = str_match_all(file, "[0-9]-[0-9]*_([0-9]*)" )
+      major_version_old = str_match_all(file, "{prefix}-([0-9]*)[\\._-]" %>% str_glue() ),
+      minor_version_old = str_match_all(file, "{prefix}-[0-9]*_([0-9]*)" %>% str_glue() ),
+      major_version_new = str_match_all(file, "{prefix}-[0-9]-([0-9]*)[\\._-]" %>% str_glue() ),
+      minor_version_new = str_match_all(file, "{prefix}-[0-9]-[0-9]*_([0-9]*)" %>% str_glue() )
     ) %>% 
     rowwise() %>% 
     mutate(
@@ -4006,7 +4031,7 @@ read_results_from_outside_read <- function(dir = here::here("tests/testthat")){
       categorised = furrr::future_map(.x = file_complete, .f = read_rds, .progress = TRUE)
     ) %>% 
     mutate(
-      versions = str_match_all(file, pattern = "^log-([0-9_]*)-([0-9_]*)\\.rds$" )
+      versions = str_match_all(file, pattern = "^{prefix}-([0-9_]*)-([0-9_]*)\\.rds$" %>% str_glue() )
     ) %>% 
     unnest_wider(
       versions,
@@ -4020,7 +4045,7 @@ read_results_from_outside_read <- function(dir = here::here("tests/testthat")){
     ) %>% 
     unnest(categorised) %>% 
     filter(
-      str_starts(package, "org\\.")
+      str_starts(package, package_start)
     )
   
     
@@ -4029,23 +4054,46 @@ read_results_from_outside_read <- function(dir = here::here("tests/testthat")){
 }
   
 
+#' Save alerts from a directory with versions
+#'
+#' @param dir 
+#' @param pmd_path 
+#' @param pattern_versions 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 save_alerts <-  function(
   dir = here::here("ArgoUML"),
-  pmd_path = "pmd/bin/pmd.bat"
+  pmd_path = "pmd/bin/pmd.bat",
+  pattern_versions = "^0_[0-9]*",
+  dest_dir = "alerts",
+  remove_str = "",
+  string_to_replace = "-",
+  string_to_replace_with = "-"
+  
 ){
+  
 
-  dirs <- list.files(dir, pattern = "^0_[0-9]*") %>% 
+  dirs <- list.files(dir, pattern = pattern_versions) %>% 
     enframe(
       value = "file"
     ) %>% 
     mutate(
       file_complete = str_glue("{dir}/{file}")
+    ) %>%
+    mutate(
+      file = str_remove(file, remove_str)
+    ) %>% 
+    mutate(
+      file = str_replace(file, string_to_replace, string_to_replace_with )
     ) %>% 
     mutate(
       saida = map2(
         .x = file ,
         .y = file_complete,
-        .f = ~system(command = str_glue("{pmd_path} -d {.y} -f xml -R rulesets/java/quickstart.xml -reportfile alerts/{.x}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
+        .f = ~system(command = str_glue("{pmd_path} -d {.y} -f xml -R rulesets/java/quickstart.xml -reportfile {dest_dir}/{.x}.xml"), show.output.on.console =  FALSE, invisible = TRUE)  
       )
     )
     
@@ -4053,7 +4101,14 @@ save_alerts <-  function(
 
 
 
-read_all_alerts <- function(dir = here::here("tests/testthat/alerts")){
+read_all_alerts <- function(
+  
+  dir = here::here("tests/testthat/alerts"),
+  pattern_major = "^0_([0-9]*)[\\._]",
+  pattern_minor = "^0_[0-9]*_([0-9]*)",
+  package_start = "org\\."
+  
+  ){
   
   
   future::plan(future::multiprocess)
@@ -4063,8 +4118,8 @@ read_all_alerts <- function(dir = here::here("tests/testthat/alerts")){
       value = "file"
     ) %>%
     mutate(
-      major_version = str_match_all(file, "^0_([0-9]*)[\\._]" ),
-      minor_version = str_match_all(file, "^0_[0-9]*_([0-9]*)" )
+      major_version = str_match_all(file, pattern_major ),
+      minor_version = str_match_all(file, pattern_minor )
     ) %>% 
     rowwise() %>% 
     mutate(
@@ -4099,7 +4154,7 @@ read_all_alerts <- function(dir = here::here("tests/testthat/alerts")){
       data
     ) %>% 
     filter(
-      str_starts(package, "org\\.")
+      str_starts(package, package_start)
     )
     
 
@@ -4125,11 +4180,34 @@ read_all_alerts <- function(dir = here::here("tests/testthat/alerts")){
 }
 
 
-analyse_alerts_and_categories <- function(){
+#' Analyses alerts
+#'
+#' @return categorised alerts
+#' @export
+#'
+#' @examples
+analyse_alerts_and_categories <- function(
+  dir_outside_read = NULL,
+  package_start_outside_read = NULL,
+  dir_read_all_alerts = NULL,
+  pattern_major_read_all_alerts = NULL,
+  pattern_minor_read_all_alerts = NULL,
+  package_start_read_all_alerts = NULL
+){
+
+  browser()
+    
+  results <- read_results_from_outside_read(
+    dir = dir_outside_read,
+    package_start = package_start_outside_read
+  )
   
-  results <- read_results_from_outside_read()
-  
-  alerts <- read_all_alerts()
+  alerts <- read_all_alerts(
+    dir = dir_read_all_alerts,
+    pattern_major = pattern_major_read_all_alerts,
+    pattern_minor = pattern_minor_read_all_alerts,
+    package_start = package_start_read_all_alerts
+  )
   
   results_summarised <- results %>% 
     group_by(
@@ -4400,8 +4478,15 @@ compare_comments <- function(comments, dir_diffs){
   
 }
 
-acha_kludge <- function(x = "something really gone wrong"){
-  
+
+
+#' Kludge exressions
+#'
+#' @return expressions 
+#' @export
+#'
+#' @examples
+get_kludge_expressions <-  function(){
   expressions <- c(
     "hack",
     "retarded",
@@ -4478,7 +4563,6 @@ acha_kludge <- function(x = "something really gone wrong"){
     "purists would",
     "that's for a next refactoring",
     "(?:todo:|needs-more-work:)[ ]*find a way to",
-    # "(?:todo:|needs-more-work:) ",
     "would be better here",
     "necessary\\?",
     "this should use ?[[:alnum:][:space:]]* instead of",
@@ -4663,7 +4747,12 @@ acha_kludge <- function(x = "something really gone wrong"){
     
   ) %>% 
     sort()
+  
+}
 
+acha_kludge <- function(x = "something really gone wrong"){
+  
+  expressions <- get_kludge_expressions()
 
   expressions <- str_glue("\\b{expressions}\\b")
   
@@ -4675,7 +4764,7 @@ acha_kludge <- function(x = "something really gone wrong"){
 }
 
 
-extract_selected_comments <- function(path_to_comments = "comments"){
+extract_selected_comments <- function(path_to_comments = "comments_joda"){
 
   future::plan(future::multiprocess)
   
@@ -4695,6 +4784,8 @@ extract_selected_comments <- function(path_to_comments = "comments"){
     mutate(
       comment = str_to_lower(comment)
     ) %>% 
+    head(1000) %>% 
+    view()
     mutate(
       bateu = furrr::future_map_int(.x = comment, .f = acha_kludge, .progress = TRUE )
     ) 
@@ -4702,10 +4793,14 @@ extract_selected_comments <- function(path_to_comments = "comments"){
   selected_comments <- comments_raw %>% 
     filter(bateu > 0) 
   
-  selected_comments %>% 
-    count(comment) %>% 
-    filter(n < 100) %>% 
-    write_csv("comentarios_sample.csv")
+  # selected_comments %>% 
+  #   count(comment) %>% 
+  #   filter(n < 100) %>% 
+  #   write_csv("comentarios_sample.csv")
+  
+  write_rds(selected_comments, "joda_selected_comments.rds")
+  
+  
   
 }
 
@@ -4727,11 +4822,17 @@ extract_only_files_from_diff_pairs <- function(file = "log-9_7-9_8.rds.diff" ){
 }
 
 
+#' Create verstion comparison of comments
+#'
+#' @return comparison of comments
+#' @export
+#'
+#' @examples
 create_version_comparisons_comment <-  function(){
 
   future::plan(future::multiprocess)
   
-  selected_comments <- read_rds("selected_comments_2.rds") %>% 
+  selected_comments <- read_rds("selected_comments_3.rds") %>% 
     ungroup() %>% 
     mutate(
       comment = str_trim(comment) %>% str_to_lower() 
@@ -4948,8 +5049,18 @@ create_version_comparisons_comment <-  function(){
     left_join(
       count_comments_per_version,
       by = c("major_version_new" = "major_version", "minor_version_new" = "minor_version"   )
+    ) %>% 
+    ungroup() %>% 
+    mutate(
+      inc_n = if_else(row_number() == 1, 0, new - fixed),
+      cum_inc_n = cumsum(inc_n),
+      n =  first(n) + cum_inc_n
+    ) %>% 
+    select(
+      -c(inc_n, cum_inc_n)
     )
-
+  
+  
   count_new_fixed_comments
   
   

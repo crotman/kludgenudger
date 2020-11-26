@@ -1,0 +1,108 @@
+---
+title: "Other projects"
+author: "Bruno"
+date: "28/02/2021"
+output: pdf_document
+---
+
+
+
+```{r}
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.9",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.8",
+  log = "jodatime-2_9-2_8"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.8",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.7",
+  log = "jodatime-2_8-2_7"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.7",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.6",
+  log = "jodatime-2_7-2_6"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.6",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.5",
+  log = "jodatime-2_6-2_5"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.5",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.4",
+  log = "jodatime-2_5-2_4"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.5",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.4",
+  log = "jodatime-2_5-2_4"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-1.5",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-1.6.0",
+  log = "jodatime-1_5-1_6"
+)
+tictoc::toc()
+
+
+```
+
+
+
+```{r}
+
+kludgenudger::save_alerts(
+  dir = here::here("joda-time"),
+  pattern_versions = "^joda-time-",
+  dest_dir = "alerts_jodatime",
+  remove_str = "joda-time-",
+  string_to_replace = "\\.",
+  string_to_replace_with = "_"
+)
+
+
+
+```
+
+
+
+
+
+
+```{r}
+
+results_alert <- kludgenudger::analyse_alerts_and_categories()
+
+results_comments <- kludgenudger::create_version_comparisons_comment()
+
+
+
+```
+
+
+
+
+

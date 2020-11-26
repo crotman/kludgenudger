@@ -11,7 +11,9 @@ read_and_decorate_code_and_alerts_mapped(
   alerts_new,
   map,
   region_only = FALSE,
-  region_size = 3
+  region_size = 3,
+  use_mnemonic = FALSE,
+  size_line_of_code_side_by_side = 77
 )
 }
 \arguments{

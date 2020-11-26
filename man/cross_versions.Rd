@@ -4,7 +4,7 @@
 \alias{cross_versions}
 \title{Adds the line map to the dataframe used inside calculate_features_from_versions}
 \usage{
-cross_versions(examples_executed)
+cross_versions(examples_executed, diff_content = NA)
 }
 \arguments{
 \item{examples_executed}{dataframe with the versions and their pmd output}

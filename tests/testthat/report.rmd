@@ -1268,7 +1268,23 @@ alerts and the insertion of \textit{Self-Admitted Technical Debt}
 comments in a transition between an old and a new version of source
 code.
 
+<<<<<<< HEAD
+In [@Potdar2014], the authors discuss that the existence of comments
+that contain some specific patterns may indicate what they call
+Self-Admitted Technical Debts (SATD). In [@Sierra2019], Self-Admitted
+Technical Debt is defined as the event in which the developer
+consciously introduce debt. According to these two works, the developer
+acknowledges the SATD in the form of comments. In [@Wehaibi2016] we can
+find some patterns based on the work of Potdar and Shihab. For instance,
+some of these patterns are "hack", "retarded", "remove this code",
+"treat this as a soft error", "kludge", "fixme", "this isn't quite
+right", "fix this crap", "abandon all hope" and "kaboom". We used all the terms used by the authors and added other terms that we found in the code and which we consdidered indicators of SATDs. To find these additional terms, we sampled 5,000 comments and looked at them in order to recognize expressions that we judged as indicators of SATDs. All the regular expressions representing these terms are listed in Section \ref{sec_SATDs}.
+
+
+We select 32 tagged and released versions of the project ArgoUML. They
+=======
 We select 39 tagged and released versions of the project ArgoUML. They
+>>>>>>> parent of 7645398 (qualitative analysis)
 were released between 2001-04-06 and 2011-12-15. For each pair of
 sequential versions, we generate the PMD Alerts and categorise the
 identified alerts as \textbf{New}, \textbf{Fixed} or \textbf{Open} using
@@ -1331,12 +1347,70 @@ estoque de comentários (e o de alertas) a cada versão. Se a transição é
 versão %x-versão y, o número de alertas/comentários na versão y = open +
 new %
 
+<<<<<<< HEAD
+Figure \ref{timeseries} shows, in the first plot, the number of alerts at
+the end of each version transition. In the second plot it shows the
+number of new and fixed alerts. The third plot shows the number of
+comments that contain expressions listed in the Section \ref{sec_SATDs}. The fourth plot, shows the number of new and fized comments in each version transition. We classify
+each comment as \textbf{New}, \textbf{Fixed}, and \textbf{Open} by using
+the following procedure: if the text in the comment is the same as in
+the preceding version, the comment is classified as \textbf{Open}; the
+remaining ones are classified as \textbf{Fixed}, if they are in the old
+version and \textbf{New} if they are in the new version.
+
+\% % MARCIO: tem certeza destes números? o primeiro pico parece corrigir
+mais erros % do que tem em estoque. O mesmo acontece para o segundo
+pico. Dá uma conferida % se em algum momento Fixed \> Accum(Open+New)
+... Também acho que vale a pena % mostrar o número de opens. % % MARCIO:
+além disso, falta um pedaço de linha vermelha no segundo gráfico. Pq? %
+% Bruno: não tinha estoque aí, era sempre transição. existem versões pra
+trás. %Faltavam uns itens de arquivos que não existima dos dois lados.
+
+\% % MARCIO: adiciona a linha de comentários Open. % BRUNO: coloquei o
+estoque de comentários (e o de alertas) a cada versão. Se a transição é
+versão %x-versão y, o número de alertas/comentários na versão y = open +
+new %
+
+```{r, cache = TRUE, include = FALSE   }
+=======
 ```{r}
+>>>>>>> parent of 7645398 (qualitative analysis)
 
 
 
 
 
+<<<<<<< HEAD
+comments <- results_comments %>% 
+  rename_with(
+    ~str_glue("{.x}_comments")
+  ) 
+
+
+comparison <- alerts %>% 
+  inner_join(
+    comments,
+    by = c(
+      "major_version_old_alerts" = "major_version_old_comments" ,
+      "minor_version_old_alerts" = "minor_version_old_comments" ,
+      "major_version_new_alerts" = "major_version_new_comments" ,
+      "minor_version_new_alerts" = "minor_version_new_comments" 
+    )
+  ) %>% 
+  mutate(
+    ratio_alerts = new_alerts/(new_alerts + fixed_alerts),
+    ratio_comments = new_comments/(new_comments + fixed_comments),
+    version = str_glue("{major_version_alerts}.{minor_version_alerts}")
+  ) %>% 
+  filter(
+    major_version_alerts > 10,
+    !(ratio_alerts == 0 & ratio_comments == 0 )
+  ) %>% 
+  rename_with(
+    .cols = matches("_version_"),
+    .fn = ~str_remove(.x, pattern = "_alerts")
+  )
+=======
 # 
 # all_results <- read_rds("all_results.rds")
 # 
@@ -1527,6 +1601,7 @@ results_comments <- create_version_comparisons_comment()
 #     comparison = str_replace_all(comparison, "9_", "09_")
 #   )
 # 
+>>>>>>> parent of 7645398 (qualitative analysis)
 
 
 ```
@@ -1574,6 +1649,8 @@ ggplot_fixed_new <- ggplot(fixed_new_data,
     x = "Transition",
     y = "Number of alerts",
     color = "Category"
+<<<<<<< HEAD
+=======
   )
 
 
@@ -1610,6 +1687,7 @@ ggplot_changed <- ggplot(changed,
   labs(
     x = "Transition",
     y = "Change"
+>>>>>>> parent of 7645398 (qualitative analysis)
   )
                           
 
@@ -1762,11 +1840,14 @@ ggplot_total_alerts / ggplot_fixed_new / ggplot_total_comments / ggplot_fixed_ne
 
 ```{r}
 
+<<<<<<< HEAD
+=======
 comparisons_non_zero <- comparisons %>% 
   filter(
     new_and_fixed_comments > 0  
   )
 
+>>>>>>> parent of 7645398 (qualitative analysis)
 correl_prop <- cor(
   comparisons_non_zero$prop_new_alerts,
   comparisons_non_zero$prop_new_comments
@@ -1777,12 +1858,21 @@ correl_prop <- cor(
 
 \% % MARCIO: de quanto é esta correlação? Como lemos os gráficos das
 figuras 6 e 7? % % Bruno: dei uma exoplicada melhor nesta parte
+<<<<<<< HEAD
 
 Hereafter we analyse the relation between the amount of new alerts and
 the amount of new comments.
 
 $$PropNewAlerts = \frac{NewAlerts}{NewAlerts + OldAlerts}$$
 
+=======
+
+Hereafter we analyse the relation between the amount of new alerts and
+the amount of new comments.
+
+$$PropNewAlerts = \frac{NewAlerts}{NewAlerts + OldAlerts}$$
+
+>>>>>>> parent of 7645398 (qualitative analysis)
 $$PropNewComments = \frac{NewComments}{NewComments + OldComments}$$
 
 The correlation between the proportion of new alerts and the proportion
@@ -1796,6 +1886,7 @@ added a regression line obtained from the following model:
 $$ NewCommentsProportions = \alpha + \beta NewAlertsProportion $$
 
 The shaded region represents the
+
 
 ```{r fig.cap="\\label{scatter_prop}Proportion of new alerts x Proportion of new comments", fig.pos="H"}
 
@@ -1857,8 +1948,27 @@ lm_prop <-  linear_reg() %>%
   set_engine("lm")
 
 lm_prop_fit <- lm_prop %>% 
+<<<<<<< HEAD
+  fit(ratio_comments ~ ratio_alerts, data = comparison_prepared)
+```
+
+
+
+We can evaluate if the positive relation we see between the new comments
+and new alert was detected by chance. Table \ref{tab_reg} shows the
+results of this regressions. The P-Value of the beta near zero. This
+means that, if there actually is not a linear relation between new
+alerts proportion and new comments proportion, it woukld be vwry unlikely to get a result as extreme as we got.
+The estimation for $\beta$ is 0.57, meaning that for each additional 1pp
+in the proportion of new alerts we observe, on average, additional 0.53 pp in the proportion
+of new comments. The $R^2$ is `r broom::glance(lm_prop_fit$fit)$r.squared %>% number(accuracy = 0.01, decimal.mark = ".")`, so we could say that `r broom::glance(lm_prop_fit$fit)$r.squared %>% percent(accuracy = 1, decimal.mark = ".")` of the variability in the proportion of new comments can be explained by the
+variation in the proportion of new alerts.
+
+```{r}
+=======
   fit(prop_new_comments ~ prop_new_alerts, data = comparisons %>% filter(friction > 1000))
 
+>>>>>>> parent of 7645398 (qualitative analysis)
 tbl_prop <- tbl_regression(
   lm_prop_fit$fit,
   pvalue_fun = function(x) style_pvalue(x, digits = 2),
@@ -1880,5 +1990,39 @@ using Natural Language Processing, for instance. Following these steps
 maybe we will be able to get more certainty about the relation between
 alerts and SATD comments. Maybe we will be able to explain a greater
 part of the variability in the proportion of new SATD comments.
+<<<<<<< HEAD
+
+\section{Appendix: expressions to find SATDs}\label{sec_SATDs}
+
+List of regular expressions used to find SATDs:
+
+```{r}
+
+kludgenudger::get_kludge_expressions() %>%
+  enframe(
+    name = "#",
+    value = "Expression"
+  ) %>% 
+  kable(
+    longtable = TRUE
+  ) %>% 
+  kable_styling(
+    latex_options = c("repeat_header")
+  )
+
+
+```
+
 
 \section{References}
+
+
+
+
+
+
+
+=======
+
+\section{References}
+>>>>>>> parent of 7645398 (qualitative analysis)

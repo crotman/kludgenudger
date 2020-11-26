@@ -13,7 +13,8 @@ decorate_code_alerts_mapped(
   region_only = FALSE,
   region_size = 3,
   length_alert_name_side_by_side = 14,
-  size_line_of_code_side_by_side = 77
+  size_line_of_code_side_by_side = 77,
+  use_mnemonic = FALSE
 )
 }
 \arguments{

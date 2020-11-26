@@ -4,7 +4,7 @@
 \alias{map_lines}
 \title{Map lines from two files based on the diff result on them}
 \usage{
-map_lines(file, lines_prev_param, lines_post_param)
+map_lines(file = NA, lines_prev_param, lines_post_param, diff_content = NA)
 }
 \arguments{
 \item{file}{diff file}

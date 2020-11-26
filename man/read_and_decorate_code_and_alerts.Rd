@@ -8,7 +8,8 @@ read_and_decorate_code_and_alerts(
   file,
   alerts,
   region_only = FALSE,
-  region_size = 3
+  region_size = 3,
+  use_mnemonic = FALSE
 )
 }
 \arguments{

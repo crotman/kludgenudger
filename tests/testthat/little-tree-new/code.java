@@ -5,7 +5,7 @@ import importX.function;
 class ClassX extends ClassY implements InterfX {
     private long fieldX;
     
-    ClassX(int paramX, double paramY) {		
+    ClassX(int paramX, double paramY) {
         int varX = function(paramX, paramY);		
         if (varX == 0)
         {
@@ -13,7 +13,7 @@ class ClassX extends ClassY implements InterfX {
         }			
         else{
             this.fieldX = 0;
-		}
+        }
     }
     @Override
     public int methodX(int paramW, Boolean paramZ)
@@ -22,7 +22,7 @@ class ClassX extends ClassY implements InterfX {
             fieldX = paramW;
         else{
             fieldX = 0;
-		}
+        }
         return paramW + this.fieldX;
      }
 }  

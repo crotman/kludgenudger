@@ -11,7 +11,10 @@ show_ast(
   node_text_field = "id_alert",
   name_field = "name",
   show_label = TRUE,
-  title = ""
+  title = "",
+  aspect = 1.3,
+  nudge_x = 0,
+  nudge_y = 0
 )
 }
 \arguments{

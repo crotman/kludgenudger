@@ -397,6 +397,97 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # )
 # tictoc::toc()
 # 
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.9",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.8",
+  log = "jodatime-2_9-2_8"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.8",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.7",
+  log = "jodatime-2_8-2_7"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.7",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.6",
+  log = "jodatime-2_7-2_6"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.6",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.5",
+  log = "jodatime-2_6-2_5"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.5",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.4",
+  log = "jodatime-2_5-2_4"
+)
+tictoc::toc()
+
+  
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.5",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.4",
+  log = "jodatime-2_5-2_4"
+)
+tictoc::toc()
+
+
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/joda-time/joda-time-1.5",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-1.6.0",
+  log = "jodatime-1_5-1_6"
+)
+tictoc::toc()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 
   tictoc::tic("compare_versions")
   output_function <- compare_versions_read_outside(
@@ -1334,9 +1425,84 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # alertas <- read_pmd_xml_all_files("teste.xml")
 # 
 
+  
 
 
 extract_comments_from_directory(
+<<<<<<< HEAD
+  dir = "C:/doutorado/joda-time/joda-time-2.9",
+  dest_file = "comments_jodatime_2_9.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.8",
+  dest_file = "comments_jodatime_2_8.rds"
+)
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.7",
+  dest_file = "comments_jodatime_2_7.rds"
+)
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.6",
+  dest_file = "comments_jodatime_2_6.rds"
+)
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.5",
+  dest_file = "comments_jodatime_2_5.rds"
+)
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.4",
+  dest_file = "comments_jodatime_2_4.rds"
+)
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.3",
+  dest_file = "comments_jodatime_2_3.rds"
+)
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.2",
+  dest_file = "comments_jodatime_2_2.rds"
+)
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.1",
+  dest_file = "comments_jodatime_2_1.rds"
+)
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-2.0",
+  dest_file = "comments_jodatime_2_0.rds"
+)
+
+=======
   dir = "C:/doutorado/ArgoUML/0_9_8",
   dest_file = "comments_9_8.rds"
 )
@@ -1347,9 +1513,63 @@ extract_comments_from_directory(
   
   
   
+>>>>>>> parent of 7645398 (qualitative analysis)
   
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.6.0",
+  dest_file = "comments_jodatime_1_6.rds"
+)
+
   
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.5",
+  dest_file = "comments_jodatime_1_5.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.4",
+  dest_file = "comments_jodatime_1_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.3",
+  dest_file = "comments_jodatime_1_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.2",
+  dest_file = "comments_jodatime_1_2.rds"
+)
+
   
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.1",
+  dest_file = "comments_jodatime_1_1.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-1.0",   
+  dest_file = "comments_jodatime_1.0.rds"
+)
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/joda-time/joda-time-0.9",
+  dest_file = "comments_jodatime_0_9.rds"
+)
+
+
+
+extract_selected_comments(
+  path_to_comments = "comments_joda"
+)
   
   
   

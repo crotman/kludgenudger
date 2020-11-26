@@ -14,7 +14,14 @@ calculate_features_from_versions(
   blockrules_location = "data/blockrules/blockrules.xml",
   mostra_new = c(10, 43, 17, 15, 18, 16, 45, 44),
   mostra_old = c(10, 42, 41, 15, 16, 43),
-  glue_string = ""
+  glue_string = "",
+  optimize_feature_calculation = TRUE,
+  alerts_new = NA,
+  alerts_old = NA,
+  ast_new = NA,
+  ast_old = NA,
+  diff = NA,
+  only_categorised = FALSE
 )
 }
 \arguments{
@@ -37,6 +44,8 @@ calculate_features_from_versions(
 \item{mostra_old}{which nodes of the old version must appear?}
 
 \item{glue_string}{template of a string that will be passed to str_glue and will be available in the returned info}
+
+\item{optimize_feature_calculation}{if true, the features are not calculated for all the combinations of new and old alerts if there is a perfect match}
 }
 \value{
 a list with information about the comparison between old and new versions.

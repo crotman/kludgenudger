@@ -8,7 +8,8 @@ read_raw_ast_nodes(
   code_location,
   output_location,
   pmd_location,
-  blockrules_location
+  blockrules_location,
+  alerts = NA
 )
 }
 \arguments{
