@@ -399,14 +399,16 @@ test_that("calculate_features_from_versions works with alerts in only one file",
 # 
 
 
-
 tictoc::tic("compare_versions")
 output_function <- compare_versions_read_outside(
-  dir_old <- "C:/doutorado/joda-time/joda-time-2.9",
-  dir_new <-  "C:/doutorado/joda-time/joda-time-2.8",
-  log = "jodatime-2_9-2_8"
+  dir_old <- "C:/doutorado/joda-time/joda-time-2.8",
+  dir_new <-  "C:/doutorado/joda-time/joda-time-2.9",
+  log = "jodatime-2_8-2_9"
 )
 tictoc::toc()
+
+
+
 
 tictoc::tic("compare_versions")
 output_function <- compare_versions_read_outside(
@@ -1429,7 +1431,6 @@ tictoc::toc()
 
 
 extract_comments_from_directory(
-<<<<<<< HEAD
   dir = "C:/doutorado/joda-time/joda-time-2.9",
   dest_file = "comments_jodatime_2_9.rds"
 )
@@ -1502,26 +1503,11 @@ extract_comments_from_directory(
   dest_file = "comments_jodatime_2_0.rds"
 )
 
-=======
-  dir = "C:/doutorado/ArgoUML/0_9_8",
-  dest_file = "comments_9_8.rds"
-)
-  
-  
-  
-  
-  
-  
-  
->>>>>>> parent of 7645398 (qualitative analysis)
-  
 
 extract_comments_from_directory(
-  dir = "C:/doutorado/joda-time/joda-time-1.6.0",
+  dir = "C:/doutorado/joda-time/joda-time-1.6",
   dest_file = "comments_jodatime_1_6.rds"
 )
-
-  
 
 
 extract_comments_from_directory(

@@ -982,7 +982,6 @@ read_raw_ast_nodes <-  function(
   code_all_lines <- read_lines(code_location)
   
   
-  browser()
   returned_value <- alerts %>% 
     replace_na(
       list(
@@ -1752,8 +1751,7 @@ calculate_features_from_versions <- function(
   
 
 
-  browser()
-  
+
   
   start <- Sys.time()
 
@@ -2987,6 +2985,7 @@ compare_versions_read_outside <- function(
   log = "log"
 ){
   
+  
 
   pmd_path = "pmd/bin/pmd.bat"
   
@@ -3989,7 +3988,8 @@ read_results_from_outside_read <- function(
   prefix = NULL,
   package_start = "org\\."
 ){
-  
+
+
   dir <- if_else(is.null(dir), here::here("tests/testthat"), dir)
   prefix <- if_else(is.null(prefix), here::here("tests/testthat"), prefix)
       
@@ -4001,8 +4001,8 @@ read_results_from_outside_read <- function(
     mutate(
       major_version_old = str_match_all(file, "{prefix}-([0-9]*)[\\._-]" %>% str_glue() ),
       minor_version_old = str_match_all(file, "{prefix}-[0-9]*_([0-9]*)" %>% str_glue() ),
-      major_version_new = str_match_all(file, "{prefix}-[0-9]-([0-9]*)[\\._-]" %>% str_glue() ),
-      minor_version_new = str_match_all(file, "{prefix}-[0-9]-[0-9]*_([0-9]*)" %>% str_glue() )
+      major_version_new = str_match_all(file, "{prefix}-[0-9_]*-([0-9]*)[\\._-]" %>% str_glue() ),
+      minor_version_new = str_match_all(file, "{prefix}-[0-9_]*-[0-9]*_([0-9]*)" %>% str_glue() )
     ) %>% 
     rowwise() %>% 
     mutate(
@@ -4184,6 +4184,9 @@ read_all_alerts <- function(
 #'
 #' @return categorised alerts
 #' @export
+#' 
+#' @import dplyr
+#' @impor tidyr
 #'
 #' @examples
 analyse_alerts_and_categories <- function(
@@ -4192,14 +4195,17 @@ analyse_alerts_and_categories <- function(
   dir_read_all_alerts = NULL,
   pattern_major_read_all_alerts = NULL,
   pattern_minor_read_all_alerts = NULL,
-  package_start_read_all_alerts = NULL
+  package_start_read_all_alerts = NULL,
+  prefix = NULL
 ){
 
-  browser()
-    
+
+
+
   results <- read_results_from_outside_read(
     dir = dir_outside_read,
-    package_start = package_start_outside_read
+    package_start = package_start_outside_read,
+    prefix = prefix
   )
   
   alerts <- read_all_alerts(
@@ -4318,9 +4324,10 @@ extract_root_dir_from_log <-  function(log = "C:/doutorado/kludgenudger/tests/te
 }
 
 
-generate_diffs_from_versions <- function(dir = here::here("tests/testthat")){
+generate_diffs_from_versions <- function(
+  dir = here::here("tests/testthat"),
   
-  complement <- tribble(
+  complement = tribble(
     ~file,                ~root_new,                         ~root_old,
     "log-14-15.rds",      "C:/doutorado/ArgoUML/0_15/",      "C:/doutorado/ArgoUML/0_14/",
     "log-17-18.rds",      "C:/doutorado/ArgoUML/0_18/",      "C:/doutorado/ArgoUML/0_17/",
@@ -4335,21 +4342,26 @@ generate_diffs_from_versions <- function(dir = here::here("tests/testthat")){
     "log-32-33.rds",      "C:/doutorado/ArgoUML/0_33/",      "C:/doutorado/ArgoUML/0_32/",
     "log-33-34.rds",      "C:/doutorado/ArgoUML/0_34/",      "C:/doutorado/ArgoUML/0_33/"
     
-  )
-
+  ),
   
+  prefix = "log"
+  
+  
+){
+  
+
   execute_system <- function(file, root_old, root_new ){
 
     system(str_glue("git diff -U0 --patience --numstat --summary --output={file}.diff --no-index {root_old} {root_new}"), show.output.on.console =  FALSE, invisible = TRUE)      
   }
     
-  results <- list.files(dir, pattern = "^log-[0-9_]*-[0-9_]*\\.rds$") %>% 
+  results <- list.files(dir, pattern = "^{prefix}-[0-9_]*-[0-9_]*\\.rds$" %>% str_glue() ) %>% 
     enframe(value = "file") %>% 
     mutate(
-      major_version_old = str_match_all(file, "log-([0-9]*)[\\._-]" ),
-      minor_version_old = str_match_all(file, "log-[0-9]*_([0-9]*)" ),
-      major_version_new = str_match_all(file, "[0-9]-([0-9]*)[\\._-]" ),
-      minor_version_new = str_match_all(file, "[0-9]-[0-9]*_([0-9]*)" )
+      major_version_old = str_match_all(file, "{prefix}-([0-9]*)[\\._-]" %>% str_glue() ),
+      minor_version_old = str_match_all(file, "{prefix}-[0-9]*_([0-9]*)" %>% str_glue() ),
+      major_version_new = str_match_all(file, "[0-9]-([0-9]*)[\\._-]" %>% str_glue() ),
+      minor_version_new = str_match_all(file, "[0-9]-[0-9]*_([0-9]*)" %>% str_glue() )
     ) %>% 
     select(file) %>% 
     mutate(
@@ -4387,30 +4399,52 @@ generate_diffs_from_versions <- function(dir = here::here("tests/testthat")){
 }
 
 
-generate_ast_only_classes <- function(dir = "C:/doutorado/ArgoUML/0_9_7", pmd_path = "pmd/bin/pmd.bat" ){
+generate_ast_only_classes <- function(
+  dir = "C:/doutorado/ArgoUML/", 
+  pattern = "^0",
+  pmd_path = "pmd/bin/pmd.bat",
+  output_path = "only_classes",
+  pattern_major_minor_versions = "^0_([0-9]*)\\_([0-9]*)"
+  
+){
 
+  
+  
   executions <- list.files(
-    "C:/doutorado/ArgoUML",
-    pattern = "^0"
+    dir,
+    pattern = pattern
   ) %>% 
     enframe(
       name = "id",
       value = "dir_incomplete"
     ) %>% 
     mutate(
-      dir_complete = str_glue("C:/doutorado/ArgoUML/{dir_incomplete}")
+      versions = str_match_all(string = dir_incomplete, pattern = pattern_major_minor_versions),
+      dir_complete = str_glue("{dir}{dir_incomplete}"),
+    ) %>% 
+    rowwise() %>% 
+    mutate(
+      major_version = versions[2],
+      minor_version = versions[3]
+    ) %>% 
+    ungroup() %>% 
+    mutate(
+      output = str_glue("{major_version}_{minor_version}") 
     ) %>% 
     mutate(
       saida = map2(
-        .x = dir_incomplete, .y = dir_complete, .f =  ~system(str_glue("{pmd_path} -d {.y} -f xml -R data/blockrules/onlyclass.xml -reportfile only_classes/{.x}"), show.output.on.console =  FALSE, invisible = TRUE)  
+        .x = output, .y = dir_complete, .f =  ~system(str_glue("{pmd_path} -d {.y} -f xml -R data/blockrules/onlyclass.xml -reportfile {output_path}/{.x}"), show.output.on.console =  FALSE, invisible = TRUE)  
       ) 
-      
     )
-
 }
 
 
-read_pmd_only_classes <- function(dir = "only_classes" ){
+
+read_pmd_only_classes <- function(
+  dir = "only_classes" ,
+  pattern_major_minor_versions = "0_([0-9]*)_([0-9]*)"
+){
+  
   
   future::plan(future::multiprocess)
   
@@ -4442,11 +4476,16 @@ read_pmd_only_classes <- function(dir = "only_classes" ){
     filter(
       str_detect(package, pattern = "org\\.")
     ) %>% 
-    separate(
-      col = dir_incomplete,
-      into = c("nada", "major_version", "minor_version"),
-      sep = "_"
+    mutate(
+      versions = str_match_all(string = dir_incomplete, pattern = pattern_major_minor_versions),
+      dir_complete = str_glue("{dir}{dir_incomplete}"),
     ) %>% 
+    rowwise() %>% 
+    mutate(
+      major_version = versions[2],
+      minor_version = versions[3]
+    ) %>% 
+    ungroup() %>% 
     mutate(
       across(
         .cols = ends_with(
@@ -4743,7 +4782,45 @@ get_kludge_expressions <-  function(){
     "we presume",
     "remove one of them",
     "this does exactly the same",
-    "[do not|don't] ?[[:alnum:][:space:]]* understand the code"
+    "[do not|don't] ?[[:alnum:][:space:]]* understand the code",
+    "this test fails",
+    "not sure if its worth fixing",
+    "take care",
+    "too complex",
+    "you should consider using",
+    "does not do this right",
+    "don't need to",
+    "subclasses are encouraged",
+    "trouble is when",
+    "is it fair to use ?[[:alnum:][:space:]]* here?",
+    "you decide\\.",
+    "verify\\.",
+    "however, it is included as",
+    "it makes the assumption",
+    "never print",
+    "we strongly recommend that",
+    "todo breaks",
+    "as best we can",
+    "todo confirm",
+    "shouldn't happen",
+    "this is ?[[:alnum:][:space:]]* dubious",
+    "which is better?[[:space:]]?",
+    "this don't work",
+    "how do i test ?[[:alnum:][:space:]]*\\?",
+    "at some point ?[[:alnum:][:space:]]* will need",
+    "no ?[[:alnum:][:space:]]* test methods are provided",
+    "figure out some sane way",
+    "test by eyeball",
+    "lots of inner classes",
+    "lots of ?[[:alnum:][:space:]]* tight coupling",
+    "no thought given to",
+    "this works fine, but",
+    "code written on the fly",
+    "shouldn't be a problem unless",
+    "if you want to restore ?[[:alnum:][:space:]]*, you must uncomment",
+    "disguised switch statements",
+    "weird",
+    "future releases? will"
     
   ) %>% 
     sort()
@@ -4764,7 +4841,16 @@ acha_kludge <- function(x = "something really gone wrong"){
 }
 
 
-extract_selected_comments <- function(path_to_comments = "comments_joda"){
+extract_selected_comments <- function(
+  path_to_comments = "comments_joda",
+  output = "joda_selected_comments.rds"
+){
+
+  
+  expressions <- get_kludge_expressions()
+  
+  expressions <- str_glue("\\b{expressions}\\b")
+
 
   future::plan(future::multiprocess)
   
@@ -4783,22 +4869,57 @@ extract_selected_comments <- function(path_to_comments = "comments_joda"){
     ) %>% 
     mutate(
       comment = str_to_lower(comment)
-    ) %>% 
-    head(1000) %>% 
-    view()
-    mutate(
-      bateu = furrr::future_map_int(.x = comment, .f = acha_kludge, .progress = TRUE )
     ) 
 
-  selected_comments <- comments_raw %>% 
-    filter(bateu > 0) 
   
-  # selected_comments %>% 
-  #   count(comment) %>% 
-  #   filter(n < 100) %>% 
-  #   write_csv("comentarios_sample.csv")
+  comments_raw_contagem <- comments_raw %>%
+    mutate(
+      across(
+        comment,
+        .fns = ~str_remove_all(string = .x, pattern =  "\\n *?\\*")
+      )
+    ) %>% 
+    mutate(
+      string_length = str_length(comment) + 4,
+      char_comment_ends = cumsum(string_length),
+      char_comment_starts = lag(char_comment_ends) + 1
+    ) %>% 
+    replace_na(
+      list(
+        char_comment_starts = 1
+      )
+    )
+
+  comments_flat <- str_flatten(string = comments_raw_contagem$comment, collapse = "####")
   
-  write_rds(selected_comments, "joda_selected_comments.rds")
+  localizacoes <- str_locate_all(
+    string = comments_flat,
+    pattern = expressions
+  ) %>% 
+    map(
+      .f = as_tibble
+    ) %>% 
+    enframe() %>% 
+    unnest(
+      value
+    ) %>% 
+    mutate(
+      bateu = 1 
+    )
+  
+  
+  comments_raw_contagem_joined <- localizacoes %>%
+    interval_left_join(
+      comments_raw_contagem,
+      by = c(
+        "start" = "char_comment_starts",
+        "end" = "char_comment_ends"
+      ),
+      type = "within"
+    )
+  
+
+  write_rds(comments_raw_contagem_joined, "joda_selected_comments.rds")
   
   
   
@@ -4828,11 +4949,19 @@ extract_only_files_from_diff_pairs <- function(file = "log-9_7-9_8.rds.diff" ){
 #' @export
 #'
 #' @examples
-create_version_comparisons_comment <-  function(){
+create_version_comparisons_comment <-  function(
+  
+  selected_comments_file = "selected_comments_3.rds",
+  pattern_diff = "log",
+  dir_only_classes = "only_classes",
+  pattern_major_minor_versions_only_classes = NULL
+    
+){
+  
 
   future::plan(future::multiprocess)
   
-  selected_comments <- read_rds("selected_comments_3.rds") %>% 
+  selected_comments <- read_rds(selected_comments_file) %>% 
     ungroup() %>% 
     mutate(
       comment = str_trim(comment) %>% str_to_lower() 
@@ -4842,7 +4971,8 @@ create_version_comparisons_comment <-  function(){
     )
   
 
-  diff_pairs <- list.files(pattern = "log-.*\\.diff") %>% 
+
+  diff_pairs <- list.files(pattern = "{pattern_diff}-.*\\.diff" %>% str_glue()) %>% 
     enframe(   
       value = "file" 
     ) %>% 
@@ -4883,11 +5013,16 @@ create_version_comparisons_comment <-  function(){
     unnest(content)
   
   
-  pmd_only_classes <- read_pmd_only_classes() %>% 
+  pmd_only_classes <- 
+    read_pmd_only_classes(
+      dir = dir_only_classes,
+      pattern_major_minor_versions = pattern_major_minor_versions_only_classes
+    ) %>% 
     mutate(
       file = str_replace_all(file, pattern =  "\\\\", replacement = "/"  )
     )
     
+
   count_comments_per_version <-  selected_comments %>% 
     left_join(
       pmd_only_classes,
@@ -4968,6 +5103,10 @@ create_version_comparisons_comment <-  function(){
   ){
     
     
+    # if(major_version_new == 2 & minor_version_new == 0  ){
+    #   browser()
+    # }
+    
     comments_old <- selected_comments %>% ungroup() %>% 
       filter(
         file == file_old
@@ -4997,6 +5136,8 @@ create_version_comparisons_comment <-  function(){
     
   }
   
+  
+
   diff_pairs_changed <- diff_pairs_with_package %>% 
     filter(
       mode == "changed"
@@ -5006,7 +5147,8 @@ create_version_comparisons_comment <-  function(){
     ) %>% 
     mutate(
       comments = furrr::future_pmap(
-        .l = list(
+      # comments = pmap(
+      .l = list(
           major_version_old = major_version_old, 
           minor_version_old = minor_version_old,
           major_version_new = major_version_new, 
@@ -5014,7 +5156,8 @@ create_version_comparisons_comment <-  function(){
           file_old = file_old,
           file_new = file_new
         ) , 
-        .f = join_comments_each_version,
+        .f = join_comments_each_version
+      ,
         .progress = TRUE
       )
     ) %>% 
@@ -5067,14 +5210,82 @@ create_version_comparisons_comment <-  function(){
 }
 
 
+unzip_files_from_folder <-  function(path_param = "C:/doutorado/junit" ){
 
-
-
-
-
-
-
+  list.files(
+    path_param,
+    full.names = TRUE
+  ) %>% 
+    enframe(
+      value = "path"
+    ) %>%
+    mutate(
+      map(
+        .x = path,        
+        .f = ~unzip(zipfile = .x)
+      )
+    )
   
+  
+  
+}
+
+
+
+
+rename_file_diff <- function(
+  pattern_diff = "C:/doutorado/joda-time",
+  prefix = "joda-time"
+){
+  
+  content <- list.files(pattern = ".*\\.diff") %>% 
+    enframe(
+      value = "file"
+    ) %>% 
+    mutate(
+      content = map(.x = file, .f = read_file)
+    ) %>%
+    mutate(
+      pattern_detected = str_detect(content, pattern = pattern_diff )
+    ) %>% 
+    filter(
+      pattern_detected
+    ) %>% 
+    rowwise() %>% 
+    mutate(
+      versions = str_match_all(string = content, pattern =  "diff --git.+?([0-9]+?\\.[0-9]+?).+?([0-9]+?\\.[0-9]+?).*"),
+      version_new = versions[1,2],
+      version_old = versions[1,3]
+    ) %>% 
+    select(
+      -content
+    ) %>% 
+    mutate(
+      version_new = str_replace(version_new, pattern = "\\.", replacement = "_" ),
+      version_old = str_replace(version_old, pattern = "\\.", replacement = "_" ),
+      new_name = str_glue("{prefix}-{version_new}-{version_old}.diff")
+    )
+  
+  walk2(
+    .x = content$file,
+    .y = content$new_name,
+    .f = ~file.copy(from = .x, to = .y)
+  )
+  
+  
+  
+  
+} 
+
+
+
+
+
+
+
+
+
+
 
 
 

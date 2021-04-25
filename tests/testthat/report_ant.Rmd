@@ -1,0 +1,1144 @@
+---
+title: "Joda-time"
+output: pdf_document
+---
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, size = "small", warning = FALSE, message = FALSE, cache = FALSE, fig.pos="H")
+
+unzip_files_from_folder(path_param = "D:/DataQuant/ant")
+
+
+library(tidyverse)
+library(tidymodels)
+library(patchwork)
+library(ggrepel)
+
+```
+
+
+
+```{r eval=FALSE, echo = FALSE, warning=FALSE, message=FALSE}
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.1.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.2.0",
+  log = "ant-1_0-2_0"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.2.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.3.0",
+  log = "ant-2_0-3_0"
+)
+tictoc::toc()
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.3.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.4.0",
+  log = "ant-3_0-4_0"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.4.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.5.0",
+  log = "ant-4_0-5_0"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.5.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.5.1",
+  log = "ant-5_0-5_1"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.5.1",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.5.2",
+  log = "ant-5_1-5_2"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.5.2",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.5.3",
+  log = "ant-5_2-5_3"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.5.3",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.5.4",
+  log = "ant-5_3-5_4"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.5.4",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.6.0",
+  log = "ant-5_4-6_0"
+)
+tictoc::toc()
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.6.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.6.1",
+  log = "ant-6_0-6_1"
+)
+tictoc::toc()
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.6.1",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.6.2",
+  log = "ant-6_1-6_2"
+)
+tictoc::toc()
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.6.2",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.6.3",
+  log = "ant-6_2-6_3"
+)
+tictoc::toc()
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.6.3",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.6.4",
+  log = "ant-6_3-6_4"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.6.4",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.6.5",
+  log = "ant-6_4-6_5"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.6.5",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.7.0",
+  log = "ant-6_5-7_0"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.7.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.7.1",
+  log = "ant-7_0-7_1"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.7.1",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.8.0",
+  log = "ant-7_1-8_0"
+)
+tictoc::toc()
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.8.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.8.1",
+  log = "ant-8_0-8_1"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.8.1",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.8.2",
+  log = "ant-8_1-8_2"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.8.2",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.8.3",
+  log = "ant-8_2-8_3"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.8.3",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.8.4",
+  log = "ant-8_3-8_4"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.8.4",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.0",
+  log = "ant-8_4-9_0"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.0",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.1",
+  log = "ant-9_0-9_1"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.1",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.2",
+  log = "ant-9_1-9_2"   
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.2",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.3",
+  log = "ant-9_2-9_3"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.3",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.4",
+  log = "ant-9_3-9_4"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.4",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.5",
+  log = "ant-9_4-9_5"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.5",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.6",
+  log = "ant-9_5-9_6"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.6",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.7",
+  log = "ant-9_6-9_7"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.7",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.8",
+  log = "ant-9_7-9_8"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.8",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.9.9",
+  log = "ant-9_8-9_9"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.9.9",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.1",
+  log = "ant-9_9-10_1"
+)
+tictoc::toc()
+
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.1",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.2",
+  log = "ant-10_1-10_2"
+)
+tictoc::toc()
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.2",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.3",
+  log = "ant-10_2-10_3"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.3",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.4",
+  log = "ant-10_3-10_4"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.4",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.5",
+  log = "ant-10_4-10_5"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.5",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.6",
+  log = "ant-10_5-10_6"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.6",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.7",
+  log = "ant-10_6-10_7"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.7",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.8",
+  log = "ant-10_7-10_8"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.8",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.9",
+  log = "ant-10_8-10_9"
+)
+tictoc::toc()
+
+
+tictoc::tic("compare_versions")
+output_function <- compare_versions_read_outside(
+  dir_old <- "C:/doutorado/ant/ant-rel-1.10.9",
+  dir_new <-  "C:/doutorado/ant/ant-rel-1.10.10",
+  log = "ant-10_9-10_10"
+)
+tictoc::toc()
+
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.10",
+  dest_file = "comments_ant_10_10.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.9",
+  dest_file = "comments_ant_10_9.rds"
+)
+
+  
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.8",
+  dest_file = "comments_ant_10_8.rds"
+)
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.7",
+  dest_file = "comments_ant_10_7.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.6",
+  dest_file = "comments_ant_10_6.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.5",
+  dest_file = "comments_ant_10_5.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.4",
+  dest_file = "comments_ant_10_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.3",
+  dest_file = "comments_ant_10_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.2",
+  dest_file = "comments_ant_10_2.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.10.1",
+  dest_file = "comments_ant_10_1.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.9",
+  dest_file = "comments_ant_9_9.rds"
+)
+
+
+
+
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.8",
+  dest_file = "comments_ant_9_8.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.7",
+  dest_file = "comments_ant_9_7.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.6",
+  dest_file = "comments_ant_9_6.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.5",
+  dest_file = "comments_ant_9_5.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.4",
+  dest_file = "comments_ant_9_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.3",
+  dest_file = "comments_ant_9_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.2",
+  dest_file = "comments_ant_9_2.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.1",
+  dest_file = "comments_ant_9_1.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.9.0",
+  dest_file = "comments_ant_9_0.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.8.4",
+  dest_file = "comments_ant_8_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.8.3",
+  dest_file = "comments_ant_8_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.8.2",
+  dest_file = "comments_ant_8_2.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.8.1",
+  dest_file = "comments_ant_8_1.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.8.0",
+  dest_file = "comments_ant_8_0.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.7.1",
+  dest_file = "comments_ant_7_1.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.7.0",
+  dest_file = "comments_ant_7_0.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.6.5",
+  dest_file = "comments_ant_6_5.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.6.4",
+  dest_file = "comments_ant_6_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.6.3",
+  dest_file = "comments_ant_6_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.6.2",
+  dest_file = "comments_ant_6_2.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.6.1",
+  dest_file = "comments_ant_6_1.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.6.0",
+  dest_file = "comments_ant_6_0.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.5.4",
+  dest_file = "comments_ant_5_4.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.5.3",
+  dest_file = "comments_ant_5_3.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.5.2",
+  dest_file = "comments_ant_5_2.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.5.1",
+  dest_file = "comments_ant_5_1.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.5.0",
+  dest_file = "comments_ant_5_0.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.5.0",
+  dest_file = "comments_ant_5_0.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.4.0",
+  dest_file = "comments_ant_4_0.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.3.0",
+  dest_file = "comments_ant_3_0.rds"
+)
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.2.0",
+  dest_file = "comments_ant_2_0.rds"
+)
+
+
+extract_comments_from_directory(
+  dir = "C:/doutorado/ant/ant-rel-1.1.0",
+  dest_file = "comments_ant_1_0.rds"
+)
+
+
+
+```
+
+
+
+```{r, eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+
+kludgenudger::save_alerts(
+  dir = "C:/doutorado/ant",
+  pattern_versions = "^ant-rel-1.",
+  dest_dir = "alerts_ant",
+  remove_str = "ant-",
+  string_to_replace = "\\.",
+  string_to_replace_with = "_"
+)
+
+
+
+
+
+```
+
+
+
+
+
+
+```{r eval=FALSE, echo=FALSE}
+
+# rename_file_diff(pattern_diff = "C:/doutorado/joda-time", prefix = "joda-time" )
+
+
+
+complement <- tribble(
+ ~major_new, ~minor_new ,
+   1, 0,
+   2, 0,
+   3, 0,
+   4, 0,
+   5, 0,
+   5, 1,
+   5, 2,
+   5, 3,
+   5, 4,
+   6, 0,
+   6, 1,
+   6, 2,
+   6, 3,
+   6, 4,
+   6, 5,
+   7, 0,
+   7, 1,
+   8, 0,
+   8, 1,
+   8, 2,
+   8, 3,
+   8, 4,
+   9, 0,
+   9, 1,
+   9, 2,
+   9, 3,
+   9, 4,
+   9, 5,
+   9, 6,
+   9, 7,
+   9, 8,
+   9, 9,
+   10, 1,
+   10, 2,
+   10, 3,
+   10, 4,
+   10, 5,
+   10, 6,
+   10, 7,
+   10, 8,
+   10, 9,
+   10, 10,
+ 
+ 
+) %>% 
+  mutate(
+    major_old = lag(major_new),
+    minor_old = lag(minor_new)
+  ) %>%
+  filter(
+    !is.na(major_old)
+  ) %>% 
+  mutate(
+    file = str_glue("ant-{major_old}_{minor_old}-{major_new}_{minor_new}.rds"),
+    root_new = str_glue("C:/doutorado/ant/ant-rel-1.{major_new}.{minor_new}/"),
+    root_old = str_glue("C:/doutorado/ant/ant-rel-1.{major_old}.{minor_old}/")
+  ) %>% 
+  select(
+    file, root_new, root_old
+  )
+  
+
+generate_diffs_from_versions(
+  complement = complement,
+  prefix = "ant"
+    
+)
+
+
+
+extract_selected_comments(
+  path_to_comments = "comments_ant",
+  output = "ant_selected_comments.rds"
+)
+
+
+generate_ast_only_classes(
+  dir = "C:/doutorado/ant/",
+  pattern = "ant-.*",
+  output_path = "only_classes_ant",
+  pattern_major_minor_versions = "ant\\-rel\\-1\\.(.*)\\.(.*)"
+)
+
+results_comments <- create_version_comparisons_comment(
+  pattern_diff = "ant",
+  selected_comments_file = "ant_selected_comments.rds",
+  dir_only_classes = "only_classes_ant",
+  pattern_major_minor_versions_only_classes = "([0-9]*)_([0-9]*)"
+)
+
+
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#jodatime
+results_alert <- kludgenudger::analyse_alerts_and_categories(
+  package_start_outside_read = "\\.*",
+  dir_read_all_alerts = here::here("tests/testthat/alerts_ant"),
+  package_start_read_all_alerts = "\\.*",
+  pattern_major_read_all_alerts = "^([0-9]*)[\\._]",
+  pattern_minor_read_all_alerts = "^[0-9]*_([0-9]*)",
+  prefix = "ant"
+  
+)
+
+
+results_comments <- kludgenudger::create_version_comparisons_comment(
+  pattern_diff = "jodatime",
+  selected_comments_file = "joda_selected_comments.rds",
+  dir_only_classes = "only_classes_jodatime",
+  pattern_major_minor_versions_only_classes = "([0-9]*)_([0-9]*)"
+)
+
+
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+alerts <- results_alert %>% 
+  rename_with(
+    ~str_glue("{.x}_alerts")
+  )
+  
+
+comments <- results_comments %>% 
+  rename_with(
+    ~str_glue("{.x}_comments")
+  ) 
+
+
+comparison <- alerts %>% 
+  inner_join(
+    comments,
+    by = c(
+      "major_version_old_alerts" = "major_version_old_comments" ,
+      "minor_version_old_alerts" = "minor_version_old_comments" ,
+      "major_version_new_alerts" = "major_version_new_comments" ,
+      "minor_version_new_alerts" = "minor_version_new_comments" 
+    )
+  ) %>% 
+  mutate(
+    ratio_alerts = new_alerts/(new_alerts + fixed_alerts),
+    ratio_comments = new_comments/(new_comments + fixed_comments),
+    version = str_glue("{major_version_alerts}.{minor_version_alerts}")
+  ) %>% 
+  rename_with(
+    .cols = matches("_version_"),
+    .fn = ~str_remove(.x, pattern = "_alerts")
+  )
+
+
+
+
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.asp= 1.75, fig.height=0.9}
+
+comparison_prepared <- comparison %>% 
+  mutate(
+    across(
+      .cols = matches("_version_"),
+      .fns = ~if_else(.x == 0, NA_character_, as.character(.x) ),
+      .names = "{.col}_str"
+    )
+  ) %>% 
+  unite(
+    col = version_old_str,
+    major_version_old_str,
+    minor_version_old_str,
+    sep = "."
+  ) %>% 
+  unite(
+    col = version_new_str,
+    major_version_new_str,
+    minor_version_new_str,
+    sep = "."
+  ) %>% 
+  mutate(
+    across(
+      .cols = matches("version_(?:new|old)_str"),
+      .fns = ~str_remove(.x, ".NA")
+    )
+  ) %>%
+  unite(
+    col = "versions_transition",
+    sep = " to ",
+    version_old_str,
+    version_new_str
+  ) %>%   
+  mutate(
+    versions_transition = 
+      fct_reorder(
+        .f = versions_transition,
+        .x = major_version_new * 1000 + minor_version_new
+      )
+  ) 
+
+
+comparison_prepared_clean <- comparison_prepared %>% 
+  filter(
+    !is.nan(ratio_alerts) & !is.nan(ratio_comments)
+  )
+  
+
+
+comparison_fixed_new_alerts <- comparison_prepared %>% 
+  select(
+    fixed_alerts,
+    new_alerts,
+    versions_transition
+  ) %>% 
+  pivot_longer(
+    cols = ends_with("_alerts"),
+    names_to = c("metric", ".value"),
+    names_pattern = "(.*)_(.*)",
+    names_transform = list(metric = str_to_title)
+  ) 
+
+
+
+ggplot_fixed_new <- 
+  ggplot(
+    data = comparison_fixed_new_alerts,
+    aes(
+      x = versions_transition,
+      y = alerts,  
+      color = metric,
+      group = metric
+    ) 
+) +
+  geom_line(
+    size = 1.2
+  ) +
+  geom_point(
+    size = 2.5
+  ) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(Fixed = "darkgreen", New = "darkred") 
+  ) +
+  theme(
+   axis.text.x = element_text(angle = 90) ,
+   legend.position = "top"
+  ) +
+  scale_y_continuous(
+    labels = number_format(big.mark = ","),
+    limits = c(0,NA)
+  ) +
+  ggtitle(
+    "Number of fixed/new alerts per version transition"
+  ) +
+  labs(
+    x = "Transition",
+    y = "Number of alerts",
+    color = "Category"
+  )
+
+comparison_fixed_new_comments <- comparison_prepared %>% 
+  select(
+    fixed_comments,
+    new_comments,
+    versions_transition
+  ) %>% 
+  pivot_longer(
+    cols = ends_with("_comments"),
+    names_to = c("metric", ".value"),
+    names_pattern = "(.*)_(.*)",
+    names_transform = list(metric = str_to_title)
+  ) 
+
+
+ggplot_fixed_new_comments <- ggplot(comparison_fixed_new_comments,
+    aes(
+      x = versions_transition,
+      y = comments,
+      color = metric,
+      group = metric
+    ) 
+) +
+  geom_line(
+    size = 1.2
+  ) +
+  geom_point(
+    size = 2.5
+  ) +
+  theme_minimal() +
+  scale_color_manual(
+    values = c(Fixed = "darkgreen", New = "darkred") 
+  ) +
+  theme(
+   axis.text.x = element_text(angle = 90) ,
+   legend.position = "top"
+  ) +
+  scale_y_continuous(
+    labels = number_format(big.mark = ","),
+    limits = c(0,NA)
+  ) +
+  ggtitle(
+    "Number of fixed/new comments per version transition"
+  ) +
+  labs(
+    x = "Transition",
+    y = "Number of comments",
+    color = "Category"
+  )
+
+
+
+ggplot_total_alerts <- 
+  ggplot(comparison_prepared,
+    aes(
+      x = versions_transition,
+      y = n_alerts,
+    ) ) +
+    geom_line(
+      size = 1.2,
+      color = "darkblue",
+      group = 1,
+      aes(
+        x = versions_transition,
+        y = n_alerts
+      )
+    ) +
+    geom_point(
+      size = 2.5,
+      color = "darkblue"
+    ) +
+    theme_minimal() +
+    theme(
+     axis.text.x = element_text(angle = 90) ,
+     legend.position = "top"
+    ) +
+    scale_y_continuous(
+      labels = number_format(big.mark = ","),
+      limits = c(0,NA)
+    ) +
+    ggtitle(
+      "Number of total alerts after version transition"
+    ) +
+    labs(
+      x = "Transition",
+      y = "Number of alerts"
+    )
+
+
+
+ggplot_total_comments <- 
+  ggplot(comparison_prepared,
+    aes(
+      x = versions_transition,
+      y = n_comments,
+    ) ) +
+    geom_line(
+      size = 1.2,
+      color = "darkblue",
+      group = 1,
+      aes(
+        x = versions_transition,
+        y = n_comments
+      )
+    ) +
+    geom_point(
+      size = 2.5,
+      color = "darkblue"
+    ) +
+    theme_minimal() +
+    theme(
+     axis.text.x = element_text(angle = 90) ,
+     legend.position = "top"
+    ) +
+    scale_y_continuous(
+      labels = number_format(big.mark = ","),
+      limits = c(0,NA)
+    ) +
+    ggtitle(
+      "Number of total comments after version transition"
+    ) +
+    labs(
+      x = "Transition",
+      y = "Number of comments"
+    )
+
+
+ggplot_total_alerts / ggplot_fixed_new / ggplot_total_comments / ggplot_fixed_new_comments + plot_layout(heights = unit(c(3, 3, 3, 3), c("cm", "cm", "cm", "cm") ), widths = unit(c(15, 15, 15, 15), c("cm", "cm", "cm", "cm") ))
+
+
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+correl_prop <- cor(
+  comparison_prepared_clean$ratio_alerts,
+  comparison_prepared_clean$ratio_comments
+)
+
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(
+  comparison_prepared_clean,
+  aes(
+    y = ratio_comments ,
+    x = ratio_alerts,
+  )
+  ) +
+  geom_point() +
+  geom_text_repel(aes(label = versions_transition), nudge_y = 0.05, size = 2) +
+  geom_smooth(method = "lm") +
+  ggtitle(
+    "Proportion of new comments x Proportion of new alerts"
+  ) +
+  labs(
+    y = "Proportion of new alerts",
+    x = "Proportion of new comments",
+    size = "Change"
+  ) +
+  scale_x_continuous(
+    label = percent_format(), limits = c(0, 1)
+  ) +
+  scale_y_continuous(
+    label = percent_format(), limits = c(0, 1)
+  ) +
+  scale_size_continuous(
+    label = number_format(big.mark = ",", accuracy = 1)
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top"
+  ) +
+  NULL
+
+
+
+
+```
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(parsnip)
+library(gtsummary)
+
+lm_prop <-  linear_reg() %>% 
+  set_engine("lm")
+
+lm_prop_fit <- lm_prop %>% 
+  fit(ratio_comments ~ ratio_alerts, data = comparison_prepared_clean)
+
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+tbl_prop <- tbl_regression(
+  lm_prop_fit$fit,
+  pvalue_fun = function(x) style_pvalue(x, digits = 2),
+  label = ratio_alerts ~ "New Alerts Proportion",
+  intercept = TRUE,
+) 
+
+tbl_prop %>% 
+  as_kable_extra(caption = "\\label{tab_reg} Regression: comments on alerts")
+
+
+```
+
+
+
+
+
+
+
+
+
