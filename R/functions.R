@@ -67,7 +67,10 @@ decorate_code <- function(strings, size_line_of_code = 80) {
 #' @import dplyr
 #' @importFrom rlang .data
 #' @examples
-read_pmd_xml <- function(file){
+read_pmd_xml <- function(
+  file,
+  include_file_in_output = FALSE
+){
   
   #file <- "internal.xml"
 
@@ -95,7 +98,7 @@ read_pmd_xml <- function(file){
     xml2::xml_attrs() %>% 
     map_df(.f = ~enframe(x = .x ))
   
-  
+
   if (nrow(alerts_initial) != 0){
     alerts <- alerts_initial %>% 
       mutate(primeiro_campo = if_else(.data$name == "beginline", 1, 0)  ) %>% 
@@ -108,6 +111,52 @@ read_pmd_xml <- function(file){
         as.integer
       ) %>% 
       bind_rows(empty)
+    
+    
+    if(include_file_in_output){
+      
+      files_count <- content_xml %>% 
+        xml2::xml_children() %>% 
+        xml2::xml_length() %>% 
+        map_df(.f = ~enframe(x = .x )) %>% 
+        filter(
+          value != 0
+        ) %>% 
+        select(
+          count_items = value
+        )
+      
+      files <- content_xml %>% 
+        xml2::xml_children() %>% 
+        xml2::xml_attrs() %>% 
+        map_df(.f = ~enframe(x = .x )) %>% 
+        filter(
+          name == "name"
+        ) %>% 
+        select(
+          file = value
+        )
+      
+      files_with_count <- bind_cols(files, files_count) %>% 
+        rowwise() %>% 
+        mutate(
+          items = list(1:count_items)
+        ) %>% 
+        ungroup() %>% 
+        unnest(
+          items
+        ) %>% 
+        select(
+          file
+        )
+      
+      alerts <- bind_cols(
+        alerts, files_with_count
+      )     
+      
+
+    }
+    
   }
   else{
     alerts <- empty
@@ -934,7 +983,8 @@ read_raw_ast_nodes <-  function(
   output_location,
   pmd_location,
   blockrules_location,
-  alerts = NA
+  alerts = NA,
+  include_file_in_output = FALSE
 ){
   
   # code_location <- code_file_old
@@ -942,7 +992,7 @@ read_raw_ast_nodes <-  function(
   
   if(is.na(alerts)){
     system(str_glue("{pmd_location}/pmd.bat -d {code_location} -f xml -R {blockrules_location} -reportfile {output_location}"), show.output.on.console =  FALSE, invisible = TRUE)
-    alerts <- read_pmd_xml(output_location)
+    alerts <- read_pmd_xml(output_location, include_file_in_output = include_file_in_output)
     delete_file <- TRUE
   } else {
     
@@ -962,6 +1012,7 @@ read_raw_ast_nodes <-  function(
       id_alert  = integer()
     )
     
+
     alerts <- alerts %>% 
       mutate(
         id_alert = row_number(),
@@ -4919,7 +4970,7 @@ extract_selected_comments <- function(
     )
   
 
-  write_rds(comments_raw_contagem_joined, "joda_selected_comments.rds")
+  write_rds(comments_raw_contagem_joined, output)
   
   
   
