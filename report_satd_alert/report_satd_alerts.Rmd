@@ -1,33 +1,43 @@
 ---
-title: "Untitled"
-author: "fulano"
-date: "17/05/2021"
+title: "SATD->Alerts?"
 output: html_document
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+knitr::opts_chunk$set(echo = FALSE)
 
-## R Markdown
+library(tidyverse)
+library(DT)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-
-results <- correlate_satd_pmd( code_location = "C:/doutorado/ant/ant-rel-1.10.10")
+data <- read_rds("output.rds")
 
 
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+
+DT::datatable(
+  data,
+  colnames = c(
+    "Project", 
+    "Classes", 
+    "Methods", 
+    "Methods SATD", 
+    "Prop Alerts SATD",
+    "Prop Alerts NOT SATD",
+    "SATD?",
+    "P-Value"
+  ),
+  options = list(pageLength = 100) 
+) %>% 
+  formatPercentage(
+    columns = ~prop_alerts_satd + prop_alerts_no_satd 
+  ) %>% 
+  formatRound(columns = ~p_value, digits = 4)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+

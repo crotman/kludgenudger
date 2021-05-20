@@ -1,0 +1,12 @@
+name: report_satd_alerts
+title: report_satd_alerts
+username:
+account: crotman
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4156578
+bundleId: 4618193
+url: https://crotman.shinyapps.io/report_satd_alerts/
+when: 1621468438.68231
+asMultiple: FALSE
+asStatic: FALSE

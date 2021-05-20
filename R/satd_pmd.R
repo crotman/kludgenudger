@@ -361,13 +361,14 @@ calculate_summaries_satd_alerts <-  function(
       has_satd
     ) %>% 
     summarise(
-      prop_alerts = sum(n_alerts)/ n(),
+      prop_alerts = sum(has_alert)/ n(),
+      alerts_per_method = sum(n_alerts)/ n(),
       n = n()
     )
   
   methods_satd_alerts_prop <- methods_satd_alerts %>% 
     summarise(
-      prop_alerts = sum(n_alerts)/ n(),
+      prop_alerts = sum(has_alert)/ n(),
       n = n()
     )
   
@@ -390,8 +391,13 @@ calculate_summaries_satd_alerts <-  function(
   n_satd <- with_satd$n
   
   prop_total <- methods_satd_alerts_prop$prop_alerts
-  
-  p_value <- sum(rbinom(1000000, size = n_satd, prop_total  ) / n_satd > prop_satd)/1000000
+
+
+  if(prop_satd > prop_no_satd ){
+    p_value <- sum(rbinom(1000000, size = n_satd, prop_total  ) / n_satd > prop_satd)/1000000
+  } else{
+    p_value <- sum(rbinom(1000000, size = n_satd, prop_total  ) / n_satd < prop_satd)/1000000
+  }
   
   
   answer <- list(
@@ -405,6 +411,8 @@ calculate_summaries_satd_alerts <-  function(
     p_value = p_value
     
   )
+  
+  answer
   
   
 }
