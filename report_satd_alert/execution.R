@@ -147,9 +147,16 @@ correlate_satd_pmd(
   output_file = here::here("temp/redisson.rds")
 )
 
+correlate_satd_pmd(
+  code_location = "C:/doutorado/flink-release-1.13.0/flink-release-1.13.0",
+  output_file = here::here("temp/flink.rds")
+)
 
 
-
+correlate_satd_pmd(
+  code_location = "C:/doutorado/jenkins-jenkins-2.293/jenkins-jenkins-2.293",
+  output_file = here::here("temp/jenkins.rds")
+)
 
 
 
@@ -183,6 +190,8 @@ resultados_beam <- read_rds(here::here("temp/beam.rds"))
 resultados_spring <- read_rds(here::here("temp/spring.rds"))
 resultados_tomcat <- read_rds(here::here("temp/tomcat.rds"))
 resultados_redisson  <- read_rds(here::here("temp/redisson.rds"))
+resultados_flink  <- read_rds(here::here("temp/flink.rds"))
+resultados_jenkins  <- read_rds(here::here("temp/jenkins.rds"))
 
 
 
@@ -215,7 +224,8 @@ resultados_beam <- calculate_summaries_satd_alerts(resultados_beam$data)
 resultados_spring <- calculate_summaries_satd_alerts(resultados_spring$data)
 resultados_tomcat <- calculate_summaries_satd_alerts(resultados_tomcat$data)
 resultados_redisson <- calculate_summaries_satd_alerts(resultados_redisson$data)
-
+resultados_flink <- calculate_summaries_satd_alerts(resultados_flink$data)
+resultados_jenkins <- calculate_summaries_satd_alerts(resultados_jenkins$data)
 
 
 resultados_ant$summarised_data
@@ -246,6 +256,9 @@ resultados_beam$summarised_data
 resultados_flatbuffers$summarised_data
 resultados_spring$summarised_data
 resultados_tomcat$summarised_data
+resultados_redisson$summarised_data
+resultados_flink$summarised_data
+resultados_jenkins$summarised_data
 
 
 resultados_jodatime$p_value 
@@ -325,7 +338,41 @@ extract_summary <- function(name){
 
 
 
+extract_data <- function(name){
+  
+  
+  if (str_detect(string = name, pattern = "resultado")){
+    
+    local_results <- .GlobalEnv[[name]]
+    
+    output <- local_results$data %>% 
+      mutate(
+        project = str_remove(string = name, pattern = "resultados\\_" )
+      ) %>% 
+      select(
+        -code_blocks
+      )
+    
+  } else {
+    output <- NULL  
+  }
+  
+  print(name)
+  
+  output
+  
+}
+
+
 outputs <- map_df(.x = names(.GlobalEnv), .f = extract_summary )
+
+outputs_data <- map_df(.x = names(.GlobalEnv), .f = extract_data )
+
+
+write_rds(outputs, here::here("report_satd_alert/output.rds"))
+
+feather::write_feather(outputs_data, here::here("report_satd_alert/output_data.feather"))
+
 
 
 
