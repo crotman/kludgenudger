@@ -5,8 +5,8 @@ account: crotman
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4156578
-bundleId: 4622362
+bundleId: 4646583
 url: https://crotman.shinyapps.io/report_satd_alerts/
-when: 1621559408.43329
+when: 1622121063.52468
 asMultiple: FALSE
 asStatic: FALSE

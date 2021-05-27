@@ -20,7 +20,8 @@ correlate_satd_pmd <- function(
   pmd_location = here::here("tests/testthat/pmd/bin"),
   alertrules_location = "rulesets/java/quickstart.xml",
   blockrules_location = here::here("tests/testthat/data/blockrules/blockrules_simple.xml"),
-  output_file
+  output_file,
+  bags = FALSE
 ){
   
 
@@ -74,23 +75,146 @@ correlate_satd_pmd <- function(
   
   write_rds(comments_grouped, file = here::here("temp/comments/comments"))
   
-  comments <- NULL
-  comments_grouped <- NULL
-
-  extract_selected_comments(
-    path_to_comments = here::here("temp/comments"),
-    output = here::here("temp/selected_comments")
-  )
-  
-  selected_comments <- read_rds(here::here("temp/selected_comments")) %>% 
-    mutate(file = str_replace_all(
-      string = file,
-      pattern = "/",
-      replacement = "\\\\"
+  if(!bags){
+    comments <- NULL
+    comments_grouped <- NULL
+    
+    extract_selected_comments(
+      path_to_comments = here::here("temp/comments"),
+      output = here::here("temp/selected_comments")
     )
-  )
+    
+    selected_comments <- read_rds(here::here("temp/selected_comments")) %>% 
+      mutate(file = str_replace_all(
+        string = file,
+        pattern = "/",
+        replacement = "\\\\"
+      )
+      )
+    
+    most_frequent <- NULL
+    
+    most_frequent2 <- NULL
+    
+    
+  } else{
+    
+    comments_grouped <- read_rds(here::here("temp/comments/comments")) %>% 
+      ungroup()
+    
+    bagsword <- read_excel(here::here("bagsword/bagsword.xlsx")) %>% 
+      group_by(
+        id_bag
+      ) %>% 
+      mutate(
+        n_groups = n_distinct(id_bag_group)
+      )
+    
+    bagsword2 <- read_excel(here::here("bagsword/bagsword.xlsx"), sheet = "bags2") %>% 
+      group_by(
+        id_bag2
+      ) %>% 
+      mutate(
+        n_groups = n_distinct(id_bag_group2)
+      )
+    
+    
+    token <- comments_grouped %>% 
+      unnest_tokens(
+        input = comment,
+        output = comments_token,
+        to_lower = TRUE,
+        drop = FALSE
+      ) %>% 
+      left_join(
+        bagsword,
+        by = c("comments_token" = "word" )
+      ) %>% 
+      group_by(
+        id,
+        id_comment_in_file,
+        id_bag
+      ) %>% 
+      mutate(
+        n_match = n_distinct(id_bag_group)
+      ) %>% 
+      ungroup() %>% 
+      filter(
+        n_match == n_groups
+      ) %>% 
+      filter(
+        !str_detect(comment, "License") 
+      )
+    
+    
+    token2 <- comments_grouped %>% 
+      unnest_tokens(
+        input = comment,
+        output = comments_token,
+        to_lower = TRUE,
+        drop = FALSE,
+        token = "ngrams",
+        n = 2
+      ) %>% 
+      left_join(
+        bagsword2,
+        by = c("comments_token" = "word2" )
+      ) %>% 
+      group_by(
+        id,
+        id_comment_in_file,
+        id_bag2
+      ) %>% 
+      mutate(
+        n_match = n_distinct(id_bag_group2)
+      ) %>% 
+      ungroup() %>% 
+      filter(
+        n_match == n_groups
+      ) %>% 
+      filter(
+        !str_detect(comment, "License") 
+      ) 
+    
+    filtered_tokens <- bind_rows(
+      token, token2
+    ) %>% 
+      select(id, id_comment_in_file) %>%        
+      distinct()
+    
+
+    selected_comments <- comments_grouped %>% 
+      semi_join(
+        filtered_tokens,
+        by = c("id", "id_comment_in_file")
+      ) %>%  
+      mutate(file = str_replace_all(
+        string = file,
+        pattern = "/",
+        replacement = "\\\\"
+      )
+      )    
+    
+    most_frequent <- token %>% 
+      group_by(
+        id_bag
+      ) %>% 
+      mutate(
+        n_comments = n_distinct( id, id_comment_in_file)
+      )
+
+
+    most_frequent2 <- token2 %>% 
+      group_by(
+        id_bag2
+      ) %>% 
+      mutate(
+        n_comments = n_distinct( id, id_comment_in_file)
+      )
+
+  }
   
-  
+
   methods <- blocks %>% 
     filter(
       rule == "method"
@@ -327,8 +451,12 @@ correlate_satd_pmd <- function(
     prop_total <- methods_satd_alerts_prop$prop_alerts
     
     p_value <- sum(rbinom(1000000, size = n_satd, prop_total  ) / n_satd > prop_satd)/1000000
+
+    most_frequent <- most_frequent
     
+    most_frequent2 <- most_frequent2
     
+
     answer <- list(
       data = methods_satd_alerts,
       summarised_data = methods_satd_alerts_partition,
@@ -337,7 +465,9 @@ correlate_satd_pmd <- function(
       prop_satd = prop_satd,
       n_satd = n_satd,
       prop_total = prop_total,
-      p_value = p_value
+      p_value = p_value,
+      most_frequent = most_frequent,
+      most_frequent2 = most_frequent2
       
     )
 
@@ -409,7 +539,6 @@ calculate_summaries_satd_alerts <-  function(
     n_satd = n_satd,
     prop_total = prop_total,
     p_value = p_value
-    
   )
   
   answer
