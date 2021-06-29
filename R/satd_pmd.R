@@ -9,6 +9,7 @@
 #' @param blockrules_location 
 #'
 #' @import here
+#' @import readxl
 #'
 #' @return
 #' @export
@@ -23,7 +24,7 @@ correlate_satd_pmd <- function(
   output_file,
   bags = FALSE
 ){
-  
+
 
   alerts <- read_raw_ast_nodes(
     code_location = code_location,
@@ -94,13 +95,13 @@ correlate_satd_pmd <- function(
     
     most_frequent <- NULL
     
-    most_frequent2 <- NULL
-    
+
     
   } else{
     
     comments_grouped <- read_rds(here::here("temp/comments/comments")) %>% 
       ungroup()
+    
     
     bagsword <- read_excel(here::here("bagsword/bagsword.xlsx")) %>% 
       group_by(
@@ -108,28 +109,229 @@ correlate_satd_pmd <- function(
       ) %>% 
       mutate(
         n_groups = n_distinct(id_bag_group)
-      )
-    
-    bagsword2 <- read_excel(here::here("bagsword/bagsword.xlsx"), sheet = "bags2") %>% 
-      group_by(
-        id_bag2
       ) %>% 
       mutate(
-        n_groups = n_distinct(id_bag_group2)
+        id = row_number()  
+      ) %>% 
+      ungroup() %>% 
+      tidytext::unnest_ngrams(
+        input = word,
+        output = one_word,
+        n = 1,
+        drop = FALSE
+      ) %>% 
+      mutate(
+        stem = SnowballC::wordStem(one_word)
+      ) %>% 
+      select(
+        -one_word
+      ) %>% 
+      group_by(
+        across(
+          .cols = -stem
+        )  
+      ) %>% 
+      summarise(
+        word = str_flatten(stem, collapse = " ")
+      ) %>% 
+      select(-id) %>% 
+      mutate(
+        length = str_length(word)
       )
     
-    
-    token <- comments_grouped %>% 
-      unnest_tokens(
+    lexicon_words <- tidytext::parts_of_speech %>% 
+      select(
+        word
+      ) %>% 
+      mutate(
+        word = SnowballC::wordStem(word) 
+      ) %>% 
+      distinct()
+
+    token_1 <- comments_grouped %>% 
+      tidytext::unnest_tokens(
         input = comment,
         output = comments_token,
         to_lower = TRUE,
         drop = FALSE
       ) %>% 
+      mutate(
+        id_word = row_number()  
+      ) %>% 
+      ungroup() %>% 
+      tidytext::unnest_ngrams(
+        input = comments_token,
+        output = one_word,
+        n = 1,
+        drop = FALSE
+      ) %>% 
+      mutate(
+        stem = SnowballC::wordStem(one_word)
+      ) %>% 
+      select(
+        -one_word
+      ) %>% 
+      group_by(
+        across(
+          .cols = -stem
+        )  
+      ) %>% 
+      summarise(
+        comments_token = str_flatten(stem, collapse = " ")
+      ) %>% 
+      select(-id_word) %>% 
+      ungroup()
+    
+    
+    token_2 <- comments_grouped %>% 
+      tidytext::unnest_tokens(
+        input = comment,
+        output = comments_token,
+        to_lower = TRUE,
+        drop = FALSE,
+        token = "ngrams",
+        n = 2
+      ) %>% 
+      mutate(
+        id_word = row_number()  
+      ) %>% 
+      ungroup() %>% 
+      tidytext::unnest_ngrams(
+        input = comments_token,
+        output = one_word,
+        n = 1,
+        drop = FALSE
+      ) %>% 
+      mutate(
+        stem = SnowballC::wordStem(one_word)
+      ) %>% 
+      select(
+        -one_word
+      ) %>% 
+      group_by(
+        across(
+          .cols = -stem
+        )  
+      ) %>% 
+      summarise(
+        comments_token = str_flatten(stem, collapse = " ")
+      ) %>% 
+      select(-id_word) %>% 
+      ungroup()
+    
+    
+    token_3 <- comments_grouped %>% 
+      tidytext::unnest_tokens(
+        input = comment,
+        output = comments_token,
+        to_lower = TRUE,
+        drop = FALSE,
+        token = "ngrams",
+        n = 3
+      ) %>% 
+      mutate(
+        id_word = row_number()  
+      ) %>% 
+      ungroup() %>% 
+      tidytext::unnest_ngrams(
+        input = comments_token,
+        output = one_word,
+        n = 1,
+        drop = FALSE
+      ) %>% 
+      mutate(
+        stem = SnowballC::wordStem(one_word)
+      ) %>% 
+      select(
+        -one_word
+      ) %>% 
+      group_by(
+        across(
+          .cols = -stem
+        )  
+      ) %>% 
+      summarise(
+        comments_token = str_flatten(stem, collapse = " ")
+      ) %>% 
+      select(-id_word) %>% 
+      ungroup()
+    
+    
+    tokens <- bind_rows(token_1, token_2, token_3) %>% 
+      mutate(
+        id_token = row_number(),
+        length_token = str_length(comments_token)
+      ) %>% 
+      filter(
+        length_token > 10
+      )
+      
+    
+    
+    token_inner_1 <- tokens %>% 
+      filter(
+        !str_detect(comment, "licens") 
+      ) %>% 
+      select(
+        id,
+        id_comment_in_file,
+        comments_token
+      ) %>% 
+      fuzzyjoin::stringdist_inner_join(
+        bagsword,
+        by = c("comments_token" = "word" ),
+        max_dist = 1,
+        distance_col = "distance",
+        method = "lv"
+      ) %>% 
+      filter(
+        distance == 1
+      ) %>% 
+      mutate(
+       id_one_word = row_number()
+      ) %>% 
+      tidytext::unnest_tokens(
+        output = one_word,
+        input = comments_token,
+        drop = FALSE
+      ) %>% 
+      left_join(
+        lexicon_words %>% rename(lexicon_word = word),
+        by = c("one_word" = "lexicon_word"),
+        keep = TRUE
+      ) %>% 
+      mutate(
+        not_found_word = is.na(lexicon_word)
+      ) %>% 
+      group_by(
+        across(
+          .cols = -c(lexicon_word, not_found_word, one_word)
+        )
+      ) %>% 
+      summarise(
+        not_found_word = sum(not_found_word)
+      ) %>% 
+      ungroup() %>% 
+      filter(
+        not_found_word > 0
+      ) %>% 
+      select(
+        id,
+        id_comment_in_file,
+        id_bag,
+        id_bag_group,
+        n_groups
+      )
+      
+    
+    token_inner_0 <- tokens %>% 
+      filter(
+        !str_detect(comment, "licens") 
+      ) %>% 
       left_join(
         bagsword,
         by = c("comments_token" = "word" )
-      ) %>% 
+      ) %>%
       group_by(
         id,
         id_comment_in_file,
@@ -142,42 +344,20 @@ correlate_satd_pmd <- function(
       filter(
         n_match == n_groups
       ) %>% 
-      filter(
-        !str_detect(comment, "License") 
-      )
-    
-    
-    token2 <- comments_grouped %>% 
-      unnest_tokens(
-        input = comment,
-        output = comments_token,
-        to_lower = TRUE,
-        drop = FALSE,
-        token = "ngrams",
-        n = 2
-      ) %>% 
-      left_join(
-        bagsword2,
-        by = c("comments_token" = "word2" )
-      ) %>% 
-      group_by(
+      select(
         id,
         id_comment_in_file,
-        id_bag2
-      ) %>% 
-      mutate(
-        n_match = n_distinct(id_bag_group2)
-      ) %>% 
-      ungroup() %>% 
-      filter(
-        n_match == n_groups
-      ) %>% 
-      filter(
-        !str_detect(comment, "License") 
-      ) 
+        id_bag,
+        id_bag_group,
+        n_groups
+      )
     
+    token <- bind_rows(
+      token_inner_0, token_inner_1
+    ) 
+
     filtered_tokens <- bind_rows(
-      token, token2
+      token
     ) %>% 
       select(id, id_comment_in_file) %>%        
       distinct()
@@ -203,14 +383,6 @@ correlate_satd_pmd <- function(
         n_comments = n_distinct( id, id_comment_in_file)
       )
 
-
-    most_frequent2 <- token2 %>% 
-      group_by(
-        id_bag2
-      ) %>% 
-      mutate(
-        n_comments = n_distinct( id, id_comment_in_file)
-      )
 
   }
   
@@ -453,8 +625,23 @@ correlate_satd_pmd <- function(
     p_value <- sum(rbinom(1000000, size = n_satd, prop_total  ) / n_satd > prop_satd)/1000000
 
     most_frequent <- most_frequent
-    
-    most_frequent2 <- most_frequent2
+
+    data_comments <- comments_grouped %>% 
+      select(
+        id_comment_in_file,
+        id,
+        file,
+        beginline,
+        endline,
+        comment
+      ) %>% 
+      left_join(
+        token %>% select(id, id_comment_in_file, id_bag)
+      ) %>% 
+      mutate(
+        satd = !is.na(id_bag)
+      ) 
+
     
 
     answer <- list(
@@ -467,8 +654,8 @@ correlate_satd_pmd <- function(
       prop_total = prop_total,
       p_value = p_value,
       most_frequent = most_frequent,
-      most_frequent2 = most_frequent2
-      
+      data_comments = data_comments
+
     )
 
     

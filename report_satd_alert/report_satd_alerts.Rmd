@@ -18,16 +18,33 @@ library(scales)
 library(feather)
 library(gtsummary)
 
-data <- read_rds("output.rds") %>% 
-  mutate(
-    prop_satd = n_methods_satd / n_methods
-  ) %>% 
-  relocate(
-    prop_satd,
-    .after = n_methods_satd
-  )
+# data <- read_rds("output.rds") %>% 
+#   mutate(
+#     prop_satd = n_methods_satd / n_methods
+#   ) %>% 
+#   relocate(
+#     prop_satd,
+#     .after = n_methods_satd
+#   )
+# 
+# data_bags <- read_rds("output_bags.rds") %>% 
+#   mutate(
+#     prop_satd = n_methods_satd / n_methods
+#   ) %>% 
+#   relocate(
+#     prop_satd,
+#     .after = n_methods_satd
+#   )
+# 
 
-data_bags <- read_rds("output_bags.rds") %>% 
+
+data_bags_2 <- read_rds("output_bags_2.rds") %>% 
+  mutate(
+    across(
+      .cols = project,
+      .fns = ~str_remove(string = .x, "resulbags_2")
+    )
+  ) %>% 
   mutate(
     prop_satd = n_methods_satd / n_methods
   ) %>% 
@@ -39,19 +56,23 @@ data_bags <- read_rds("output_bags.rds") %>%
 
 ```
 
-
-# Regular Expressions
+# Reviewed Bags of Words
 
 ## Methods containing SATD comments contain more PMD Alerts?
 
-The following plot shows that, in the majority of the cases, there is a larger proportion of methods containing PMD Alerts among methods containing Self-Admitted Technical Debt comments than among methods that do not contain SATD. 
+The following plot shows that, in the majority of the cases, there is a larger proportion of methods containing PMD Alerts among methods containing Self-Admitted Technical Debt comments than among methods that do not contain SATD.
 
-Considering 30 open code java projects, 21 projects have significantly more PMD Alerts among methods with SATD comments (P-Value < 0.05). In 3 projects, there is significantly less. In other 6 projects there is no significant difference. 
-
+Considering 30 open code java projects, 21 projects have significantly more PMD Alerts among methods with SATD comments (P-Value \< 0.05). No project shows significantly less. In other 9 projects there is no significant difference.
 
 ```{r}
 
-plot <- data %>% 
+plot <- data_bags_2 %>% 
+  mutate(
+    across(
+      .cols = project,
+      .fns = ~str_remove(string = .x, "resulbags_2")
+    )
+  ) %>% 
   select(
     project,
     n_classes,
@@ -140,14 +161,19 @@ renderGirafe(plot)
 
 ## The Prevalence of Methods Containg SATD Comments is Low
 
-The prevalence of methods containg SATD comments is low: the median proportion in 30 projects is 0.9%.
+The prevalence of methods containg SATD comments is not high: the median proportion in 30 projects is 2.5%.
 
 ArgoUML, the project with the larger proportion, was a source of many patterns used to extract SATD comments.
 
-
 ```{r}
 
-plot_data <- data %>% 
+plot_data <- data_bags_2 %>% 
+  mutate(
+    across(
+      .cols = project,
+      .fns = ~str_remove(string = .x, "resulbags_2")
+    )
+  ) %>% 
   select(
     project,
     n_classes,
@@ -206,14 +232,12 @@ renderGirafe(plot_2)
 
 ```
 
-
 ## Data
-
 
 ```{r}
 
 DT::datatable(
-  data,
+  data_bags_2,
   colnames = c(
     "Project", 
     "Classes", 
@@ -240,26 +264,28 @@ DT::datatable(
 
 ## Including other effects
 
-
 Including size
 
 ```{r}
 
-modelo <- read_rds("modelo.rds")
+modelo <- read_rds("modelo_bags_2.rds")
 
 summary(modelo)
 
 ```
 
 
+The effect of the presence of SATD on probability of PMD Alert is approximately 6pp
+
+
 
 ```{r}
 
-synthetic_predictions <- read_feather("predictions.rds")
+synthetic_predictions <- read_feather("predictions_bags_2.rds")
 
 plot_reg <- ggplot(
   synthetic_predictions
-) +
+) +  
   geom_line(
     aes(
       y = prediction,
@@ -312,8 +338,6 @@ renderGirafe(plot_reg)
 
 ```
 
-
-
 ```{r}
 # plot_violin <- data_regression %>% 
 #   mutate(
@@ -354,326 +378,4 @@ renderGirafe(plot_reg)
 # 
 
 ```
-
-
-# Bags of words
-
-## Methods containing SATD comments contain more PMD Alerts?
-
-The following plot shows that, in the majority of the cases, there is a larger proportion of methods containing PMD Alerts among methods containing Self-Admitted Technical Debt comments than among methods that do not contain SATD. 
-
-Considering 30 open code java projects, 21 projects have significantly more PMD Alerts among methods with SATD comments (P-Value < 0.05). In 3 projects, there is significantly less. In other 6 projects there is no significant difference. 
-
-
-```{r}
-
-plot_bags <- data_bags %>% 
-  select(
-    project,
-    n_classes,
-    n_methods,
-    prop_alerts_satd,
-    prop_alerts_no_satd,
-    greater_class,
-    p_value,
-    prop_satd
-  ) %>% 
-  mutate(
-    rank_class = rank(n_classes),
-    project = fct_reorder(.f = project, .x = n_classes),
-    greater_class = if_else(p_value < 0.05, greater_class, "DRAW" )
-  ) %>% 
-  ggplot( 
-    aes(
-      tooltip = paste0(
-        "Project: ", project, "\n",
-        "Classes: ", number(n_classes, accuracy = 1, big.mark = ","), "\n",
-        "Methods: ", number(n_methods, accuracy = 1, big.mark = ","), "\n",
-        "Prop SATD: ", percent(prop_satd, accuracy = 0.1), "\n",
-        "Prop alerts when SATD: ", percent(prop_alerts_satd, accuracy = 1), "\n",
-        "Prop alerts when NO SATD: ", percent(prop_alerts_no_satd, accuracy = 1), "\n",
-        "P-value:", number(p_value, accuracy = 0.0001)
-      )
-    )
-  ) +
-  geom_point_interactive(
-    aes(
-      x = prop_alerts_satd,
-      y = project,
-      color = "SATD"
-    )
-  ) +
-  geom_point_interactive(
-    aes(
-      x = prop_alerts_no_satd ,
-      y = project,
-      color = "NO SATD"
-    )
-  ) +
-  geom_segment_interactive(
-    aes(
-      y = rank_class,
-      yend = rank_class,
-      x = prop_alerts_satd,
-      xend = prop_alerts_no_satd,
-      color = greater_class
-    )
-  ) +
-  scale_x_continuous(
-    labels = percent_format(accuracy = 1),
-    breaks = seq(from = 0, to = 1, by = 0.2 ),
-    limits = c(0, 1)
-  ) +
-  theme_minimal() +
-  theme(
-    legend.position = "top",
-    plot.caption = element_text(hjust = 0)
-  ) +
-  labs(
-    x = "Proportion of Methods with PMD Alerts",
-    color = "Methods with SATD?",
-    y = "Java Project",
-    caption = "Each point shows the proportion of PMD methods that contain PMD alerts.\nThe green points show the proportion for methods containing SATD. The red, those that don't contain SATD\nThe color of the segment shows if SATD or NOT SATD have a larger proportion. Gray represents differences that are not significant"
-  ) +
-  ggtitle(
-    label = "SATD -> PMD Alerts?",
-    subtitle = "Mouse hover for details"
-  ) +
-  scale_color_manual(
-    values = c("NO SATD" = "darkred", "SATD" = "darkgreen", "DRAW" = "gray")
-  )
-
-
-
-plot_bags <- girafe(ggobj = plot_bags, width_svg = 9, height_svg = 5 )
-  
-
-
-renderGirafe(plot_bags)
-
-
-```
-
-## The Prevalence of Methods Containg SATD Comments is Low
-
-The prevalence of methods containg SATD comments is low: the median proportion in 30 projects is 0.9%.
-
-ArgoUML, the project with the larger proportion, was a source of many patterns used to extract SATD comments.
-
-
-```{r}
-
-plot_data_bags <- data_bags %>% 
-  select(
-    project,
-    n_classes,
-    n_methods,
-    prop_alerts_satd,
-    prop_alerts_no_satd,
-    greater_class,
-    p_value,
-    prop_satd
-  ) %>% 
-  mutate(
-    project = fct_reorder(.f = project, .x = n_classes),
-  ) 
-  
-median_prevalence_bags <- median(plot_data_bags$prop_satd)
-  
-plot_2_bags <- ggplot( 
-    plot_data_bags,
-    aes(
-      tooltip = paste0(
-        "Project: ", project, "\n",
-        "Classes: ", number(n_classes, accuracy = 1, big.mark = ","), "\n",
-        "Methods: ", number(n_methods, accuracy = 1, big.mark = ","), "\n",
-        "Prop SATD: ", percent(prop_satd, accuracy = 0.1), "\n",
-        "Prop alerts when SATD: ", percent(prop_alerts_satd, accuracy = 1), "\n",
-        "Prop alerts when NO SATD: ", percent(prop_alerts_no_satd, accuracy = 1), "\n",
-        "P-value:", number(p_value, accuracy = 0.0001)
-      )
-    )
-  ) +
-  geom_col_interactive(
-    aes(
-      y = prop_satd,
-      x = project
-    ),
-    fill = "darkblue"
-  ) +
-  geom_hline_interactive(
-    yintercept = median_prevalence_bags,
-    color = "darkblue",
-    tooltip = paste0("Median proportion: ", percent(median_prevalence_bags, accuracy = 0.1) )
-  ) +
-  coord_flip() +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  theme_minimal() +
-  ggtitle(
-    label = "Proportion of Methods containg SATD comments"
-  )
-
-plot_2_bags <- girafe(ggobj = plot_2_bags, width_svg = 9, height_svg = 5 )
-
-
-renderGirafe(plot_2_bags)
-
-
-
-```
-
-
-## Data
-
-
-```{r}
-
-DT::datatable(
-  data_bags,
-  colnames = c(
-    "Project", 
-    "Classes", 
-    "Methods", 
-    "Methods SATD",
-    "Prop SATD",
-    "Prop Alerts SATD",
-    "Prop Alerts NOT SATD",
-    "SATD?",
-    "P-Value"
-  ),
-  options = list(pageLength = 100) 
-) %>% 
-  formatPercentage(
-    columns = ~prop_alerts_satd + prop_alerts_no_satd 
-  ) %>% 
-  formatPercentage(
-    columns = ~prop_satd,
-    digits = 1
-  ) %>% 
-  formatRound(columns = ~p_value, digits = 4)
-
-```
-
-## Including other effects
-
-
-Including size
-
-```{r}
-
-modelo_bags <- read_rds("modelo_bags.rds")
-
-summary(modelo_bags)
-
-```
-
-
-
-```{r}
-
-synthetic_predictions_bags <- read_feather("predictions_bags.rds")
-
-plot_reg_bags <- ggplot(
-  synthetic_predictions_bags
-) +
-  geom_line(
-    aes(
-      y = prediction,
-      x = size,
-      color = has_satd
-    )
-  ) +
-  geom_point_interactive(
-    aes(
-      y = prediction,
-      x = size,
-      color = has_satd,
-      tooltip = paste0(
-        "Lines of code: ", number(size, accuracy = 1), "\n",
-        has_satd, "\n",
-        "Probability PMD Alert:", percent(prediction, accuracy = 1)
-      )
-    )
-  ) +
-  scale_x_log10() +
-  scale_y_continuous(
-    labels = percent_format(accuracy = 1)
-  ) +
-  theme_minimal() +
-  theme(
-    legend.position = "top"
-  ) +
-  labs(
-    y = "Prob PMD alert\n",
-    x = "\nLines of Code",
-    color = ""
-  ) +
-  scale_color_manual(
-    values = c("NO SATD" = "darkred", "SATD" = "darkgreen", "DRAW" = "gray")
-  )
-
-
-plot_reg_bags <- girafe(
-  ggobj = plot_reg_bags, 
-  width_svg = 9, 
-  height_svg = 5
-
-) %>% 
-  girafe_options(
-    opts_tooltip(use_fill = TRUE)
-  )
-
-
-renderGirafe(plot_reg_bags)
-
-```
-
-
-
-```{r}
-# plot_violin_bags <- data_regression_bags %>% 
-#   mutate(
-#     has_satd = if_else(has_satd, "SATD", "NO SATD"),
-#     has_alert = if_else(has_alert, "PMD ALERT", "NO PMD ALERT"),
-#   ) %>% 
-#   ggplot() +
-#     geom_violin(
-#       aes(
-#         x = has_alert,
-#         y = size
-#       ),
-#       adjust = 2.5,
-#       draw_quantiles = c(0.25, 0.5, 0.75),
-#       alpha = 0.5,
-#       fill = "darkblue"
-#     ) +
-#     scale_y_log10(
-#       breaks = breaks_log(n = 20)
-#     ) +
-#     facet_wrap(
-#       ~has_satd
-#     ) +
-#     theme_minimal()
-# 
-# plot_violin_bags <- girafe(
-#   ggobj = plot_violin_bags, 
-#   width_svg = 9, 
-#   height_svg = 5
-# 
-# ) %>% 
-#   girafe_options(
-#     opts_tooltip(use_fill = TRUE)
-#   )
-# 
-# 
-# renderGirafe(plot_violin_bags)
-# 
-
-```
-
-
-
-
-
-
 
