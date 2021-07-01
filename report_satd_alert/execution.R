@@ -485,6 +485,13 @@ outputs_data_bags_2 <- map_df(.x = names(.GlobalEnv), .f = ~extract_data(name = 
 outputs_comments <- map_df(.x = names(.GlobalEnv), .f = ~extract_comments_bags(name = .x, prefix = "resulbags_dist_stem") )
 
 
+evaluations <- tibble(
+  user = character(),
+  id_comment_pk = integer(),
+  satd = character(),
+  justification = character()
+)
+
 
 str(outputs_comments)
 
@@ -497,20 +504,42 @@ library(DBI)
 library(dbplyr)
 library(here)
 
+map_github <- tribble(
+  ~project, ~root_dir, ~root_github,
+  "junit",   "C:/doutorado/junit5-r5.7.2/junit5-r5.7.2/",        "https://github.com/junit-team/junit5/tree/0ba600e478c728cdb80c83dcbf554c08f7a0755c/",
+  "glide",   "C:/doutorado/glide-4.12.0/glide-4.12.0/",          "https://github.com/bumptech/glide/tree/384617791a97f3d2f3052e0b63bd4d971da92f7d/",
+  "kafka",   "C:/doutorado/kafka-2.7.1/kafka-2.7.1/",            "https://github.com/apache/kafka/tree/61dbce85d0d41457d81a4096ecaea049f3a4b3ae/",
+  "pulsar",  "C:/doutorado/pulsar-2.7.2/pulsar-2.7.2/",          "https://github.com/apache/pulsar/tree/7bf14b5ac049d71c7ff74bbe758cb41aaffeb0af/",
+  "hive",    "C:/doutorado/hive-rel-release-2.3.8/hive-rel-release-2.3.8/",   "https://github.com/apache/hive/tree/f1e87137034e4ecbe39a859d4ef44319800016d7/" 
+)
+
 
 con <- dbConnect(RSQLite::SQLite(), here("verify-satd/db/db.db"))
 
-dbWriteTable(con, "comments", outputs_comments, append = FALSE, overwrite = TRUE )
+dbWriteTable(con, "comments", outputs_comments %>% mutate(id_comment_pk = row_number()), append = TRUE, overwrite = FALSE )
+
+dbWriteTable(con, "map_github", map_github, append = FALSE, overwrite = TRUE )
+
+dbWriteTable(con, "evaluations", evaluations, append = FALSE, overwrite = TRUE )
+
+dbWriteTable(
+  con, 
+  "bags", 
+  bagsword %>% 
+    mutate(
+      across(
+        .cols = where(is.numeric),
+        .fns = as.integer
+      )
+    ),  
+  append = FALSE, 
+  overwrite = TRUE  
+)
+
+
 
 dbDisconnect(con)
 
-map_github <- tribble(
-  ~project, ~root_dir, ~root_github,
- "junit",   "C:/doutorado/junit5-r5.7.2/junit5-r5.7.2/",        "https://github.com/junit-team/junit5/tree/0ba600e478c728cdb80c83dcbf554c08f7a0755c/",
- "glide",   "C:/doutorado/glide-4.12.0/glide-4.12.0/",          "https://github.com/bumptech/glide/tree/384617791a97f3d2f3052e0b63bd4d971da92f7d/",
- "kafka",   "C:/doutorado/kafka-2.7.1/kafka-2.7.1/",            "https://github.com/apache/kafka/tree/61dbce85d0d41457d81a4096ecaea049f3a4b3ae/"
- "pulsar",  "" 
-)
 
 
 
@@ -668,6 +697,7 @@ synthetic_predictions_bags_2 <- bind_cols(synthetic_data, predictions_bags_2) %>
   )
 
 
+bagsword <- read_excel(here::here("bagsword/bagsword.xlsx"))
 
 
 
