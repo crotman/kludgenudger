@@ -666,7 +666,102 @@ correlate_satd_pmd <- function(
 } 
 
 
+#' Title
+#'
+#' @param files 
+#' @param output_file 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+bind_outputs_correlate_satd <-  function(
+  
+  files = c(
+    "temp/flink_bags_dist_stem_1.rds",
+    "temp/flink_bags_dist_stem_2.rds",
+    "temp/flink_bags_dist_stem_3.rds",
+    "temp/flink_bags_dist_stem_4.rds"
+  ),
+  
+  output_file = "temp/flink_bags_dist_stem.rds"
+  
+){
+  
+  
+  contents <- map(
+    .x = files,
+    .f = read_rds
+  )
+  
+  methods_satd_alerts <- map_df(
+    .x = contents,
+    .f = ~magrittr::extract2(.x, "data")
+  )
+  
 
+  
+  methods_satd_alerts_partition <- methods_satd_alerts %>% 
+    group_by(
+      has_satd
+    ) %>% 
+    summarise(
+      prop_alerts = sum(has_alert)/ n(),
+      alerts_per_method = sum(n_alerts)/ n(),
+      n = n()
+    )
+  
+  methods_satd_alerts_prop <- methods_satd_alerts %>% 
+    summarise(
+      prop_alerts = sum(has_alert)/ n(),
+      n = n()
+    )
+  
+  with_satd <- methods_satd_alerts_partition %>% 
+    filter(
+      has_satd
+    ) 
+  
+  without_satd <- methods_satd_alerts_partition %>% 
+    filter(
+      !has_satd
+    ) 
+  
+  prop_no_satd <- without_satd$prop_alerts
+  
+  n_no_satd <- without_satd$n
+  
+  prop_satd <- with_satd$prop_alerts
+  
+  n_satd <- with_satd$n
+  
+  prop_total <- methods_satd_alerts_prop$prop_alerts
+  
+  p_value <- sum(rbinom(1000000, size = n_satd, prop_total  ) / n_satd > prop_satd)/1000000
+  
+  most_frequent <- NULL
+  
+  data_comments <- NULL
+
+  answer <- list(
+    data = methods_satd_alerts,
+    summarised_data = methods_satd_alerts_partition,
+    prop_no_satd = prop_no_satd,
+    n_no_satd = n_no_satd,
+    prop_satd = prop_satd,
+    n_satd = n_satd,
+    prop_total = prop_total,
+    p_value = p_value,
+    most_frequent = most_frequent,
+    data_comments = data_comments
+    
+  )
+  
+  
+  write_rds(answer, output_file)
+  
+
+}
 
 
 calculate_summaries_satd_alerts <-  function(

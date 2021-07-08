@@ -62,7 +62,6 @@ data_bags_2 <- read_rds("output_bags_2.rds") %>%
 
 The following plot shows that, in the majority of the cases, there is a larger proportion of methods containing PMD Alerts among methods containing Self-Admitted Technical Debt comments than among methods that do not contain SATD.
 
-Considering 30 open code java projects, 21 projects have significantly more PMD Alerts among methods with SATD comments (P-Value \< 0.05). No project shows significantly less. In other 9 projects there is no significant difference.
 
 ```{r}
 
@@ -161,9 +160,6 @@ renderGirafe(plot)
 
 ## The Prevalence of Methods Containg SATD Comments is Low
 
-The prevalence of methods containg SATD comments is not high: the median proportion in 30 projects is 2.5%.
-
-ArgoUML, the project with the larger proportion, was a source of many patterns used to extract SATD comments.
 
 ```{r}
 
@@ -217,7 +213,7 @@ plot_2 <- ggplot(
     tooltip = paste0("Median proportion: ", percent(median_prevalence, accuracy = 0.1) )
   ) +
   coord_flip() +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_y_continuous(labels = percent_format(accuracy = 0.1)) +
   theme_minimal() +
   ggtitle(
     label = "Proportion of Methods containg SATD comments"
@@ -273,9 +269,6 @@ modelo <- read_rds("modelo_bags_2.rds")
 summary(modelo)
 
 ```
-
-
-The effect of the presence of SATD on probability of PMD Alert is approximately 6pp
 
 
 

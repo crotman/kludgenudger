@@ -20,55 +20,65 @@ con <- dbConnect(RSQLite::SQLite(), "db/db.db")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-
+    tags$head(
+        tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+    ),    
     # Application title
 
     tabsetPanel(
         
         tabPanel(
             title = "Evaluate",
-            
-            sidebarLayout(
-                
-                sidebarPanel( 
-                    radioButtons(
-                        inputId = "user",
-                        label = "User",
-                        choices = c("Bruno", "Prof. Earl", "Prof. Marcio"),
-                        inline = TRUE
-                    ),
+            radioButtons(
+                inputId = "user",
+                label = "User",
+                choices = c("Bruno", "Prof. Earl", "Prof. Marcio"),
+                inline = TRUE
+            ),
+            splitLayout(
                     
-                    radioButtons(
-                        inputId = "satd",
-                        label = "SATD?",
-                        choices = c("YES!", "Nooooooooo!"),
-                        inline = TRUE
-                    ),
-                    
-                    textAreaInput(
-                        inputId = "justification",
-                        label = "Justify",
-                        cols = 80,
-                        rows = 20
-                    ),
-                    
+                wellPanel( 
+                    width = 6,
+                    tags$h3("Sampled comment"),
                     actionButton(
-                        inputId = "save",
-                        label = "Save and sample another one!"
-                    )
-                ),
-                mainPanel(
+                        inputId = "sample_button",
+                        label = "Sample a new comment!"
+                    ),
                     tags$hr(),
                     "Comment info:",
                     gt_output("info"),
+                    tags$hr(),
+                    htmlOutput("frame"),
                     tags$hr(),
                     "Comment:",    
                     verbatimTextOutput("comment"),
                     tags$hr(),
                     "Bag found",
                     gt_output("bags"),
-                    tags$hr(),
-                    htmlOutput("frame")
+                    tags$hr()
+                    
+                ),
+                wellPanel(
+                    tags$h3("Verify if it's an SATD"),
+                    
+                    radioButtons(
+                        inputId = "satd",
+                        label = "Is this comment an SATD?",
+                        choices = c("YES!", "Nooooooooo!"),
+                        inline = TRUE
+                    ),
+                    
+                    textAreaInput(
+                        inputId = "justification",
+                        label = "Justify your answer",
+                        cols = 80,
+                        rows = 20
+                    ),
+                    actionButton(
+                        inputId = "save",
+                        label = "Save justification"
+                    ),
+                    
                 )
             )
             
@@ -105,8 +115,14 @@ ui <- fluidPage(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
 
+    
+    observe(
+        print(session$clientData$url_search)    
+    )
+    
+    
     values <- reactiveValues(
         message = NULL, 
         address = NULL, 
@@ -121,22 +137,44 @@ server <- function(input, output) {
     
 
     observeEvent(input$save, {
-
-
-        if(!is.null(values$comment_register$id_comment_pk)){
-
-            chosen_pk = values$comment_register$id_comment_pk
-            
-            insert_data <- tibble(
-                user = input$user,
-                id_comment_pk = chosen_pk,
-                satd = input$satd,
-                justification = input$justification
-            )
-            
-            dbWriteTable(con, "evaluations", insert_data, append = TRUE)
-        }        
         
+        
+        if(input$justification != ""){
+        
+            if(!is.null(values$comment_register$id_comment_pk)){
+                
+                chosen_pk = values$comment_register$id_comment_pk
+                
+                insert_data <- tibble(
+                    user = input$user,
+                    id_comment_pk = chosen_pk,
+                    satd = input$satd,
+                    justification = input$justification
+                )
+                
+                dbWriteTable(con, "evaluations", insert_data, append = TRUE)
+                showModal(
+                    modalDialog("Saved") 
+                )
+                updateTextInput(inputId = "justification", value = "" )
+            }else {
+                showModal(
+                    modalDialog("No comment. Not saved") 
+                )
+            }
+        }else{
+            showModal(
+                modalDialog("No justification. Not saved") 
+            )
+        }
+        
+    })
+    
+    
+    
+    observeEvent(input$sample_button, {
+
+
         rows <- dbGetQuery(con, "SELECT COUNT() as c FROM cOMMENTS where satd = 1") %>% pull(c)
         lucky <- sample(1:rows, size = 1)
         chosen_comment <- tbl(con, "comments" ) %>% 
@@ -180,7 +218,11 @@ server <- function(input, output) {
 
     output$bags <- render_gt({
         validate(need(!is.null(values$bags), "Sample a comment"))
-        gt(values$bags)
+        gt(values$bags) %>% 
+        tab_options(
+            table.font.size = "10px"
+        )
+        
     })
     
     output$info <- render_gt({
@@ -206,7 +248,10 @@ server <- function(input, output) {
                 names_to = "Attribute",
                 values_to = "Value"
             ) %>% 
-            gt()
+            gt() %>% 
+            tab_options(
+                table.font.size = "10px"
+            )
     })
     
     output$comment <- renderText(

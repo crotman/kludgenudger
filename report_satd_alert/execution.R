@@ -7,11 +7,11 @@ correlate_satd_pmd(
   bags = TRUE
 )
 
-# correlate_satd_pmd(
-#   code_location = "C:/doutorado/spark-2.9.3/spark-2.9.3",
-#   output_file = here::here("temp/spark_bags_2.rds"),
-#   bags = TRUE
-# )
+correlate_satd_pmd(
+  code_location = "C:/doutorado/spark-2.9.3/spark-2.9.3",
+  output_file = here::here("temp/spark_bags_dist_stem.rds"),
+  bags = TRUE
+)
 # 
 # correlate_satd_pmd(
 #   code_location = "C:/doutorado/ant/ant-rel-1.10.10",
@@ -153,11 +153,44 @@ correlate_satd_pmd(
 # 
 # 
 # 
-# correlate_satd_pmd(
-#   code_location = "C:/doutorado/flink-release-1.13.0/flink-release-1.13.0",
-#   output_file = here::here("temp/flink_bags_dist_stem.rds"),
-#   bags = TRUE
-# )
+correlate_satd_pmd(
+  code_location = "C:/doutorado/flink-release-1.13.0_4/flink-release-1.13.0",
+  output_file = here::here("temp/flink_bags_dist_stem_4.rds"),
+  bags = TRUE
+)
+
+correlate_satd_pmd(
+  code_location = "C:/doutorado/netbeans-12.2.2-7",
+  output_file = here::here("temp/netbeans_bags_dist_stem_7.rds"),
+  bags = TRUE
+)
+
+
+correlate_satd_pmd(
+  code_location = "C:/doutorado/netbeans-12.2.2-9",
+  output_file = here::here("temp/netbeans_bags_dist_stem_9.rds"),
+  bags = TRUE
+)
+
+
+
+bind_outputs_correlate_satd(
+  files = c(
+    "temp/netbeans_bags_dist_stem_1.rds",
+    "temp/netbeans_bags_dist_stem_2.rds",
+    "temp/netbeans_bags_dist_stem_3.rds",
+    "temp/netbeans_bags_dist_stem_4.rds",
+    "temp/netbeans_bags_dist_stem_5.rds",
+    "temp/netbeans_bags_dist_stem_6.rds",
+    "temp/netbeans_bags_dist_stem_7.rds",
+    "temp/netbeans_bags_dist_stem_8.rds",
+    "temp/netbeans_bags_dist_stem_9.rds"
+  ),
+  output_file = "temp/netbeans_bags_dist_stem.rds"
+)
+
+
+
 # 
 # 
 # 
@@ -189,43 +222,43 @@ correlate_satd_pmd(
 )
 
 
-# correlate_satd_pmd(
-#   code_location = "C:/doutorado/netbeans-12.2.2",
-#   output_file = here::here("temp/netbeans_bags_dist_stem.rds"),
-#   bags = TRUE
-# )
+correlate_satd_pmd(
+  code_location = "C:/doutorado/netbeans-12.2.2",
+  output_file = here::here("temp/netbeans_bags_dist_stem.rds"),
+  bags = TRUE
+)
 
 
-resulbags_2ant <- read_rds(here::here("temp/ant_bags_2.rds"))
-resulbags_2jodatime <- read_rds(here::here("temp/jodatime_bags_2.rds"))
-resulbags_2argouml <- read_rds(here::here("temp/argouml_bags_2.rds"))
-resulbags_2kafka <- read_rds(here::here("temp/kafka_bags_2.rds"))
-resulbags_2hive <- read_rds(here::here("temp/hive_bags_2.rds"))
-resulbags_2junit <- read_rds(here::here("temp/junit_bags_2.rds"))
-resulbags_2spark <- read_rds(here::here("temp/spark_bags_2.rds"))
-resulbags_2netbeans <- read_rds(here::here("temp/netbeans_bags_2.rds"))
-resulbags_2pulsar <- read_rds(here::here("temp/pulsar_bags_2.rds"))
-resulbags_2rxjava <- read_rds(here::here("temp/rxjava_bags_2.rds"))
-resulbags_2glide <- read_rds(here::here("temp/glide_bags_2.rds"))
-resulbags_2kubernetes <- read_rds(here::here("temp/kubernetes_bags_2.rds"))
-resulbags_2lottie <- read_rds(here::here("temp/lottie_bags_2.rds"))
-resulbags_2eventbus <- read_rds(here::here("temp/eventbus_bags_2.rds"))
-resulbags_2jodamoney <- read_rds(here::here("temp/jodamoney_bags_2.rds"))
-resulbags_2dbeaver <- read_rds(here::here("temp/dbeaver_bags_2.rds"))
-resulbags_2mpandroidchart <- read_rds(here::here("temp/mpandroidchart_bags_2.rds"))
-resulbags_2checkstyle <- read_rds(here::here("temp/checkstyle_bags_2.rds"))
-resulbags_2presto <- read_rds(here::here("temp/presto_bags_2.rds"))
-resulbags_2storm <- read_rds(here::here("temp/storm_bags_2.rds"))
-resulbags_2camel <- read_rds(here::here("temp/camel_bags_2.rds"))
-resulbags_2activiti <- read_rds(here::here("temp/activiti_bags_2.rds"))
-resulbags_2exoplayer <- read_rds(here::here("temp/exoplayer_bags_2.rds"))
-resulbags_2hbase <- read_rds(here::here("temp/hbase_bags_2.rds"))
-resulbags_2beam <- read_rds(here::here("temp/beam_bags_2.rds"))
-resulbags_2spring <- read_rds(here::here("temp/spring_bags_2.rds"))
-resulbags_2tomcat <- read_rds(here::here("temp/tomcat_bags_2.rds"))
-resulbags_2redisson  <- read_rds(here::here("temp/redisson_bags_2.rds"))
-resulbags_2flink  <- read_rds(here::here("temp/flink_bags_2.rds"))
-resulbags_2jenkins  <- read_rds(here::here("temp/jenkins_bags_2.rds"))
+resulbags_dist_stem_ant <- read_rds(here::here("temp/ant_bags_dist_stem.rds"))
+resulbags_dist_stem_jodatime <- read_rds(here::here("temp/jodatime_bags_dist_stem.rds"))
+resulbags_dist_stem_argouml <- read_rds(here::here("temp/argouml_bags_dist_stem.rds"))
+resulbags_dist_stem_kafka <- read_rds(here::here("temp/kafka_bags_dist_stem.rds"))
+resulbags_dist_stem_hive <- read_rds(here::here("temp/hive_bags_dist_stem.rds"))
+resulbags_dist_stem_junit <- read_rds(here::here("temp/junit_bags_dist_stem.rds"))
+resulbags_dist_stem_spark <- read_rds(here::here("temp/spark_bags_dist_stem.rds"))
+resulbags_dist_stem_netbeans <- read_rds(here::here("temp/netbeans_bags_dist_stem.rds"))
+resulbags_dist_stem_pulsar <- read_rds(here::here("temp/pulsar_bags_dist_stem.rds"))
+resulbags_dist_stem_rxjava <- read_rds(here::here("temp/rxjava_bags_dist_stem.rds"))
+resulbags_dist_stem_glide <- read_rds(here::here("temp/glide_bags_dist_stem.rds"))
+resulbags_dist_stem_kubernetes <- read_rds(here::here("temp/kubernetes_bags_dist_stem.rds"))
+resulbags_dist_stem_lottie <- read_rds(here::here("temp/lottie_bags_dist_stem.rds"))
+resulbags_dist_stem_eventbus <- read_rds(here::here("temp/eventbus_bags_dist_stem.rds"))
+resulbags_dist_stem_jodamoney <- read_rds(here::here("temp/jodamoney_bags_dist_stem.rds"))
+resulbags_dist_stem_dbeaver <- read_rds(here::here("temp/dbeaver_bags_dist_stem.rds"))
+resulbags_dist_stem_mpandroidchart <- read_rds(here::here("temp/mpandroidchart_bags_dist_stem.rds"))
+resulbags_dist_stem_checkstyle <- read_rds(here::here("temp/checkstyle_bags_dist_stem.rds"))
+resulbags_dist_stem_presto <- read_rds(here::here("temp/presto_bags_dist_stem.rds"))
+resulbags_dist_stem_storm <- read_rds(here::here("temp/storm_bags_dist_stem.rds"))
+resulbags_dist_stem_camel <- read_rds(here::here("temp/camel_bags_dist_stem.rds"))
+resulbags_dist_stem_activiti <- read_rds(here::here("temp/activiti_bags_dist_stem.rds"))
+resulbags_dist_stem_exoplayer <- read_rds(here::here("temp/exoplayer_bags_dist_stem.rds"))
+resulbags_dist_stem_hbase <- read_rds(here::here("temp/hbase_bags_dist_stem.rds"))
+resulbags_dist_stem_beam <- read_rds(here::here("temp/beam_bags_dist_stem.rds"))
+resulbags_dist_stem_spring <- read_rds(here::here("temp/spring_bags_dist_stem.rds"))
+resulbags_dist_stem_tomcat <- read_rds(here::here("temp/tomcat_bags_dist_stem.rds"))
+resulbags_dist_stem_redisson  <- read_rds(here::here("temp/redisson_bags_dist_stem.rds"))
+resulbags_dist_stem_flink  <- read_rds(here::here("temp/flink_bags_dist_stem.rds"))
+resulbags_dist_stem_jenkins  <- read_rds(here::here("temp/jenkins_bags_dist_stem.rds"))
 
 
 
@@ -264,74 +297,74 @@ resulbags_dist_stem_glide <- read_rds(here::here("temp/glide_bags_dist_stem.rds"
 # 
 
 
-# resulbags_ant <- calculate_summaries_satd_alerts(resulbags_ant$data)
-# resulbags_jodatime <- calculate_summaries_satd_alerts(resulbags_jodatime$data)
-# resulbags_argouml <- calculate_summaries_satd_alerts(resulbags_argouml$data)
-resulbags_kafka <- calculate_summaries_satd_alerts(resulbags_kafka$data)
-resulbags_hive <- calculate_summaries_satd_alerts(resulbags_hive$data)
-resulbags_junit <- calculate_summaries_satd_alerts(resulbags_junit$data)
-resulbags_spark <- calculate_summaries_satd_alerts(resulbags_spark$data)
-# resulbags_netbeans <- calculate_summaries_satd_alerts(resulbags_netbeans$data)
-resulbags_pulsar <- calculate_summaries_satd_alerts(resulbags_pulsar$data)
-# resulbags_rxjava <- calculate_summaries_satd_alerts(resulbags_rxjava$data)
-# resulbags_glide <- calculate_summaries_satd_alerts(resulbags_glide$data)
-# resulbags_kubernetes <- calculate_summaries_satd_alerts(resulbags_kubernetes$data)
-# resulbags_lottie <- calculate_summaries_satd_alerts(resulbags_lottie$data)
-# resulbags_eventbus <- calculate_summaries_satd_alerts(resulbags_eventbus$data)
-# resulbags_jodamoney <- calculate_summaries_satd_alerts(resulbags_jodamoney$data)
-# resulbags_dbeaver <- calculate_summaries_satd_alerts(resulbags_dbeaver$data)
-# resulbags_mpandroidchart <- calculate_summaries_satd_alerts(resulbags_mpandroidchart$data)
-# resulbags_checkstyle <- calculate_summaries_satd_alerts(resulbags_checkstyle$data)
-# resulbags_presto <- calculate_summaries_satd_alerts(resulbags_presto$data)
-# resulbags_storm <- calculate_summaries_satd_alerts(resulbags_storm$data)
-# resulbags_camel <- calculate_summaries_satd_alerts(resulbags_camel$data)
-# resulbags_activiti <- calculate_summaries_satd_alerts(resulbags_activiti$data)
-# resulbags_exoplayer <- calculate_summaries_satd_alerts(resulbags_exoplayer$data)
-# resulbags_hbase <- calculate_summaries_satd_alerts(resulbags_hbase$data)
-# resulbags_beam <- calculate_summaries_satd_alerts(resulbags_beam$data)
-# resulbags_spring <- calculate_summaries_satd_alerts(resulbags_spring$data)
-# resulbags_tomcat <- calculate_summaries_satd_alerts(resulbags_tomcat$data)
-# resulbags_redisson <- calculate_summaries_satd_alerts(resulbags_redisson$data)
-# resulbags_flink <- calculate_summaries_satd_alerts(resulbags_flink$data)
-# resulbags_jenkins <- calculate_summaries_satd_alerts(resulbags_jenkins$data)
+resulbags_dist_stem_ant <- calculate_summaries_satd_alerts(resulbags_dist_stem_ant$data)
+resulbags_dist_stem_jodatime <- calculate_summaries_satd_alerts(resulbags_dist_stem_jodatime$data)
+resulbags_dist_stem_argouml <- calculate_summaries_satd_alerts(resulbags_dist_stem_argouml$data)
+resulbags_dist_stem_kafka <- calculate_summaries_satd_alerts(resulbags_dist_stem_kafka$data)
+resulbags_dist_stem_hive <- calculate_summaries_satd_alerts(resulbags_dist_stem_hive$data)
+resulbags_dist_stem_junit <- calculate_summaries_satd_alerts(resulbags_dist_stem_junit$data)
+resulbags_dist_stem_spark <- calculate_summaries_satd_alerts(resulbags_dist_stem_spark$data)
+resulbags_dist_stem_netbeans <- calculate_summaries_satd_alerts(resulbags_dist_stem_netbeans$data)
+resulbags_dist_stem_pulsar <- calculate_summaries_satd_alerts(resulbags_dist_stem_pulsar$data)
+resulbags_dist_stem_rxjava <- calculate_summaries_satd_alerts(resulbags_dist_stem_rxjava$data)
+resulbags_dist_stem_glide <- calculate_summaries_satd_alerts(resulbags_dist_stem_glide$data)
+resulbags_dist_stem_kubernetes <- calculate_summaries_satd_alerts(resulbags_dist_stem_kubernetes$data)
+resulbags_dist_stem_lottie <- calculate_summaries_satd_alerts(resulbags_dist_stem_lottie$data)
+resulbags_dist_stem_eventbus <- calculate_summaries_satd_alerts(resulbags_dist_stem_eventbus$data)
+resulbags_dist_stem_jodamoney <- calculate_summaries_satd_alerts(resulbags_dist_stem_jodamoney$data)
+resulbags_dist_stem_dbeaver <- calculate_summaries_satd_alerts(resulbags_dist_stem_dbeaver$data)
+resulbags_dist_stem_mpandroidchart <- calculate_summaries_satd_alerts(resulbags_dist_stem_mpandroidchart$data)
+resulbags_dist_stem_checkstyle <- calculate_summaries_satd_alerts(resulbags_dist_stem_checkstyle$data)
+resulbags_dist_stem_presto <- calculate_summaries_satd_alerts(resulbags_dist_stem_presto$data)
+resulbags_dist_stem_storm <- calculate_summaries_satd_alerts(resulbags_dist_stem_storm$data)
+resulbags_dist_stem_camel <- calculate_summaries_satd_alerts(resulbags_dist_stem_camel$data)
+resulbags_dist_stem_activiti <- calculate_summaries_satd_alerts(resulbags_dist_stem_activiti$data)
+resulbags_dist_stem_exoplayer <- calculate_summaries_satd_alerts(resulbags_dist_stem_exoplayer$data)
+resulbags_dist_stem_hbase <- calculate_summaries_satd_alerts(resulbags_dist_stem_hbase$data)
+resulbags_dist_stem_beam <- calculate_summaries_satd_alerts(resulbags_dist_stem_beam$data)
+resulbags_dist_stem_spring <- calculate_summaries_satd_alerts(resulbags_dist_stem_spring$data)
+resulbags_dist_stem_tomcat <- calculate_summaries_satd_alerts(resulbags_dist_stem_tomcat$data)
+resulbags_dist_stem_redisson <- calculate_summaries_satd_alerts(resulbags_dist_stem_redisson$data)
+resulbags_dist_stem_flink <- calculate_summaries_satd_alerts(resulbags_dist_stem_flink$data)
+resulbags_dist_stem_jenkins <- calculate_summaries_satd_alerts(resulbags_dist_stem_jenkins$data)
 
 
 
-
-
-resultados_ant <- calculate_summaries_satd_alerts(resultados_ant$data)
-resultados_jodatime <- calculate_summaries_satd_alerts(resultados_jodatime$data)
-resultados_argouml <- calculate_summaries_satd_alerts(resultados_argouml$data)
-resultados_kafka <- calculate_summaries_satd_alerts(resultados_kafka$data)
-resultados_hive <- calculate_summaries_satd_alerts(resultados_hive$data)
-resultados_junit <- calculate_summaries_satd_alerts(resultados_junit$data)
-resultados_spark <- calculate_summaries_satd_alerts(resultados_spark$data)
-resultados_netbeans <- calculate_summaries_satd_alerts(resultados_netbeans$data)
-resultados_pulsar <- calculate_summaries_satd_alerts(resultados_pulsar$data)
-resultados_rxjava <- calculate_summaries_satd_alerts(resultados_rxjava$data)
-resultados_glide <- calculate_summaries_satd_alerts(resultados_glide$data)
-resultados_kubernetes <- calculate_summaries_satd_alerts(resultados_kubernetes$data)
-resultados_lottie <- calculate_summaries_satd_alerts(resultados_lottie$data)
-resultados_eventbus <- calculate_summaries_satd_alerts(resultados_eventbus$data)
-resultados_jodamoney <- calculate_summaries_satd_alerts(resultados_jodamoney$data)
-resultados_dbeaver <- calculate_summaries_satd_alerts(resultados_dbeaver$data)
-resultados_mpandroidchart <- calculate_summaries_satd_alerts(resultados_mpandroidchart$data)
-resultados_checkstyle <- calculate_summaries_satd_alerts(resultados_checkstyle$data)
-resultados_presto <- calculate_summaries_satd_alerts(resultados_presto$data)
-resultados_storm <- calculate_summaries_satd_alerts(resultados_storm$data)
-resultados_camel <- calculate_summaries_satd_alerts(resultados_camel$data)
-resultados_activiti <- calculate_summaries_satd_alerts(resultados_activiti$data)
-resultados_exoplayer <- calculate_summaries_satd_alerts(resultados_exoplayer$data)
-resultados_hbase <- calculate_summaries_satd_alerts(resultados_hbase$data)
-resultados_beam <- calculate_summaries_satd_alerts(resultados_beam$data)
-resultados_spring <- calculate_summaries_satd_alerts(resultados_spring$data)
-resultados_tomcat <- calculate_summaries_satd_alerts(resultados_tomcat$data)
-resultados_redisson <- calculate_summaries_satd_alerts(resultados_redisson$data)
-resultados_flink <- calculate_summaries_satd_alerts(resultados_flink$data)
-resultados_jenkins <- calculate_summaries_satd_alerts(resultados_jenkins$data)
-
-
-
+# 
+# 
+# resultados_ant <- calculate_summaries_satd_alerts(resultados_ant$data)
+# resultados_jodatime <- calculate_summaries_satd_alerts(resultados_jodatime$data)
+# resultados_argouml <- calculate_summaries_satd_alerts(resultados_argouml$data)
+# resultados_kafka <- calculate_summaries_satd_alerts(resultados_kafka$data)
+# resultados_hive <- calculate_summaries_satd_alerts(resultados_hive$data)
+# resultados_junit <- calculate_summaries_satd_alerts(resultados_junit$data)
+# resultados_spark <- calculate_summaries_satd_alerts(resultados_spark$data)
+# resultados_netbeans <- calculate_summaries_satd_alerts(resultados_netbeans$data)
+# resultados_pulsar <- calculate_summaries_satd_alerts(resultados_pulsar$data)
+# resultados_rxjava <- calculate_summaries_satd_alerts(resultados_rxjava$data)
+# resultados_glide <- calculate_summaries_satd_alerts(resultados_glide$data)
+# resultados_kubernetes <- calculate_summaries_satd_alerts(resultados_kubernetes$data)
+# resultados_lottie <- calculate_summaries_satd_alerts(resultados_lottie$data)
+# resultados_eventbus <- calculate_summaries_satd_alerts(resultados_eventbus$data)
+# resultados_jodamoney <- calculate_summaries_satd_alerts(resultados_jodamoney$data)
+# resultados_dbeaver <- calculate_summaries_satd_alerts(resultados_dbeaver$data)
+# resultados_mpandroidchart <- calculate_summaries_satd_alerts(resultados_mpandroidchart$data)
+# resultados_checkstyle <- calculate_summaries_satd_alerts(resultados_checkstyle$data)
+# resultados_presto <- calculate_summaries_satd_alerts(resultados_presto$data)
+# resultados_storm <- calculate_summaries_satd_alerts(resultados_storm$data)
+# resultados_camel <- calculate_summaries_satd_alerts(resultados_camel$data)
+# resultados_activiti <- calculate_summaries_satd_alerts(resultados_activiti$data)
+# resultados_exoplayer <- calculate_summaries_satd_alerts(resultados_exoplayer$data)
+# resultados_hbase <- calculate_summaries_satd_alerts(resultados_hbase$data)
+# resultados_beam <- calculate_summaries_satd_alerts(resultados_beam$data)
+# resultados_spring <- calculate_summaries_satd_alerts(resultados_spring$data)
+# resultados_tomcat <- calculate_summaries_satd_alerts(resultados_tomcat$data)
+# resultados_redisson <- calculate_summaries_satd_alerts(resultados_redisson$data)
+# resultados_flink <- calculate_summaries_satd_alerts(resultados_flink$data)
+# resultados_jenkins <- calculate_summaries_satd_alerts(resultados_jenkins$data)
+# 
+# 
+# 
 
 
 
@@ -473,12 +506,12 @@ extract_data <- function(name, prefix = "resultado" ){
 
 outputs <- map_df(.x = names(.GlobalEnv), .f = ~extract_summary(name = .x, prefix = "resultados" ) )
 outputs_bags <- map_df(.x = names(.GlobalEnv), .f = ~extract_summary(name = .x, prefix = "resulbags" ) )
-outputs_bags_2 <- map_df(.x = names(.GlobalEnv), .f = ~extract_summary(name = .x, prefix = "resulbags_2" ) )
+outputs_bags_2 <- map_df(.x = names(.GlobalEnv), .f = ~extract_summary(name = .x, prefix = "resulbags_dist_stem" ) )
 
 
 outputs_data <- map_df(.x = names(.GlobalEnv), .f = ~extract_data(name = .x, prefix = "resultados") )
 outputs_data_bags <- map_df(.x = names(.GlobalEnv), .f = ~extract_data(name = .x, prefix = "resulbags") )
-outputs_data_bags_2 <- map_df(.x = names(.GlobalEnv), .f = ~extract_data(name = .x, prefix = "resulbags_2") )
+outputs_data_bags_2 <- map_df(.x = names(.GlobalEnv), .f = ~extract_data(name = .x, prefix = "resulbags_dist_stem") )
 
 
 
@@ -539,16 +572,6 @@ dbWriteTable(
 
 
 dbDisconnect(con)
-
-
-
-
-
-
-
-
-
-
 
 
 
