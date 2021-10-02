@@ -1,0 +1,13 @@
+name: explore
+title: explore
+username:
+account: crotman
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4695041
+bundleId: 5054106
+url: https://crotman.shinyapps.io/explore/
+when: 1632188345.70515
+lastSyncTime: 1632188345.70515
+asMultiple: FALSE
+asStatic: FALSE

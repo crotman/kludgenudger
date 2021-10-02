@@ -1,0 +1,235 @@
+---
+title: "SATD"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+
+library(reactable)
+library(DBI)
+library(tidyverse)
+library(shiny)
+
+
+source("R/inter_rate_metrics.R")
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE  )
+
+con <- dbConnect(RSQLite::SQLite(), "db/db.db")
+
+evaluation <- get_evaluations(con) 
+
+
+```
+
+
+# Results
+
+## Only answered by all, truncate probably
+
+
+```{r echo=FALSE}
+
+renderPlot({
+  
+  plot_results(evaluation, filter_answered_by_all = TRUE, simplify_answer_probably = TRUE)
+  
+  
+})
+```
+
+## All answers, truncate probably
+
+
+```{r echo=FALSE}
+
+renderPlot({
+  
+  plot_results(evaluation,filter_answered_by_all = FALSE, simplify_answer_probably = TRUE )
+  
+  
+})
+```
+
+## Only answered by all
+
+
+```{r echo=FALSE}
+
+renderPlot({
+  
+  plot_results(evaluation, filter_answered_by_all = TRUE, simplify_answer_probably = FALSE)
+  
+  
+})
+```
+
+## All answers
+
+
+```{r echo=FALSE}
+
+renderPlot({
+  
+  plot_results(evaluation,filter_answered_by_all = FALSE, simplify_answer_probably = FALSE )
+  
+  
+})
+```
+
+
+## Inter-rate agreemeent
+
+## All
+
+
+```{r}
+
+results_no_truncate_no_removal <-  calculate_all(evaluation = evaluation, truncate_probably = FALSE, remove_unknown = FALSE)
+
+renderPlot(
+  plot_agreement(results_no_truncate_no_removal),
+  height = 800
+)
+
+
+renderReactable(
+  results_no_truncate_no_removal %>% 
+    select(
+      users = name,
+      metric,
+      value,
+      p_value
+    ) %>% 
+    reactable(
+      pagination = FALSE,
+      defaultColDef = colDef(
+        format = colFormat(
+          digits = 2
+        )
+      )
+        
+    )
+)
+
+```
+
+
+## Removing unknown
+
+
+```{r}
+
+
+results_no_truncate_removal <-  calculate_all(evaluation = evaluation, truncate_probably = FALSE, remove_unknown = TRUE)
+
+renderPlot(
+  plot_agreement(results_no_truncate_removal),
+  height = 800
+)
+
+
+renderReactable(
+  results_no_truncate_removal %>% 
+    select(
+      users = name,
+      metric,
+      value,
+      p_value
+    ) %>% 
+    reactable(
+      pagination = FALSE,
+      defaultColDef = colDef(
+        format = colFormat(
+          digits = 2
+        )
+      )
+        
+    )
+)
+
+
+```
+
+
+
+## Truncate probably, unknown not removed
+
+
+```{r}
+
+
+results_truncate_no_removal <-  calculate_all(evaluation = evaluation, truncate_probably = TRUE, remove_unknown = FALSE)
+
+renderPlot(
+  plot_agreement(results_truncate_no_removal),
+  height = 800
+)
+
+
+renderReactable(
+  results_truncate_no_removal %>% 
+    select(
+      users = name,
+      metric,
+      value,
+      p_value
+    ) %>% 
+    reactable(
+      pagination = FALSE,
+      defaultColDef = colDef(
+        format = colFormat(
+          digits = 2
+        )
+      )
+        
+    )
+)
+
+
+```
+
+
+
+## Truncate probably, unknown removed
+
+
+```{r}
+
+
+
+
+results_truncate_removal <-  calculate_all(evaluation = evaluation, truncate_probably = TRUE, remove_unknown = TRUE)
+
+renderPlot(
+  plot_agreement(results_truncate_removal),
+  height = 800
+)
+
+
+renderReactable(
+  results_truncate_removal %>% 
+    select(
+      users = name,
+      metric,
+      value,
+      p_value
+    ) %>% 
+    reactable(
+      pagination = FALSE,
+      defaultColDef = colDef(
+        format = colFormat(
+          digits = 2
+        )
+      )
+        
+    )
+)
+
+
+
+
+
+```
+

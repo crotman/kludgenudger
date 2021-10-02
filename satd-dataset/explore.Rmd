@@ -1,0 +1,181 @@
+---
+title: "SATD database"
+output: html_document
+runtime: shiny
+resource_files:
+- dataset/technical_debt_dataset.csv
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+
+library(tidyverse)
+library(here)
+library(reactable)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE  )
+```
+
+# Projects
+
+```{r}
+
+data <- read_csv("dataset/technical_debt_dataset.csv") %>% 
+  mutate(
+    projectname = if_else(projectname == "argouml", str_glue("{projectname}-0.34"), projectname )
+  )
+
+
+project_info <- tribble(
+
+  ~name,                 ~repository,                      ~version,              ~commits_since,    ~version_location,
+  "apache-ant-1.7.0",   "https://github.com/apache/ant",  "1.7.0",               4490,        "https://github.com/apache/ant/releases/tag/rel%2F1.7.0",
+  "apache-jmeter-2.10", "https://github.com/apache/jmeter","2.10",               7351,  "https://github.com/apache/jmeter/releases/tag/v2_10",
+  "argouml-0.34",       "https://github.com/argouml-tigris-org/argouml", "0.34", 162, "https://github.com/argouml-tigris-org/argouml/releases/tag/VERSION_0_34",    
+  "columba-1.4-src",    "Not found on Github"              ,"1.4",               NA, NA,
+  "emf-2.4.1",          "Not found on Github",              "2.4.1",             NA, NA,
+  "hibernate-distribution-3.3.2.GA", "Not found on Github", "3.3.2.GA",          NA, NA,
+  "jEdit-4.2", "Not found on Github",                       "4.2",               NA,  NA,
+  "jfreechart-1.0.19", "https://github.com/jfree/jfreechart", "1.0.19",         998, "https://github.com/jfree/jfreechart/releases/tag/v1.0.19",
+  "jruby-1.4.0",       "https://github.com/jruby/jruby",      "1.4.0"             ,40391,      "https://github.com/jruby/jruby/releases/tag/1.4.0"  ,
+  "sql12" ,            "Not found on Github",                  "12",            NA, NA
+  
+  
+  
+)
+  
+
+project_info %>%  reactable()
+
+
+```
+
+# Number of SATDs
+
+
+```{r}
+
+
+summarized <- project_info %>% 
+  left_join(
+    data,
+    by = c("name" = "projectname")
+  ) %>% 
+  filter(
+    repository != "Not found on Github"
+  ) %>% 
+  tidylog::distinct() %>% 
+  group_by(
+    name,
+    classification
+  ) %>% 
+  summarise(
+    n = n()
+  ) %>% 
+  ungroup() %>% 
+  complete(
+    name,
+    classification,
+    fill = list(
+      n = 0
+    )
+  )
+
+to_table <- summarized %>% 
+  pivot_wider(
+    names_from = classification,
+    values_from = n
+  ) %>% 
+  rowwise() %>% 
+  mutate(
+    total_satds = sum(c_across(-c(name, WITHOUT_CLASSIFICATION))),
+    total_comments = sum(c_across(-c(name, total_satds)))
+  ) %>% 
+  ungroup() %>% 
+  janitor::clean_names() %>% 
+  relocate(
+    without_classification,
+    .after = total_satds
+  )
+  
+reactable(
+  to_table,
+  columns = list(
+    name = colDef(name = "Project"),
+    defect = colDef(name = "SATD: Defect"),
+    design = colDef(name = "SATD: Design"),
+    documentation = colDef(name = "SATD: Documentation"),
+    implementation = colDef(name = "SATD: Implementation"),
+    test = colDef(name = "SATD: Test"),
+    without_classification = colDef(name = "Not SATD"),
+    total_satds = colDef(name = "Total SATDs"),
+    total_comments = colDef(name = "Total Comments")
+    
+  )
+) 
+
+```
+
+
+# Relative Number of SATDs
+
+
+
+```{r}
+
+to_table_frac <- to_table %>% 
+  mutate(
+    across(
+      .cols = c(defect, design, documentation, implementation, test),
+      .fns = ~(.x/total_satds)
+    )
+  ) %>% 
+  mutate(
+    across(
+      .cols = c(without_classification, total_satds),
+      .fns = ~(.x/total_comments)
+    )
+  )  
+
+
+reactable(to_table_frac,
+  columns = list(
+    name = colDef(name = "Project"),
+    defect = colDef(
+      name = "Defect as % of SATDs", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    design = colDef(
+      name = "Design as % of SATDs", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    documentation = colDef(
+      name = "Documentation as % of SATDs", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    implementation = colDef(
+      name = "Implementation as % of SATDs", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    test = colDef(
+      name = "Test as % of SATDs", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    without_classification = colDef(
+      name = "Not SATDs as % of comments", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    total_satds = colDef(
+      name = "SATDs as % of comments", 
+      format = colFormat(percent = TRUE, digits = 1) 
+    ),
+    total_comments = colDef(name = "Total Comments")
+    
+  )
+)
+          
+          
+
+```
+
+
+

@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+    version="6.24.0" timestamp="2021-04-24T21:24:39.448">
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\com\oreilly\servlet\MailMessage.java">
+<violation beginline="127" endline="402" begincolumn="26" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="com.oreilly.servlet" class="MailMessage" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="407" endline="448" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="com.oreilly.servlet" class="MailPrintStream" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\BuildEvent.java">
+<violation beginline="59" endline="166" begincolumn="45" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="BuildEvent" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\BuildException.java">
+<violation beginline="63" endline="162" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="BuildException" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\BuildListener.java">
+<violation beginline="66" endline="119" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="BuildListener" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\DefaultLogger.java">
+<violation beginline="64" endline="162" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="DefaultLogger" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\DesirableFilter.java">
+<violation beginline="68" endline="111" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="DesirableFilter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\DirectoryScanner.java">
+<violation beginline="136" endline="827" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="DirectoryScanner" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\EnumeratedAttribute.java">
+<violation beginline="66" endline="112" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="EnumeratedAttribute" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\IntrospectionHelper.java">
+<violation beginline="68" endline="510" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="160" endline="169" begincolumn="66" endcolumn="21" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="IntrospectionHelper" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="182" endline="192" begincolumn="70" endcolumn="25" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="IntrospectionHelper" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="347" endline="352" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="357" endline="363" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="365" endline="371" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="373" endline="379" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="381" endline="387" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="389" endline="395" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="397" endline="403" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="405" endline="411" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="417" endline="424" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="428" endline="437" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="441" endline="447" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="451" endline="463" begincolumn="42" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="473" endline="483" begincolumn="46" endcolumn="21" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper" method="createAttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="501" endline="504" begincolumn="37" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper$NestedCreator" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="505" endline="509" begincolumn="39" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="IntrospectionHelper$AttributeSetter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Location.java">
+<violation beginline="60" endline="111" begincolumn="23" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="Location" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Main.java">
+<violation beginline="73" endline="361" begincolumn="19" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="Main" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Map.java">
+<violation beginline="59" endline="62" begincolumn="22" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="Map" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Path.java">
+<violation beginline="90" endline="224" begincolumn="19" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="Path" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\PathTokenizer.java">
+<violation beginline="69" endline="128" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="PathTokenizer" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\ProjectHelper.java">
+<violation beginline="71" endline="503" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="149" endline="176" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper$AbstractHandler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="181" endline="193" begincolumn="51" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper$RootHandler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="198" endline="264" begincolumn="58" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper$ProjectHandler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="269" endline="329" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper$TargetHandler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="334" endline="374" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper$TaskHandler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="379" endline="421" begincolumn="64" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="ProjectHelper$NestedElementHandler" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Task.java">
+<violation beginline="63" endline="196" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="Task" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\TaskAdapter.java">
+<violation beginline="66" endline="102" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="TaskAdapter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\XmlLogger.java">
+<violation beginline="67" endline="269" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="XmlLogger" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Ant.java">
+<violation beginline="80" endline="179" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Ant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Available.java">
+<violation beginline="67" endline="128" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Available" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Chmod.java">
+<violation beginline="69" endline="125" begincolumn="41" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Chmod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\CompileTask.java">
+<violation beginline="69" endline="112" begincolumn="40" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="CompileTask" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Copyfile.java">
+<violation beginline="68" endline="97" begincolumn="36" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Copyfile" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Cvs.java">
+<violation beginline="68" endline="152" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Cvs" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Delete.java">
+<violation beginline="65" endline="155" begincolumn="42" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Delete" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Deltree.java">
+<violation beginline="66" endline="121" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Deltree" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Echo.java">
+<violation beginline="65" endline="85" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Echo" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Exec.java">
+<violation beginline="66" endline="240" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Exec" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="200" endline="239" begincolumn="39" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Exec$StreamPumper" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Expand.java">
+<violation beginline="66" endline="159" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Expand" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Filter.java">
+<violation beginline="65" endline="81" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Filter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\FixCRLF.java">
+<violation beginline="92" endline="382" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="FixCRLF" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="377" endline="381" begincolumn="67" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="FixCRLF$AddAsisRemove" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\GUnzip.java">
+<violation beginline="70" endline="143" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="GUnzip" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\GZip.java">
+<violation beginline="70" endline="130" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="GZip" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Get.java">
+<violation beginline="65" endline="157" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Get" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Jar.java">
+<violation beginline="68" endline="123" begincolumn="30" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Jar" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Java.java">
+<violation beginline="67" endline="241" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Java" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\JavacOutputStream.java">
+<violation beginline="69" endline="124" begincolumn="46" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="JavacOutputStream" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Javadoc.java">
+<violation beginline="89" endline="989" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Javadoc" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="91" endline="110" begincolumn="30" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Javadoc$DocletParam" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="112" endline="155" begincolumn="29" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Javadoc$DocletInfo" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="383" endline="414" begincolumn="31" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Javadoc$LinkArgument" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="422" endline="444" begincolumn="32" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Javadoc$GroupArgument" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="918" endline="988" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Javadoc$JavaReader" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Jikes.java">
+<violation beginline="11" endline="47" begincolumn="20" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Jikes" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\JikesOutputParser.java">
+<violation beginline="16" endline="103" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="JikesOutputParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\KeySubst.java">
+<violation beginline="69" endline="203" begincolumn="36" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="KeySubst" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\MatchingTask.java">
+<violation beginline="72" endline="310" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="MatchingTask" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="90" endline="104" begincolumn="28" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="MatchingTask$NameEntry" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Mkdir.java">
+<violation beginline="67" endline="87" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Mkdir" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Patch.java">
+<violation beginline="65" endline="174" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Patch" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Property.java">
+<violation beginline="69" endline="242" begincolumn="36" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Rename.java">
+<violation beginline="67" endline="116" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Rename" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Replace.java">
+<violation beginline="67" endline="190" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Replace" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Rmic.java">
+<violation beginline="84" endline="416" begincolumn="40" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Rmic" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\SignJar.java">
+<violation beginline="64" endline="217" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="SignJar" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Tar.java">
+<violation beginline="67" endline="148" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Tar" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\TaskOutputStream.java">
+<violation beginline="72" endline="117" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="TaskOutputStream" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Taskdef.java">
+<violation beginline="64" endline="111" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Taskdef" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Touch.java">
+<violation beginline="78" endline="197" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Touch" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Tstamp.java">
+<violation beginline="68" endline="86" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Tstamp" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Untar.java">
+<violation beginline="68" endline="167" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Untar" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\XSLTLiaison.java">
+<violation beginline="64" endline="70" begincolumn="30" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="XSLTLiaison" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\XSLTProcess.java">
+<violation beginline="88" endline="314" begincolumn="47" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="XSLTProcess" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Zip.java">
+<violation beginline="72" endline="239" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs" class="Zip" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\RenameExtensions.java">
+<violation beginline="77" endline="163" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional" class="RenameExtensions" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\Script.java">
+<violation beginline="67" endline="160" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional" class="Script" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\XalanLiaison.java">
+<violation beginline="69" endline="87" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional" class="XalanLiaison" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\XslpLiaison.java">
+<violation beginline="70" endline="88" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional" class="XslpLiaison" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\DDCreator.java">
+<violation beginline="69" endline="162" begincolumn="45" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="DDCreator" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\DDCreatorHelper.java">
+<violation beginline="66" endline="149" begincolumn="30" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="DDCreatorHelper" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\EjbJar.java">
+<violation beginline="120" endline="638" begincolumn="42" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="EjbJar" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="130" endline="239" begincolumn="71" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="EjbJar$DescriptorHandler" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\Ejbc.java">
+<violation beginline="69" endline="200" begincolumn="40" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="Ejbc" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\EjbcHelper.java">
+<violation beginline="75" endline="278" begincolumn="25" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="EjbcHelper" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\WLRun.java">
+<violation beginline="68" endline="224" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="WLRun" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\ejb\WLStop.java">
+<violation beginline="68" endline="168" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.ejb" class="WLStop" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\vss\MSVSS.java">
+<violation beginline="77" endline="195" begincolumn="42" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.vss" class="MSVSS" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\vss\MSVSSGET.java">
+<violation beginline="117" endline="308" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant.taskdefs.optional.vss" class="MSVSSGET" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\tar\TarBuffer.java">
+<violation beginline="78" endline="440" begincolumn="24" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.tar" class="TarBuffer" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\tar\TarConstants.java">
+<violation beginline="69" endline="182" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.tar" class="TarConstants" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\tar\TarEntry.java">
+<violation beginline="116" endline="572" begincolumn="47" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.tar" class="TarEntry" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\tar\TarInputStream.java">
+<violation beginline="73" endline="419" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.tar" class="TarInputStream" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\tar\TarOutputStream.java">
+<violation beginline="71" endline="312" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.tar" class="TarOutputStream" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\tar\TarUtils.java">
+<violation beginline="68" endline="234" begincolumn="23" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.tar" class="TarUtils" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\AllJUnitTests.java">
+<violation beginline="66" endline="78" begincolumn="45" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="AllJUnitTests" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\PathTest.java">
+<violation beginline="68" endline="205" begincolumn="40" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.apache.tools.ant" class="PathTest" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Project.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Project.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Project.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Line 128, Column 30: Can't use 'enum' as a variable name when running in JDK 1.5 mode!
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.throwParseException(JavaParser.java:28)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.checkForBadEnumUsage(JavaParser.java:69)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclaratorId(JavaParser.java:1800)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclarator(JavaParser.java:1721)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.LocalVariableDeclaration(JavaParser.java:5300)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5197)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TryStatement(JavaParser.java:6255)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5076)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Target.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Target.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\Target.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Line 126, Column 30: Can't use 'enum' as a variable name when running in JDK 1.5 mode!
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.throwParseException(JavaParser.java:28)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.checkForBadEnumUsage(JavaParser.java:69)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclaratorId(JavaParser.java:1800)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclarator(JavaParser.java:1721)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.LocalVariableDeclaration(JavaParser.java:5300)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5197)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5033)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.IfStatement(JavaParser.java:5812)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5049)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\AntStructure.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\AntStructure.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\AntStructure.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Line 108, Column 30: Can't use 'enum' as a variable name when running in JDK 1.5 mode!
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.throwParseException(JavaParser.java:28)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.checkForBadEnumUsage(JavaParser.java:69)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclaratorId(JavaParser.java:1800)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclarator(JavaParser.java:1721)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.LocalVariableDeclaration(JavaParser.java:5300)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5197)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TryStatement(JavaParser.java:6255)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5076)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Copydir.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Copydir.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Copydir.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Line 110, Column 30: Can't use 'enum' as a variable name when running in JDK 1.5 mode!
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.throwParseException(JavaParser.java:28)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.checkForBadEnumUsage(JavaParser.java:69)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclaratorId(JavaParser.java:1800)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclarator(JavaParser.java:1721)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.LocalVariableDeclaration(JavaParser.java:5300)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5197)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5033)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.IfStatement(JavaParser.java:5812)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5049)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Javac.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Javac.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\Javac.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Line 315, Column 30: Can't use 'enum' as a variable name when running in JDK 1.5 mode!
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.throwParseException(JavaParser.java:28)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.checkForBadEnumUsage(JavaParser.java:69)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclaratorId(JavaParser.java:1800)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclarator(JavaParser.java:1721)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.LocalVariableDeclaration(JavaParser.java:5300)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5197)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5033)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.IfStatement(JavaParser.java:5812)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5049)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\NetRexxC.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\NetRexxC.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\main\org\apache\tools\ant\taskdefs\optional\NetRexxC.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Line 483, Column 30: Can't use 'enum' as a variable name when running in JDK 1.5 mode!
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.throwParseException(JavaParser.java:28)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.checkForBadEnumUsage(JavaParser.java:69)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclaratorId(JavaParser.java:1800)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.VariableDeclarator(JavaParser.java:1721)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.LocalVariableDeclaration(JavaParser.java:5300)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5197)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5033)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.IfStatement(JavaParser.java:5812)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5049)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\EnumeratedAttributeTest.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\EnumeratedAttributeTest.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\EnumeratedAttributeTest.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Encountered " "," ", "" at line 77, column 51.
+Was expecting one of:
+    ")" ...
+    "++" ...
+    "--" ...
+    
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.generateParseException(JavaParser.java:12731)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.jj_consume_token(JavaParser.java:12615)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.PrimaryPrefix(JavaParser.java:4255)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.PrimaryExpression(JavaParser.java:4071)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.PostfixExpression(JavaParser.java:3893)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.UnaryExpressionNotPlusMinus(JavaParser.java:3851)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.UnaryExpression(JavaParser.java:3728)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MultiplicativeExpression(JavaParser.java:3643)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.AdditiveExpression(JavaParser.java:3590)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ShiftExpression(JavaParser.java:3533)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.RelationalExpression(JavaParser.java:3472)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.InstanceOfExpression(JavaParser.java:3401)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.EqualityExpression(JavaParser.java:3348)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.AndExpression(JavaParser.java:3308)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ExclusiveOrExpression(JavaParser.java:3268)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.InclusiveOrExpression(JavaParser.java:3228)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ConditionalAndExpression(JavaParser.java:3188)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ConditionalOrExpression(JavaParser.java:3148)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ConditionalExpression(JavaParser.java:3110)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Expression(JavaParser.java:2967)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.AssertStatement(JavaParser.java:6525)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5193)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5033)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ForStatement(JavaParser.java:5952)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Statement(JavaParser.java:5058)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5200)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+<error filename="C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\IntrospectionHelperTest.java" msg="PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\IntrospectionHelperTest.java">
+<![CDATA[net.sourceforge.pmd.PMDException: Error while parsing C:\doutorado\ant\ant-rel-1.1.0\src\testcases\org\apache\tools\ant\IntrospectionHelperTest.java
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:110)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:89)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCode(SourceCodeProcessor.java:51)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:78)
+	at net.sourceforge.pmd.processor.PmdRunnable.call(PmdRunnable.java:24)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: net.sourceforge.pmd.lang.java.ast.ParseException: Encountered " "(" "( "" at line 94, column 15.
+Was expecting one of:
+    "false" ...
+    "new" ...
+    "null" ...
+    "super" ...
+    "true" ...
+    <INTEGER_LITERAL> ...
+    <FLOATING_POINT_LITERAL> ...
+    <HEX_FLOATING_POINT_LITERAL> ...
+    <CHARACTER_LITERAL> ...
+    <STRING_LITERAL> ...
+    <TEXT_BLOCK_LITERAL> ...
+    <IDENTIFIER> ...
+    "!" ...
+    "~" ...
+    "++" ...
+    "--" ...
+    "+" ...
+    "-" ...
+    "~" ...
+    "!" ...
+    <INTEGER_LITERAL> ...
+    <FLOATING_POINT_LITERAL> ...
+    <HEX_FLOATING_POINT_LITERAL> ...
+    <CHARACTER_LITERAL> ...
+    <STRING_LITERAL> ...
+    <TEXT_BLOCK_LITERAL> ...
+    "true" ...
+    "false" ...
+    "null" ...
+    "super" ...
+    <IDENTIFIER> ...
+    <IDENTIFIER> ...
+    <IDENTIFIER> ...
+    <IDENTIFIER> ...
+    <IDENTIFIER> ...
+    <IDENTIFIER> ...
+    
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.generateParseException(JavaParser.java:12731)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.jj_consume_token(JavaParser.java:12615)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.PrimaryPrefix(JavaParser.java:4279)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.PrimaryExpression(JavaParser.java:4071)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.PostfixExpression(JavaParser.java:3893)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.UnaryExpressionNotPlusMinus(JavaParser.java:3851)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.UnaryExpression(JavaParser.java:3728)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MultiplicativeExpression(JavaParser.java:3643)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.AdditiveExpression(JavaParser.java:3590)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ShiftExpression(JavaParser.java:3533)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.RelationalExpression(JavaParser.java:3472)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.InstanceOfExpression(JavaParser.java:3401)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.EqualityExpression(JavaParser.java:3348)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.AndExpression(JavaParser.java:3308)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ExclusiveOrExpression(JavaParser.java:3268)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.InclusiveOrExpression(JavaParser.java:3228)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ConditionalAndExpression(JavaParser.java:3188)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ConditionalOrExpression(JavaParser.java:3148)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ConditionalExpression(JavaParser.java:3110)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Expression(JavaParser.java:2967)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.AssertStatement(JavaParser.java:6525)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.BlockStatement(JavaParser.java:5193)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.Block(JavaParser.java:5156)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.MethodDeclaration(JavaParser.java:1948)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBodyDeclaration(JavaParser.java:1629)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceBody(JavaParser.java:1582)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.ClassOrInterfaceDeclaration(JavaParser.java:779)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.TypeDeclaration(JavaParser.java:686)
+	at net.sourceforge.pmd.lang.java.ast.JavaParser.CompilationUnit(JavaParser.java:420)
+	at net.sourceforge.pmd.lang.java.AbstractJavaParser.parse(AbstractJavaParser.java:62)
+	at net.sourceforge.pmd.SourceCodeProcessor.parse(SourceCodeProcessor.java:121)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSource(SourceCodeProcessor.java:185)
+	at net.sourceforge.pmd.SourceCodeProcessor.processSourceCodeWithoutCache(SourceCodeProcessor.java:107)
+	... 10 more
+]]>
+</error>
+</pmd>

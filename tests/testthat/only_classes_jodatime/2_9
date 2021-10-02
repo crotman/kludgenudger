@@ -1,0 +1,2320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+    version="6.24.0" timestamp="2021-04-21T19:17:15.015">
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\example\org\joda\example\time\AgeCalculator.java">
+<violation beginline="56" endline="360" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="105" endline="109" begincolumn="54" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator" method="AgeCalculator" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="138" endline="152" begincolumn="56" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator" method="addTopArea" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="162" endline="168" begincolumn="61" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator" method="addTopArea" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="177" endline="181" begincolumn="52" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator" method="addBottomArea" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="232" endline="295" begincolumn="30" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator$FieldGroup" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="297" endline="359" begincolumn="35" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="AgeCalculator$FieldSet" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\example\org\joda\example\time\DateTimeBrowser.java">
+<violation beginline="69" endline="1162" begincolumn="45" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="186" endline="193" begincolumn="48" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser" method="go" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="412" endline="508" begincolumn="30" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$LoadedFile" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="515" endline="536" begincolumn="38" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$TableView" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="542" endline="653" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$GetterTableView" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="659" endline="774" begincolumn="50" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$HexTableView" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="780" endline="885" begincolumn="51" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$DateTableView" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="891" endline="1014" begincolumn="50" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$CalTableView" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1019" endline="1051" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$OpenAction" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1056" endline="1072" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$ExitAction" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1077" endline="1094" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$GetterAction" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1099" endline="1116" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$HexAction" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1121" endline="1138" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$DateAction" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1143" endline="1160" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimeBrowser$CalAction" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\example\org\joda\example\time\DateTimePerformance.java">
+<violation beginline="39" endline="900" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimePerformance" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="41" endline="47" begincolumn="33" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="DateTimePerformance$Result" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\example\org\joda\example\time\Examples.java">
+<violation beginline="28" endline="115" begincolumn="23" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="Examples" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\example\org\joda\example\time\TimeZoneTable.java">
+<violation beginline="34" endline="179" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="TimeZoneTable" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="116" endline="178" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.example.time" class="TimeZoneTable$ZoneData" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Chronology.java">
+<violation beginline="65" endline="506" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Chronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateMidnight.java">
+<violation beginline="80" endline="1480" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateMidnight" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1219" endline="1479" begincolumn="85" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateMidnight$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTime.java">
+<violation beginline="75" endline="2372" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTime" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="2078" endline="2370" begincolumn="85" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTime$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTimeComparator.java">
+<violation beginline="48" endline="275" begincolumn="77" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeComparator" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTimeConstants.java">
+<violation beginline="29" endline="172" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeConstants" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTimeField.java">
+<violation beginline="33" endline="687" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTimeFieldType.java">
+<violation beginline="41" endline="595" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeFieldType" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="422" endline="593" begincolumn="78" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeFieldType$StandardDateTimeFieldType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTimeUtils.java">
+<violation beginline="39" endline="596" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeUtils" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="524" endline="533" begincolumn="44" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeUtils$MillisProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="538" endline="546" begincolumn="65" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeUtils$SystemMillisProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="551" endline="570" begincolumn="64" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeUtils$FixedMillisProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="575" endline="594" begincolumn="65" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeUtils$OffsetMillisProvider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DateTimeZone.java">
+<violation beginline="102" endline="1375" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1273" endline="1298" begincolumn="61" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeZone$Stub" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1304" endline="1373" begincolumn="33" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeZone$LazyInit" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1314" endline="1328" begincolumn="54" endcolumn="13" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DateTimeZone$LazyInit" method="buildFormatter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Days.java">
+<violation beginline="42" endline="491" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Days" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Duration.java">
+<violation beginline="41" endline="521" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Duration" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DurationField.java">
+<violation beginline="30" endline="320" begincolumn="74" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\DurationFieldType.java">
+<violation beginline="39" endline="352" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DurationFieldType" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="246" endline="351" begincolumn="78" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="DurationFieldType$StandardDurationFieldType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Hours.java">
+<violation beginline="42" endline="490" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Hours" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\IllegalFieldValueException.java">
+<violation beginline="24" endline="329" begincolumn="74" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="IllegalFieldValueException" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\IllegalInstantException.java">
+<violation beginline="41" endline="89" begincolumn="71" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="IllegalInstantException" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Instant.java">
+<violation beginline="57" endline="364" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Instant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Interval.java">
+<violation beginline="54" endline="562" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Interval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\JodaTimePermission.java">
+<violation beginline="46" endline="60" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="JodaTimePermission" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\LocalDate.java">
+<violation beginline="84" endline="2129" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="LocalDate" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1890" endline="2127" begincolumn="85" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="LocalDate$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\LocalDateTime.java">
+<violation beginline="82" endline="2398" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="LocalDateTime" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="2146" endline="2396" begincolumn="85" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="LocalDateTime$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\LocalTime.java">
+<violation beginline="78" endline="1623" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="LocalTime" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1356" endline="1621" begincolumn="85" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="LocalTime$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Minutes.java">
+<violation beginline="42" endline="471" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Minutes" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\MonthDay.java">
+<violation beginline="73" endline="977" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MonthDay" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="825" endline="975" begincolumn="95" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MonthDay$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Months.java">
+<violation beginline="42" endline="397" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Months" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\MutableDateTime.java">
+<violation beginline="73" endline="1475" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MutableDateTime" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1261" endline="1473" begincolumn="85" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MutableDateTime$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\MutableInterval.java">
+<violation beginline="54" endline="414" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MutableInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\MutablePeriod.java">
+<violation beginline="58" endline="1013" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MutablePeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Partial.java">
+<violation beginline="70" endline="1029" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Partial" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="847" endline="1027" begincolumn="95" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Partial$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Period.java">
+<violation beginline="59" endline="1666" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Period" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\PeriodType.java">
+<violation beginline="51" endline="858" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="PeriodType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadWritableDateTime.java">
+<violation beginline="31" endline="267" begincolumn="85" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadWritableDateTime" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadWritableInstant.java">
+<violation beginline="28" endline="159" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadWritableInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadWritableInterval.java">
+<violation beginline="25" endline="135" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadWritableInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadWritablePeriod.java">
+<violation beginline="28" endline="280" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadWritablePeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadableDateTime.java">
+<violation beginline="34" endline="213" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadableDateTime" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadableDuration.java">
+<violation beginline="39" endline="152" begincolumn="72" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadableDuration" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadableInstant.java">
+<violation beginline="38" endline="181" begincolumn="70" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadableInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadableInterval.java">
+<violation beginline="43" endline="321" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadableInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadablePartial.java">
+<violation beginline="38" endline="187" begincolumn="70" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadablePartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\ReadablePeriod.java">
+<violation beginline="44" endline="167" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ReadablePeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Seconds.java">
+<violation beginline="42" endline="471" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Seconds" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\TimeOfDay.java">
+<violation beginline="68" endline="1228" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TimeOfDay" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1018" endline="1226" begincolumn="95" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TimeOfDay$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\UTCDateTimeZone.java">
+<violation beginline="24" endline="83" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="UTCDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Weeks.java">
+<violation beginline="42" endline="477" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Weeks" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\YearMonth.java">
+<violation beginline="70" endline="991" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="YearMonth" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="836" endline="989" begincolumn="95" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="YearMonth$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\YearMonthDay.java">
+<violation beginline="67" endline="1121" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="YearMonthDay" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="933" endline="1119" begincolumn="95" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="YearMonthDay$Property" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\Years.java">
+<violation beginline="42" endline="361" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="Years" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\AbstractDateTime.java">
+<violation beginline="46" endline="346" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="AbstractDateTime" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\AbstractDuration.java">
+<violation beginline="38" endline="206" begincolumn="68" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="AbstractDuration" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\AbstractInstant.java">
+<violation beginline="55" endline="442" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="AbstractInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\AbstractInterval.java">
+<violation beginline="44" endline="509" begincolumn="68" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="AbstractInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\AbstractPartial.java">
+<violation beginline="47" endline="415" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="AbstractPartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\AbstractPeriod.java">
+<violation beginline="39" endline="246" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="AbstractPeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BaseDateTime.java">
+<violation beginline="45" endline="342" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BaseDateTime" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BaseDuration.java">
+<violation beginline="47" endline="272" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BaseDuration" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BaseInterval.java">
+<violation beginline="50" endline="254" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BaseInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BaseLocal.java">
+<violation beginline="32" endline="63" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BaseLocal" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BasePartial.java">
+<violation beginline="45" endline="312" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BasePartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BasePeriod.java">
+<violation beginline="52" endline="619" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BasePeriod" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="57" endline="64" begincolumn="77" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BasePeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\base\BaseSingleFieldPeriod.java">
+<violation beginline="47" endline="346" begincolumn="84" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.base" class="BaseSingleFieldPeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\AssembledChronology.java">
+<violation beginline="35" endline="565" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="AssembledChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="396" endline="564" begincolumn="38" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="AssembledChronology$Fields" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BaseChronology.java">
+<violation beginline="45" endline="682" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BaseChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicChronology.java">
+<violation beginline="50" endline="821" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="790" endline="809" begincolumn="68" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicChronology$HalfdayField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="811" endline="819" begincolumn="35" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicChronology$YearInfo" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicDayOfMonthDateTimeField.java">
+<violation beginline="31" endline="111" begincolumn="79" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicDayOfMonthDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicDayOfYearDateTimeField.java">
+<violation beginline="31" endline="108" begincolumn="78" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicDayOfYearDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicFixedMonthChronology.java">
+<violation beginline="35" endline="161" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicFixedMonthChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicGJChronology.java">
+<violation beginline="34" endline="206" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicGJChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicMonthOfYearDateTimeField.java">
+<violation beginline="34" endline="367" begincolumn="68" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicMonthOfYearDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicSingleEraDateTimeField.java">
+<violation beginline="36" endline="134" begincolumn="67" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicSingleEraDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicWeekOfWeekyearDateTimeField.java">
+<violation beginline="32" endline="121" begincolumn="83" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicWeekOfWeekyearDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicWeekyearDateTimeField.java">
+<violation beginline="32" endline="253" begincolumn="71" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicWeekyearDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BasicYearDateTimeField.java">
+<violation beginline="31" endline="154" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BasicYearDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\BuddhistChronology.java">
+<violation beginline="54" endline="254" begincolumn="67" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="BuddhistChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\CopticChronology.java">
+<violation beginline="50" endline="272" begincolumn="71" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="CopticChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\EthiopicChronology.java">
+<violation beginline="50" endline="271" begincolumn="73" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="EthiopicChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJCacheKey.java">
+<violation beginline="24" endline="77" begincolumn="18" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJCacheKey" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJChronology.java">
+<violation beginline="73" endline="1157" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="597" endline="934" begincolumn="58" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJChronology$CutoverField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="943" endline="1124" begincolumn="68" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJChronology$ImpreciseCutoverField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1130" endline="1155" begincolumn="77" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJChronology$LinkedDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJDayOfWeekDateTimeField.java">
+<violation beginline="34" endline="142" begincolumn="75" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJDayOfWeekDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJEraDateTimeField.java">
+<violation beginline="35" endline="153" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJEraDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJLocaleSymbols.java">
+<violation beginline="34" endline="249" begincolumn="23" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJLocaleSymbols" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJMonthOfYearDateTimeField.java">
+<violation beginline="28" endline="66" begincolumn="78" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJMonthOfYearDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GJYearOfEraDateTimeField.java">
+<violation beginline="31" endline="125" begincolumn="69" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GJYearOfEraDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\GregorianChronology.java">
+<violation beginline="44" endline="249" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="GregorianChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\ISOChronology.java">
+<violation beginline="48" endline="232" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ISOChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="208" endline="230" begincolumn="61" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ISOChronology$Stub" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\ISOYearOfEraDateTimeField.java">
+<violation beginline="34" endline="119" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ISOYearOfEraDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\IslamicChronology.java">
+<violation beginline="65" endline="581" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="IslamicChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="508" endline="580" begincolumn="69" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="IslamicChronology$LeapYearPatternType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\JulianChronology.java">
+<violation beginline="49" endline="278" begincolumn="63" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="JulianChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\LenientChronology.java">
+<violation beginline="33" endline="156" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="LenientChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\LimitChronology.java">
+<violation beginline="49" endline="607" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="LimitChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="346" endline="386" begincolumn="67" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="LimitChronology$LimitException" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="388" endline="441" begincolumn="69" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="LimitChronology$LimitDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="443" endline="605" begincolumn="69" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="LimitChronology$LimitDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\StrictChronology.java">
+<violation beginline="33" endline="156" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="StrictChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\chrono\ZonedChronology.java">
+<violation beginline="41" endline="647" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ZonedChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="284" endline="391" begincolumn="63" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ZonedChronology$ZonedDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="399" endline="645" begincolumn="69" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ZonedChronology$ZonedDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\AbstractConverter.java">
+<violation beginline="32" endline="161" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="AbstractConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\CalendarConverter.java">
+<violation beginline="38" endline="135" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="CalendarConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\Converter.java">
+<violation beginline="24" endline="34" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="Converter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ConverterManager.java">
+<violation beginline="81" endline="597" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ConverterManager" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ConverterSet.java">
+<violation beginline="25" endline="328" begincolumn="20" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="318" endline="326" begincolumn="24" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ConverterSet$Entry" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\DateConverter.java">
+<violation beginline="30" endline="69" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="DateConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\DurationConverter.java">
+<violation beginline="25" endline="36" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="DurationConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\InstantConverter.java">
+<violation beginline="31" endline="72" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="InstantConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\IntervalConverter.java">
+<violation beginline="28" endline="53" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="IntervalConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\LongConverter.java">
+<violation beginline="29" endline="80" begincolumn="74" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="LongConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\NullConverter.java">
+<violation beginline="34" endline="98" begincolumn="110" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="NullConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\PartialConverter.java">
+<violation beginline="33" endline="89" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="PartialConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\PeriodConverter.java">
+<violation beginline="29" endline="51" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="PeriodConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ReadableDurationConverter.java">
+<violation beginline="31" endline="91" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ReadableDurationConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ReadableInstantConverter.java">
+<violation beginline="31" endline="113" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ReadableInstantConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ReadableIntervalConverter.java">
+<violation beginline="31" endline="116" begincolumn="74" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ReadableIntervalConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ReadablePartialConverter.java">
+<violation beginline="30" endline="107" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ReadablePartialConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\ReadablePeriodConverter.java">
+<violation beginline="31" endline="84" begincolumn="36" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="ReadablePeriodConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\convert\StringConverter.java">
+<violation beginline="39" endline="250" begincolumn="110" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="StringConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\AbstractPartialFieldProperty.java">
+<violation beginline="37" endline="360" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="AbstractPartialFieldProperty" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\AbstractReadableInstantFieldProperty.java">
+<violation beginline="46" endline="474" begincolumn="84" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="AbstractReadableInstantFieldProperty" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\BaseDateTimeField.java">
+<violation beginline="41" endline="1006" begincolumn="63" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="BaseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\BaseDurationField.java">
+<violation beginline="38" endline="168" begincolumn="87" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="BaseDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\DecoratedDateTimeField.java">
+<violation beginline="39" endline="106" begincolumn="72" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="DecoratedDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\DecoratedDurationField.java">
+<violation beginline="38" endline="104" begincolumn="63" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="DecoratedDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\DelegatedDateTimeField.java">
+<violation beginline="36" endline="296" begincolumn="83" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="DelegatedDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\DelegatedDurationField.java">
+<violation beginline="34" endline="169" begincolumn="83" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="DelegatedDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\DividedDateTimeField.java">
+<violation beginline="35" endline="258" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="DividedDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\FieldUtils.java">
+<violation beginline="30" endline="346" begincolumn="25" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="FieldUtils" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\ImpreciseDateTimeField.java">
+<violation beginline="41" endline="201" begincolumn="72" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="ImpreciseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="149" endline="199" begincolumn="71" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="ImpreciseDateTimeField$LinkedDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\LenientDateTimeField.java">
+<violation beginline="32" endline="77" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="LenientDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\MillisDurationField.java">
+<violation beginline="32" endline="174" begincolumn="86" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="MillisDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\OffsetDateTimeField.java">
+<violation beginline="30" endline="219" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="OffsetDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\PreciseDateTimeField.java">
+<violation beginline="35" endline="147" begincolumn="72" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="PreciseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\PreciseDurationDateTimeField.java">
+<violation beginline="30" endline="167" begincolumn="78" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="PreciseDurationDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\PreciseDurationField.java">
+<violation beginline="29" endline="148" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="PreciseDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\RemainderDateTimeField.java">
+<violation beginline="34" endline="243" begincolumn="68" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="RemainderDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\ScaledDurationField.java">
+<violation beginline="32" endline="154" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="ScaledDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\SkipDateTimeField.java">
+<violation beginline="35" endline="107" begincolumn="69" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="SkipDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\SkipUndoDateTimeField.java">
+<violation beginline="34" endline="102" begincolumn="73" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="SkipUndoDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\StrictDateTimeField.java">
+<violation beginline="31" endline="71" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="StrictDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\UnsupportedDateTimeField.java">
+<violation beginline="34" endline="547" begincolumn="91" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="UnsupportedDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\UnsupportedDurationField.java">
+<violation beginline="32" endline="279" begincolumn="91" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="UnsupportedDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\field\ZeroIsMaxDateTimeField.java">
+<violation beginline="33" endline="205" begincolumn="74" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="ZeroIsMaxDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimeFormat.java">
+<violation beginline="131" endline="907" begincolumn="29" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="788" endline="860" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormat$StyleFormatter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="862" endline="906" begincolumn="41" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormat$StyleFormatterCacheKey" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimeFormatter.java">
+<violation beginline="90" endline="1024" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimeFormatterBuilder.java">
+<violation beginline="70" endline="2663" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1196" endline="1245" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$CharacterLiteral" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1249" endline="1282" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$StringLiteral" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1286" endline="1368" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$NumberFormatter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1371" endline="1405" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$UnpaddedNumber" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1408" endline="1445" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$PaddedNumber" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1448" endline="1478" begincolumn="51" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$FixedNumber" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1482" endline="1650" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$TwoDigitYear" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1654" endline="1772" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$TextField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1776" endline="1948" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$Fraction" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1952" endline="2244" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$TimeZoneOffset" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="2248" endline="2310" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$TimeZoneName" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="2391" endline="2533" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$Composite" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="2537" endline="2618" begincolumn="39" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeFormatterBuilder$MatchingParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimeParser.java">
+<violation beginline="35" endline="64" begincolumn="33" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimeParserBucket.java">
+<violation beginline="56" endline="607" begincolumn="35" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeParserBucket" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="510" endline="541" begincolumn="22" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeParserBucket$SavedState" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="543" endline="593" begincolumn="63" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeParserBucket$SavedField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimeParserInternalParser.java">
+<violation beginline="24" endline="55" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimeParserInternalParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimePrinter.java">
+<violation beginline="44" endline="104" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimePrinter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\DateTimePrinterInternalPrinter.java">
+<violation beginline="32" endline="89" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="DateTimePrinterInternalPrinter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\FormatUtils.java">
+<violation beginline="29" endline="448" begincolumn="26" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="FormatUtils" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\ISODateTimeFormat.java">
+<violation beginline="63" endline="2016" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="ISODateTimeFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1246" endline="2014" begincolumn="34" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="ISODateTimeFormat$Constants" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\ISOPeriodFormat.java">
+<violation beginline="33" endline="206" begincolumn="30" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="ISOPeriodFormat" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\InternalParser.java">
+<violation beginline="27" endline="56" begincolumn="26" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="InternalParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\InternalParserDateTimeParser.java">
+<violation beginline="25" endline="72" begincolumn="78" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="InternalParserDateTimeParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\InternalPrinter.java">
+<violation beginline="33" endline="68" begincolumn="27" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="InternalPrinter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\InternalPrinterDateTimePrinter.java">
+<violation beginline="32" endline="106" begincolumn="82" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="InternalPrinterDateTimePrinter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\PeriodFormat.java">
+<violation beginline="44" endline="407" begincolumn="27" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="361" endline="405" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormat$DynamicWordBased" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\PeriodFormatter.java">
+<violation beginline="67" endline="344" begincolumn="30" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\PeriodFormatterBuilder.java">
+<violation beginline="72" endline="2199" begincolumn="37" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="930" endline="964" begincolumn="39" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$PeriodFieldAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="969" endline="1026" begincolumn="70" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$IgnorableAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1032" endline="1089" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$SimpleAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1096" endline="1175" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$PluralAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1182" endline="1261" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$RegExAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1183" endline="1187" begincolumn="99" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$RegExAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1267" endline="1331" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$CompositeAffix" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1338" endline="1863" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$FieldFormatter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1870" endline="1902" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$Literal" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1910" endline="2085" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$Separator" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="2092" endline="2197" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodFormatterBuilder$Composite" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\PeriodParser.java">
+<violation beginline="40" endline="62" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodParser" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\format\PeriodPrinter.java">
+<violation beginline="42" endline="83" begincolumn="32" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="PeriodPrinter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\CachedDateTimeZone.java">
+<violation beginline="30" endline="215" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="CachedDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="169" endline="214" begincolumn="37" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="CachedDateTimeZone$Info" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\DateTimeZoneBuilder.java">
+<violation beginline="86" endline="1731" begincolumn="34" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="480" endline="733" begincolumn="39" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$OfYear" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="738" endline="806" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$Recurrence" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="811" endline="877" begincolumn="37" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$Rule" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="879" endline="939" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$Transition" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="941" endline="1163" begincolumn="40" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$RuleSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1165" endline="1337" begincolumn="61" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$DSTZone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1339" endline="1730" begincolumn="71" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DateTimeZoneBuilder$PrecalculatedZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\DefaultNameProvider.java">
+<violation beginline="35" endline="161" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="DefaultNameProvider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\FixedDateTimeZone.java">
+<violation beginline="28" endline="105" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="FixedDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\NameProvider.java">
+<violation beginline="26" endline="44" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="NameProvider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\Provider.java">
+<violation beginline="28" endline="44" begincolumn="27" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="Provider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\UTCProvider.java">
+<violation beginline="31" endline="63" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="UTCProvider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\ZoneInfoCompiler.java">
+<violation beginline="63" endline="892" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoCompiler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="556" endline="685" begincolumn="33" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoCompiler$DateTimeOfYear" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="687" endline="757" begincolumn="31" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoCompiler$Rule" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="759" endline="783" begincolumn="34" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoCompiler$RuleSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="785" endline="891" begincolumn="31" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoCompiler$Zone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\ZoneInfoLogger.java">
+<violation beginline="21" endline="41" begincolumn="29" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoLogger" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="23" endline="27" begincolumn="71" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoLogger" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\main\java\org\joda\time\tz\ZoneInfoProvider.java">
+<violation beginline="41" endline="290" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="ZoneInfoProvider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\ClassLoadTest.java">
+<violation beginline="27" endline="51" begincolumn="28" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="ClassLoadTest" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\MockNullZoneChronology.java">
+<violation beginline="26" endline="44" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MockNullZoneChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\MockPartial.java">
+<violation beginline="25" endline="65" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MockPartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\MockZone.java">
+<violation beginline="18" endline="79" begincolumn="44" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="MockZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestAbstractPartial.java">
+<violation beginline="31" endline="228" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="149" endline="183" begincolumn="54" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockPartial" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="185" endline="196" begincolumn="69" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockProperty0" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="197" endline="208" begincolumn="69" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockProperty1" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="209" endline="213" begincolumn="59" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockProperty0Field" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="214" endline="218" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockProperty0Val" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="219" endline="227" begincolumn="60" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockProperty0Chrono" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="221" endline="225" begincolumn="38" endcolumn="13" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAbstractPartial$MockProperty0Chrono" method="getReadablePartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestAll.java">
+<violation beginline="29" endline="143" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestAllPackages.java">
+<violation beginline="28" endline="60" begincolumn="47" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestAllPackages" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestBasePartial.java">
+<violation beginline="28" endline="145" begincolumn="47" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestBasePartial" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="104" endline="144" begincolumn="50" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestBasePartial$MockPartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestBaseSingleFieldPeriod.java">
+<violation beginline="28" endline="334" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestBaseSingleFieldPeriod" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="299" endline="332" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestBaseSingleFieldPeriod$Single" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestChronology.java">
+<violation beginline="42" endline="249" begincolumn="46" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateMidnight_Basics.java">
+<violation beginline="48" endline="1022" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateMidnight_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="289" endline="299" begincolumn="47" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateMidnight_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="993" endline="1004" begincolumn="62" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateMidnight_Basics" method="testProperty" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateMidnight_Constructors.java">
+<violation beginline="36" endline="621" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateMidnight_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateMidnight_Properties.java">
+<violation beginline="34" endline="545" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateMidnight_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTimeComparator.java">
+<violation beginline="40" endline="948" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeComparator" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTimeConstants.java">
+<violation beginline="26" endline="117" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeConstants" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="53" endline="54" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeConstants" method="testConstructor" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTimeFieldType.java">
+<violation beginline="34" endline="327" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeFieldType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTimeUtils.java">
+<violation beginline="43" endline="518" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="93" endline="108" begincolumn="33" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="109" endline="117" begincolumn="30" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="154" endline="154" begincolumn="29" endcolumn="30" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" method="testClass" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="284" endline="288" begincolumn="73" endcolumn="13" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" method="testMillisProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="312" endline="316" begincolumn="77" endcolumn="17" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" method="testMillisProviderSecurity" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="349" endline="356" begincolumn="52" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" method="testGetInstantChronology_RI" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="369" endline="375" begincolumn="52" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeUtils" method="testGetIntervalChronology_RInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTimeZone.java">
+<violation beginline="53" endline="1106" begincolumn="48" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="106" endline="121" begincolumn="33" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="122" endline="130" begincolumn="30" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="398" endline="423" begincolumn="43" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone" method="testFromTimeZoneInvalid" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="546" endline="553" begincolumn="58" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockNullIDSProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="554" endline="561" begincolumn="59" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockEmptyIDSProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="562" endline="571" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockNoUTCProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="572" endline="582" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockBadUTCProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="583" endline="593" begincolumn="53" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockOKProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="656" endline="663" begincolumn="68" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockOKButNullNameProvider" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="670" endline="692" begincolumn="36" endcolumn="13" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone" method="testConstructor" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="783" endline="808" begincolumn="56" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZone$MockDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTimeZoneCutover.java">
+<violation beginline="29" endline="1374" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTimeZoneCutover" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTime_Basics.java">
+<violation beginline="48" endline="1293" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTime_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="308" endline="318" begincolumn="47" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTime_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="320" endline="337" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTime_Basics$MockEqualsChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="1260" endline="1271" begincolumn="62" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTime_Basics" method="testProperty" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTime_Constructors.java">
+<violation beginline="36" endline="799" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTime_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDateTime_Properties.java">
+<violation beginline="33" endline="1397" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDateTime_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDays.java">
+<violation beginline="31" endline="435" begincolumn="40" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDays" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDurationField.java">
+<violation beginline="28" endline="62" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDurationFieldType.java">
+<violation beginline="34" endline="189" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDurationFieldType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDuration_Basics.java">
+<violation beginline="37" endline="824" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDuration_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="143" endline="152" begincolumn="49" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDuration_Basics$MockDuration" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="815" endline="822" begincolumn="59" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDuration_Basics$MockMutableDuration" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestDuration_Constructors.java">
+<violation beginline="29" endline="300" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestDuration_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestHours.java">
+<violation beginline="31" endline="397" begincolumn="41" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestHours" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestIllegalFieldValueException.java">
+<violation beginline="32" endline="338" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestIllegalFieldValueException" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestInstant_Basics.java">
+<violation beginline="39" endline="593" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInstant_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="207" endline="217" begincolumn="47" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInstant_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestInstant_Constructors.java">
+<violation beginline="35" endline="182" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInstant_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestInterval_Basics.java">
+<violation beginline="40" endline="1280" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInterval_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="192" endline="205" begincolumn="49" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInterval_Basics$MockInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestInterval_Constructors.java">
+<violation beginline="36" endline="794" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInterval_Constructors" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="659" endline="670" begincolumn="58" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInterval_Constructors" method="testConstructor_Object5" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="685" endline="696" begincolumn="58" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInterval_Constructors" method="testConstructor_Object6" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="708" endline="769" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestInterval_Constructors$MockInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalDateTime_Basics.java">
+<violation beginline="46" endline="1109" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDateTime_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="313" endline="328" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDateTime_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalDateTime_Constructors.java">
+<violation beginline="36" endline="786" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDateTime_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalDateTime_Properties.java">
+<violation beginline="30" endline="1084" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDateTime_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalDate_Basics.java">
+<violation beginline="48" endline="1159" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDate_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="270" endline="284" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDate_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalDate_Constructors.java">
+<violation beginline="36" endline="602" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDate_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalDate_Properties.java">
+<violation beginline="32" endline="555" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalDate_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalTime_Basics.java">
+<violation beginline="39" endline="819" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalTime_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="227" endline="238" begincolumn="62" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalTime_Basics" method="testIsSupported_DateTimeFieldType" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="241" endline="252" begincolumn="49" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalTime_Basics" method="testIsSupported_DateTimeFieldType" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="295" endline="310" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalTime_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalTime_Constructors.java">
+<violation beginline="37" endline="760" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalTime_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestLocalTime_Properties.java">
+<violation beginline="28" endline="785" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestLocalTime_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMinMaxLong.java">
+<violation beginline="30" endline="317" begincolumn="46" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMinMaxLong" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMinutes.java">
+<violation beginline="31" endline="380" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMinutes" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMonthDay_Basics.java">
+<violation beginline="38" endline="821" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMonthDay_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="201" endline="220" begincolumn="38" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMonthDay_Basics$MockMD" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMonthDay_Constructors.java">
+<violation beginline="33" endline="408" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMonthDay_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMonthDay_Properties.java">
+<violation beginline="30" endline="348" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMonthDay_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMonths.java">
+<violation beginline="31" endline="366" begincolumn="42" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMonths" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableDateTime_Adds.java">
+<violation beginline="31" endline="391" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Adds" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableDateTime_Basics.java">
+<violation beginline="45" endline="755" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="251" endline="261" begincolumn="47" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="263" endline="280" begincolumn="55" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Basics$MockEqualsChronology" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="733" endline="744" begincolumn="62" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Basics" method="testProperty" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableDateTime_Constructors.java">
+<violation beginline="36" endline="587" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableDateTime_Properties.java">
+<violation beginline="29" endline="776" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableDateTime_Sets.java">
+<violation beginline="33" endline="667" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableDateTime_Sets" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableInterval_Basics.java">
+<violation beginline="38" endline="489" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="180" endline="193" begincolumn="49" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Basics$MockInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableInterval_Constructors.java">
+<violation beginline="35" endline="680" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Constructors" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="545" endline="556" begincolumn="58" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Constructors" method="testConstructor_Object5" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="571" endline="582" begincolumn="58" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Constructors" method="testConstructor_Object6" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="594" endline="655" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Constructors$MockInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutableInterval_Updates.java">
+<violation beginline="32" endline="398" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Updates" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="176" endline="186" begincolumn="52" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutableInterval_Updates$MockBadInterval" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutablePeriod_Basics.java">
+<violation beginline="35" endline="454" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutablePeriod_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="153" endline="157" begincolumn="48" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutablePeriod_Basics$MockMutablePeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutablePeriod_Constructors.java">
+<violation beginline="32" endline="972" begincolumn="62" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutablePeriod_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestMutablePeriod_Updates.java">
+<violation beginline="31" endline="1455" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestMutablePeriod_Updates" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPartial_Basics.java">
+<violation beginline="39" endline="930" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPartial_Basics" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPartial_Constructors.java">
+<violation beginline="31" endline="495" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPartial_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPartial_Match.java">
+<violation beginline="30" endline="174" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPartial_Match" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPartial_Properties.java">
+<violation beginline="28" endline="416" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPartial_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPeriodType.java">
+<violation beginline="33" endline="916" begincolumn="46" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPeriodType" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPeriod_Basics.java">
+<violation beginline="39" endline="1562" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPeriod_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="219" endline="224" begincolumn="41" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPeriod_Basics$MockPeriod" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestPeriod_Constructors.java">
+<violation beginline="32" endline="1562" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestPeriod_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestSeconds.java">
+<violation beginline="31" endline="370" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestSeconds" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestSerialization.java">
+<violation beginline="44" endline="511" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestSerialization" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestStringConvert.java">
+<violation beginline="29" endline="203" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestStringConvert" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestTimeOfDay_Basics.java">
+<violation beginline="41" endline="906" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestTimeOfDay_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="221" endline="236" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestTimeOfDay_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestTimeOfDay_Constructors.java">
+<violation beginline="36" endline="766" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestTimeOfDay_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestTimeOfDay_Properties.java">
+<violation beginline="29" endline="736" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestTimeOfDay_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestWeeks.java">
+<violation beginline="31" endline="400" begincolumn="41" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestWeeks" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYearMonthDay_Basics.java">
+<violation beginline="41" endline="832" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonthDay_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="202" endline="216" begincolumn="43" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonthDay_Basics$MockInstant" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYearMonthDay_Constructors.java">
+<violation beginline="34" endline="464" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonthDay_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYearMonthDay_Properties.java">
+<violation beginline="33" endline="559" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonthDay_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYearMonth_Basics.java">
+<violation beginline="40" endline="655" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonth_Basics" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="202" endline="215" begincolumn="38" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonth_Basics$MockYM" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYearMonth_Constructors.java">
+<violation beginline="35" endline="408" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonth_Constructors" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYearMonth_Properties.java">
+<violation beginline="32" endline="366" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYearMonth_Properties" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\TestYears.java">
+<violation beginline="31" endline="321" begincolumn="41" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time" class="TestYears" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestAll.java">
+<violation beginline="30" endline="60" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestBuddhistChronology.java">
+<violation beginline="37" endline="393" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestBuddhistChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestCopticChronology.java">
+<violation beginline="39" endline="597" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestCopticChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestEthiopicChronology.java">
+<violation beginline="39" endline="597" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestEthiopicChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestGJChronology.java">
+<violation beginline="44" endline="563" begincolumn="48" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestGJChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestGJDate.java">
+<violation beginline="29" endline="138" begincolumn="42" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestGJDate" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestGregorianChronology.java">
+<violation beginline="38" endline="331" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestGregorianChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestISOChronology.java">
+<violation beginline="44" endline="475" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestISOChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestIslamicChronology.java">
+<violation beginline="38" endline="739" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestIslamicChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestJulianChronology.java">
+<violation beginline="35" endline="320" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestJulianChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\TestLenientChronology.java">
+<violation beginline="31" endline="170" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="TestLenientChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\ThreadContention.java">
+<violation beginline="32" endline="166" begincolumn="31" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ThreadContention" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="48" endline="68" begincolumn="41" endcolumn="13" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ThreadContention" method="multiThreadGJLocale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="115" endline="135" begincolumn="41" endcolumn="13" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono" class="ThreadContention" method="multiThreadZones" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\MainTest.java">
+<violation beginline="50" endline="444" begincolumn="40" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="MainTest" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestAll.java">
+<violation beginline="29" endline="49" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJChronology.java">
+<violation beginline="47" endline="294" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJDateTimeField.java">
+<violation beginline="25" endline="43" begincolumn="67" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJDayOfMonthField.java">
+<violation beginline="25" endline="72" begincolumn="57" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJDayOfMonthField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJDayOfWeekField.java">
+<violation beginline="25" endline="61" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJDayOfWeekField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJDayOfYearField.java">
+<violation beginline="25" endline="68" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJDayOfYearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJMonthOfYearField.java">
+<violation beginline="25" endline="93" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJMonthOfYearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJWeekOfWeekyearField.java">
+<violation beginline="25" endline="69" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJWeekOfWeekyearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJWeekyearField.java">
+<violation beginline="25" endline="79" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJWeekyearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGJYearField.java">
+<violation beginline="25" endline="75" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGJYearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestGregorianChronology.java">
+<violation beginline="26" endline="137" begincolumn="69" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestGregorianChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestJulianChronology.java">
+<violation beginline="28" endline="165" begincolumn="66" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestJulianChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestJulianDayOfMonthField.java">
+<violation beginline="22" endline="30" begincolumn="63" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestJulianDayOfMonthField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestJulianMonthOfYearField.java">
+<violation beginline="22" endline="60" begincolumn="65" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestJulianMonthOfYearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestJulianWeekyearField.java">
+<violation beginline="24" endline="58" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestJulianWeekyearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\chrono\gj\TestJulianYearField.java">
+<violation beginline="24" endline="58" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.chrono.gj" class="TestJulianYearField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\MockBadChronology.java">
+<violation beginline="27" endline="47" begincolumn="48" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="MockBadChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\MockUnknownCalendar.java">
+<violation beginline="26" endline="66" begincolumn="44" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="MockUnknownCalendar" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\MockUnknownTimeZone.java">
+<violation beginline="27" endline="55" begincolumn="44" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="MockUnknownTimeZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\MockZeroNullIntegerConverter.java">
+<violation beginline="28" endline="51" begincolumn="71" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="MockZeroNullIntegerConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestAll.java">
+<violation beginline="29" endline="60" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestCalendarConverter.java">
+<violation beginline="44" endline="181" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestCalendarConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestConverterManager.java">
+<violation beginline="60" endline="992" begincolumn="52" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="78" endline="93" begincolumn="33" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="94" endline="102" begincolumn="30" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="170" endline="175" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testGetInstantConverterOKMultipleMatches" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="188" endline="193" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testGetInstantConverterBadMultipleMatches" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="216" endline="221" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddInstantConverter1" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="234" endline="239" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddInstantConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="294" endline="299" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testRemoveInstantConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="375" endline="381" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testGetPartialConverterOKMultipleMatches" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="394" endline="400" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testGetPartialConverterBadMultipleMatches" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="423" endline="429" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddPartialConverter1" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="442" endline="448" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddPartialConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="503" endline="509" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testRemovePartialConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="586" endline="589" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddDurationConverter1" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="602" endline="605" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddDurationConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="654" endline="657" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testRemoveDurationConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="734" endline="738" begincolumn="51" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddPeriodConverter1" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="751" endline="755" begincolumn="51" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddPeriodConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="804" endline="808" begincolumn="51" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testRemovePeriodConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="883" endline="887" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddIntervalConverter1" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="900" endline="904" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testAddIntervalConverter2" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="953" endline="957" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterManager" method="testRemoveIntervalConverter2" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestConverterSet.java">
+<violation beginline="39" endline="189" begincolumn="48" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="41" endline="43" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="44" endline="46" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="47" endline="49" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="50" endline="52" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="53" endline="55" begincolumn="58" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="56" endline="58" begincolumn="57" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestConverterSet" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestDateConverter.java">
+<violation beginline="39" endline="119" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestDateConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestLongConverter.java">
+<violation beginline="37" endline="121" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestLongConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestNullConverter.java">
+<violation beginline="46" endline="191" begincolumn="49" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestNullConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestReadableDurationConverter.java">
+<violation beginline="40" endline="131" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableDurationConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestReadableInstantConverter.java">
+<violation beginline="41" endline="147" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableInstantConverter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="109" endline="113" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableInstantConverter" method="testGetChronology_Object_Zone" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="121" endline="125" begincolumn="53" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableInstantConverter" method="testGetChronology_Object_nullChronology" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestReadableIntervalConverter.java">
+<violation beginline="43" endline="188" begincolumn="61" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableIntervalConverter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="158" endline="162" begincolumn="59" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableIntervalConverter" method="testSetIntoInterval_Object3" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="171" endline="175" begincolumn="59" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadableIntervalConverter" method="testSetIntoInterval_Object4" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestReadablePartialConverter.java">
+<violation beginline="42" endline="147" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadablePartialConverter" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="123" endline="140" begincolumn="46" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadablePartialConverter$MockTOD" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestReadablePeriodConverter.java">
+<violation beginline="39" endline="114" begincolumn="59" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestReadablePeriodConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\convert\TestStringConverter.java">
+<violation beginline="43" endline="583" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.convert" class="TestStringConverter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestAll.java">
+<violation beginline="29" endline="59" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestBaseDateTimeField.java">
+<violation beginline="38" endline="616" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="425" endline="429" begincolumn="45" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="432" endline="436" begincolumn="45" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="439" endline="443" begincolumn="45" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="446" endline="450" begincolumn="45" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="518" endline="549" begincolumn="66" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField$MockBaseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="551" endline="561" begincolumn="78" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField$MockStandardBaseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="564" endline="599" begincolumn="70" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField$MockCountingDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="601" endline="615" begincolumn="50" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestBaseDateTimeField$MockPartial" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestFieldUtils.java">
+<violation beginline="26" endline="324" begincolumn="46" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestFieldUtils" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestMillisDurationField.java">
+<violation beginline="35" endline="216" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestMillisDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestOffsetDateTimeField.java">
+<violation beginline="35" endline="551" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestOffsetDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="533" endline="537" begincolumn="70" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestOffsetDateTimeField$MockOffsetDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="539" endline="549" begincolumn="76" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestOffsetDateTimeField$MockStandardDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestPreciseDateTimeField.java">
+<violation beginline="35" endline="660" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="534" endline="544" begincolumn="72" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDateTimeField$MockPreciseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="546" endline="556" begincolumn="77" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDateTimeField$MockStandardDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="559" endline="596" begincolumn="70" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDateTimeField$MockCountingDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="599" endline="627" begincolumn="66" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDateTimeField$MockZeroDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="630" endline="658" begincolumn="71" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDateTimeField$MockImpreciseDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestPreciseDurationDateTimeField.java">
+<violation beginline="35" endline="664" begincolumn="64" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="430" endline="434" begincolumn="56" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="437" endline="441" begincolumn="56" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="444" endline="448" begincolumn="56" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="451" endline="455" begincolumn="56" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField" method="test_getMaximumTextLength_Locale" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="533" endline="550" begincolumn="88" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField$MockPreciseDurationDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="552" endline="562" begincolumn="89" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField$MockStandardBaseDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="565" endline="600" begincolumn="70" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField$MockCountingDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="603" endline="631" begincolumn="66" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField$MockZeroDurationField" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="634" endline="662" begincolumn="71" endcolumn="5" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationDateTimeField$MockImpreciseDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestPreciseDurationField.java">
+<violation beginline="35" endline="275" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestPreciseDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestScaledDurationField.java">
+<violation beginline="35" endline="292" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestScaledDurationField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\field\TestUnsupportedDateTimeField.java">
+<violation beginline="36" endline="657" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.field" class="TestUnsupportedDateTimeField" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestAll.java">
+<violation beginline="29" endline="66" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestDateTimeFormat.java">
+<violation beginline="38" endline="1178" begincolumn="50" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="92" endline="94" begincolumn="49" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeFormat" method="testSubclassableConstructor" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestDateTimeFormatStyle.java">
+<violation beginline="36" endline="375" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeFormatStyle" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestDateTimeFormatter.java">
+<violation beginline="44" endline="1048" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeFormatter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestDateTimeFormatterBuilder.java">
+<violation beginline="39" endline="684" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeFormatterBuilder" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestDateTimeParserBucket.java">
+<violation beginline="32" endline="294" begincolumn="56" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeParserBucket" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="276" endline="285" begincolumn="54" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestDateTimeParserBucket" method="testParse" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestISODateTimeFormat.java">
+<violation beginline="36" endline="597" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISODateTimeFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="89" endline="91" begincolumn="55" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISODateTimeFormat" method="testSubclassableConstructor" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestISODateTimeFormatParsing.java">
+<violation beginline="32" endline="874" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISODateTimeFormatParsing" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestISODateTimeFormat_Fields.java">
+<violation beginline="35" endline="1151" begincolumn="60" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISODateTimeFormat_Fields" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestISOPeriodFormat.java">
+<violation beginline="35" endline="210" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISOPeriodFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="94" endline="96" begincolumn="51" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISOPeriodFormat" method="testSubclassableConstructor" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestISOPeriodFormatParsing.java">
+<violation beginline="35" endline="204" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestISOPeriodFormatParsing" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestPeriodFormat.java">
+<violation beginline="30" endline="653" begincolumn="48" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestPeriodFormat" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="68" endline="70" begincolumn="45" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestPeriodFormat" method="testSubclassableConstructor" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestPeriodFormatParsing.java">
+<violation beginline="35" endline="150" begincolumn="55" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestPeriodFormatParsing" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestPeriodFormatter.java">
+<violation beginline="40" endline="232" begincolumn="51" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestPeriodFormatter" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestPeriodFormatterBuilder.java">
+<violation beginline="35" endline="1186" begincolumn="58" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestPeriodFormatterBuilder" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\format\TestTextFields.java">
+<violation beginline="34" endline="151" begincolumn="46" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.format" class="TestTextFields" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\tz\TestAll.java">
+<violation beginline="29" endline="52" begincolumn="39" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestAll" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\tz\TestBuilder.java">
+<violation beginline="35" endline="314" begincolumn="43" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestBuilder" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\tz\TestCachedDateTimeZone.java">
+<violation beginline="33" endline="82" begincolumn="54" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestCachedDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\tz\TestCompiler.java">
+<violation beginline="38" endline="253" begincolumn="44" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestCompiler" priority="3">
+class_or_interface_body
+</violation>
+<violation beginline="99" endline="103" begincolumn="46" endcolumn="9" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestCompiler" method="testDateTimeZoneBuilder" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\tz\TestFixedDateTimeZone.java">
+<violation beginline="31" endline="111" begincolumn="53" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestFixedDateTimeZone" priority="3">
+class_or_interface_body
+</violation>
+</file>
+<file name="C:\doutorado\joda-time\joda-time-2.9\src\test\java\org\joda\time\tz\TestUTCProvider.java">
+<violation beginline="32" endline="75" begincolumn="47" endcolumn="1" rule="class_or_interface_body" ruleset="complete" package="org.joda.time.tz" class="TestUTCProvider" priority="3">
+class_or_interface_body
+</violation>
+</file>
+</pmd>
