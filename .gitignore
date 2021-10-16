@@ -8,5 +8,4 @@ tests/testthat/*.xml
 tests/testthat/*.diff
 tests/testthat/data/log
 tests/testthat/data/log_old
-
-
+jitterbug_test

@@ -8,7 +8,7 @@ Authors@R:
            email = "crotman@gmail.com",
            comment = c(ORCID = "0000-0003-3102-6310"))
 Description: Extract possible kludges com source code using PMD alerts. Categorize alerts in fixed, open and new.
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -35,6 +35,7 @@ Imports:
     pryr,
     IRanges,
     uuid,
-    readxl
+    readxl,
+    structtibble
 Depends: 
     R (>= 2.10)
