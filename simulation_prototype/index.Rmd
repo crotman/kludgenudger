@@ -1,0 +1,139 @@
+---
+title: "Untitled"
+author: "teste"
+date: "16/10/2021"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(structtibble)
+library(shiny)
+
+source("R/create_enums.R", encoding = "UTF-8")
+source("R/simulator.R", encoding = "UTF-8")
+
+```
+
+
+```{r eruptions, echo=FALSE}
+inputPanel(
+  numericInput(
+    inputId = "prob_diligent",
+    label = "Probability of Kludge when Diligent",
+    value = "0.2"
+  ) ,
+  numericInput(
+    inputId = "prob_kludgy",
+    label = "Probability of Kludge when Kludgy",
+    value = "0.8"
+  ) ,
+  
+  selectInput(
+    inputId = "action_d1",
+    label = "Developer 1 Pure Strategy",
+    choices = c("Diligent/Accurate", "Diligent/Innaccurate", "Kludgy/Accurate", "Kludgy/Innaccurate" )
+  ) ,
+  
+  selectInput(
+    inputId = "action_d2",
+    label = "Developer 2 Pure Strategy",
+    choices = c("Diligent/Accurate", "Diligent/Innaccurate", "Kludgy/Accurate", "Kludgy/Innaccurate" )
+  ) ,
+  
+  selectInput(
+    inputId = "action_r",
+    label = "Reviewer Pure Strategy",
+    choices = c("Careful", "Negligent")
+  ) ,
+  
+  
+  actionButton(
+    inputId = "go",
+    label = "GO!"
+  )
+
+  
+)
+
+tasks <- create_backlog()
+cur_time <- 0
+total_time <- 1000
+next_task <- NULL
+
+devs_status <- tribble(
+  ~player,     ~status,
+  players$D1,  status$Idle,
+  players$D2,  status$Idle,
+  players$R,  status$Idle
+)
+
+
+game_results <- eventReactive(eventExpr = input$go , valueExpr = {
+  
+
+  probabilities_kludge <- tribble(
+    ~action,             ~prob,
+    actions$Diligent,    input$prob_diligent,
+    actions$Kludgy,      input$prob_kludgy
+  )
+  
+  devs_actions <- set_devs_actions(
+      d1 = input$action_d1,
+      d2 = input$action_d2
+  )
+
+  browser()
+  
+  while(cur_time < total_time){
+   
+    if(!is.null(next_task)){
+      # switch(
+      #   next_task$
+      #   
+      # )          
+    }
+    
+    for(dev in devs){
+      
+      if (get_dev_status(devs_status, dev) == status$Idle){
+        
+        
+
+        new_pr <- create_pull_request(
+          developer = dev, 
+          kludge = rbinom(prob = 0.5, n = 1, size = 1)
+        )
+
+      }
+      
+    }
+  }
+
+})
+
+    
+
+
+
+
+```
+
+
+
+
+```{r}
+
+
+renderText(
+  game_results()
+)
+
+
+
+```
+
+

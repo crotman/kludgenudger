@@ -4,7 +4,15 @@
 \alias{analyse_alerts_and_categories}
 \title{Analyses alerts}
 \usage{
-analyse_alerts_and_categories()
+analyse_alerts_and_categories(
+  dir_outside_read = NULL,
+  package_start_outside_read = NULL,
+  dir_read_all_alerts = NULL,
+  pattern_major_read_all_alerts = NULL,
+  pattern_minor_read_all_alerts = NULL,
+  package_start_read_all_alerts = NULL,
+  prefix = NULL
+)
 }
 \value{
 categorised alerts

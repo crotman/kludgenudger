@@ -7,7 +7,11 @@
 save_alerts(
   dir = here::here("ArgoUML"),
   pmd_path = "pmd/bin/pmd.bat",
-  pattern_versions = "^0_[0-9]*"
+  pattern_versions = "^0_[0-9]*",
+  dest_dir = "alerts",
+  remove_str = "",
+  string_to_replace = "-",
+  string_to_replace_with = "-"
 )
 }
 \arguments{

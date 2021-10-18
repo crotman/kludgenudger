@@ -4,7 +4,12 @@
 \alias{create_version_comparisons_comment}
 \title{Create verstion comparison of comments}
 \usage{
-create_version_comparisons_comment()
+create_version_comparisons_comment(
+  selected_comments_file = "selected_comments_3.rds",
+  pattern_diff = "log",
+  dir_only_classes = "only_classes",
+  pattern_major_minor_versions_only_classes = NULL
+)
 }
 \value{
 comparison of comments

@@ -149,10 +149,10 @@ create_backlog <- function(
 #'
 #' @examples
 get_dev_status <-  function(
-  devs_status,
+  developers_status,
   developer
 ){
-  devs_status %>% filter(player == developer) %>% pull(status)
+  developers_status %>% filter(player == developer) %>% pull(status)
 }
 
 
