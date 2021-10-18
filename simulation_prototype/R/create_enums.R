@@ -28,7 +28,12 @@ actions <- list(
 )  
 
 
-
+review_statuses <- list(
+  NotSampled =  "Not sampled for review",
+  Waiting =  "Waiting for review",
+  Kludge =  "Kludge",
+  NotKludge =  "Not Kludge"
+)
 
 
 

@@ -9,7 +9,8 @@ read_raw_ast_nodes(
   output_location,
   pmd_location,
   blockrules_location,
-  alerts = NA
+  alerts = NA,
+  include_file_in_output = FALSE
 )
 }
 \arguments{

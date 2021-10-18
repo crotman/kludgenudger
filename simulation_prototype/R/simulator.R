@@ -193,5 +193,3 @@ set_devs_actions <- function(d1 = "Diligent/Accurate", d2 = "Kludgy/Inaccurate")
 
 
 
-
-
